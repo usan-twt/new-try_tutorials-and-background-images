@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo } from 'react'
 
 // 스크립트 진행 상태
 // phase: opening → playing → closing → done
-export default function useScriptEngine(script) {
+export default function useScriptEngine(script, episodeConfig = {}) {
   const [phase, setPhase] = useState('opening')
   const [turnIndex, setTurnIndex] = useState(0)
   const [messages, setMessages] = useState([])
@@ -12,7 +12,25 @@ export default function useScriptEngine(script) {
   const [usedFamilies, setUsedFamilies] = useState(new Set())
   const [innerVoice, setInnerVoice] = useState(null)
 
+  // Phase 3: 턴/라포 상태
+  const [exchangeCount, setExchangeCount] = useState(0)
+  const [rapportFamilyCount, setRapportFamilyCount] = useState(0)
+  const [isOvertime, setIsOvertime] = useState(false)
+  const [overtimeTurns, setOvertimeTurns] = useState(0)
+
   const totalTurns = script?.turns?.length ?? 0
+  const maxTurns = episodeConfig.maxTurns ?? null
+  const rapportGating = episodeConfig.rapportGating ?? script?.rapportGating ?? null
+
+  // 라포 달성 여부
+  const rapportUnlocked = rapportGating
+    ? rapportFamilyCount >= rapportGating.threshold
+    : true
+
+  // 남은 턴 (표시용)
+  const turnsRemaining = maxTurns !== null
+    ? Math.max(0, maxTurns - exchangeCount)
+    : null
 
   const currentTurn = useMemo(() => {
     if (phase !== 'playing' || turnIndex >= totalTurns) return null
@@ -25,7 +43,7 @@ export default function useScriptEngine(script) {
 
     // Phase 1: 단일 선택지
     if (currentTurn.choice) {
-      return null // ChoicePanel이 Phase 1 모드로 동작
+      return null
     }
 
     // Turn 0: firstChoices
@@ -33,7 +51,7 @@ export default function useScriptEngine(script) {
       return currentTurn.firstChoices
     }
 
-    // 이후 턴: pivots + continue (같은 family 연속 시)
+    // 이후 턴: pivots + continue
     const choices = []
 
     if (currentTurn.pivots) {
@@ -47,7 +65,6 @@ export default function useScriptEngine(script) {
       const continueKey = `after_${lastFamily}`
       const continueChoice = currentTurn.continue[continueKey]
       if (continueChoice) {
-        // 같은 family의 pivot을 continue로 교체
         const idx = choices.findIndex(c => c.family === continueChoice.family)
         if (idx !== -1) {
           choices[idx] = continueChoice
@@ -73,13 +90,48 @@ export default function useScriptEngine(script) {
     setLastFamily(null)
     setUsedFamilies(new Set())
     setInnerVoice(null)
+    setExchangeCount(0)
+    setRapportFamilyCount(0)
+    setIsOvertime(false)
+    setOvertimeTurns(0)
 
-    // 첫 턴에 선배 가이드가 있으면 표시 (Phase 1)
     const firstTurn = script.turns[0]
     if (firstTurn?.seniorGuide?.timing === 'before') {
       setShowSeniorGuide(true)
     }
   }, [script])
+
+  // 턴 종료 시 공통 처리
+  const advanceOrClose = useCallback((choiceIndex) => {
+    const nextIndex = choiceIndex + 1
+    if (nextIndex >= totalTurns) {
+      // 스크립트 소진 → 클로징
+      setTimeout(() => {
+        // 라포 달성 여부에 따른 클로징 분기
+        const closingData = rapportUnlocked && script.closingGated
+          ? script.closingGated
+          : script.closing
+        setMessages(prev => [
+          ...prev,
+          {
+            id: 'closing',
+            speaker: closingData.speaker,
+            text: closingData.text,
+          },
+        ])
+        setPhase('closing')
+      }, 800)
+    } else {
+      setTimeout(() => {
+        setTurnIndex(nextIndex)
+        setWaitingForChoice(true)
+        const nextTurn = script.turns[nextIndex]
+        if (nextTurn?.seniorGuide?.timing === 'before') {
+          setShowSeniorGuide(true)
+        }
+      }, 400)
+    }
+  }, [totalTurns, script, rapportUnlocked])
 
   // Phase 1: 단일 선택지 클릭
   const selectChoice = useCallback(() => {
@@ -124,31 +176,9 @@ export default function useScriptEngine(script) {
         }, 500)
       }
 
-      const nextIndex = choiceIndex + 1
-      if (nextIndex >= totalTurns) {
-        setTimeout(() => {
-          setMessages(prev => [
-            ...prev,
-            {
-              id: 'closing',
-              speaker: script.closing.speaker,
-              text: script.closing.text,
-            },
-          ])
-          setPhase('closing')
-        }, 800)
-      } else {
-        setTimeout(() => {
-          setTurnIndex(nextIndex)
-          setWaitingForChoice(true)
-          const nextTurn = script.turns[nextIndex]
-          if (nextTurn?.seniorGuide?.timing === 'before') {
-            setShowSeniorGuide(true)
-          }
-        }, 400)
-      }
+      advanceOrClose(choiceIndex)
     }, 800)
-  }, [currentTurn, waitingForChoice, turnIndex, totalTurns, script])
+  }, [currentTurn, waitingForChoice, turnIndex, advanceOrClose])
 
   // Phase 2+: 방향 선택지 클릭
   const selectDirectionChoice = useCallback((choice) => {
@@ -158,12 +188,42 @@ export default function useScriptEngine(script) {
     setInnerVoice(null)
 
     const choiceIndex = turnIndex
-    const response = currentTurn.responses?.[choice.intent]
-    if (!response) return
+    const responseData = currentTurn.responses?.[choice.intent]
+    if (!responseData) return
 
     // family 추적
     setLastFamily(choice.family)
     setUsedFamilies(prev => new Set([...prev, choice.family]))
+
+    // 교환 카운트 증가
+    const newExchangeCount = exchangeCount + 1
+    setExchangeCount(newExchangeCount)
+
+    // Phase 3: 초과 진료 체크
+    if (maxTurns !== null && newExchangeCount > maxTurns && !isOvertime) {
+      setIsOvertime(true)
+    }
+    if (maxTurns !== null && newExchangeCount > maxTurns) {
+      setOvertimeTurns(prev => prev + 1)
+    }
+
+    // Phase 3: 라포 카운트 (emotional/life)
+    if (rapportGating && rapportGating.families.includes(choice.family)) {
+      setRapportFamilyCount(prev => prev + 1)
+    }
+
+    // 라포 게이팅 적용: gatedResponse가 있고 라포 달성 시 교체
+    // 현재 rapportFamilyCount는 아직 업데이트 전이므로 +1 고려
+    const currentRapportCount = rapportGating && rapportGating.families.includes(choice.family)
+      ? rapportFamilyCount + 1
+      : rapportFamilyCount
+    const isUnlocked = rapportGating
+      ? currentRapportCount >= rapportGating.threshold
+      : true
+
+    const response = (isUnlocked && responseData.gatedResponse)
+      ? responseData.gatedResponse
+      : responseData
 
     // 의사 발화
     setMessages(prev => [
@@ -176,7 +236,7 @@ export default function useScriptEngine(script) {
     ])
 
     setTimeout(() => {
-      // 내면 독백 (있으면)
+      // 내면 독백
       if (response.innerVoice) {
         setInnerVoice(response.innerVoice)
         setTimeout(() => setInnerVoice(null), 2500)
@@ -193,28 +253,24 @@ export default function useScriptEngine(script) {
         },
       ])
 
-      // 다음 턴 또는 종료
-      const nextIndex = choiceIndex + 1
-      if (nextIndex >= totalTurns) {
+      // Phase 3: 턴 소진 시 간호사 메시지
+      if (maxTurns !== null && newExchangeCount === maxTurns) {
         setTimeout(() => {
           setMessages(prev => [
             ...prev,
             {
-              id: 'closing',
-              speaker: script.closing.speaker,
-              text: script.closing.text,
+              id: `nurse-overtime-${choiceIndex}`,
+              speaker: 'system',
+              text: '대기 환자가 있습니다.',
             },
           ])
-          setPhase('closing')
-        }, 800)
-      } else {
-        setTimeout(() => {
-          setTurnIndex(nextIndex)
-          setWaitingForChoice(true)
-        }, 400)
+        }, 600)
       }
+
+      advanceOrClose(choiceIndex)
     }, 800)
-  }, [currentTurn, waitingForChoice, turnIndex, totalTurns, script])
+  }, [currentTurn, waitingForChoice, turnIndex, exchangeCount, maxTurns,
+      isOvertime, rapportGating, rapportFamilyCount, advanceOrClose])
 
   const finishConsultation = useCallback(() => {
     setPhase('done')
@@ -229,6 +285,10 @@ export default function useScriptEngine(script) {
     setLastFamily(null)
     setUsedFamilies(new Set())
     setInnerVoice(null)
+    setExchangeCount(0)
+    setRapportFamilyCount(0)
+    setIsOvertime(false)
+    setOvertimeTurns(0)
   }, [])
 
   return {
@@ -243,6 +303,13 @@ export default function useScriptEngine(script) {
     lastFamily,
     usedFamilies,
     innerVoice,
+    // Phase 3
+    exchangeCount,
+    turnsRemaining,
+    maxTurns,
+    isOvertime,
+    overtimeTurns,
+    rapportUnlocked,
     beginPlaying,
     selectChoice,
     selectDirectionChoice,

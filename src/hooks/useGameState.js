@@ -1,19 +1,24 @@
 import { useState, useCallback } from 'react'
 import phase1Episodes from '../data/phases/phase1/episodes'
 import phase2Episodes from '../data/phases/phase2/episodes'
+import phase3Episodes from '../data/phases/phase3/episodes'
 import interludes from '../data/interludes'
 
-const allEpisodes = [...phase1Episodes, ...phase2Episodes]
+const allEpisodes = [...phase1Episodes, ...phase2Episodes, ...phase3Episodes]
 
 const INITIAL_STATE = {
   currentPhase: 1,
   currentEpisodeIndex: 0,
-  screen: 'title', // title | phaseIntro | consultation | dayEnd | interlude
+  screen: 'title', // title | phaseIntro | consultation | dayEnd | interlude | complete
   patientsEncountered: [],
-  // Phase 2+: 선택한 family 기록 (에피소드별)
   episodeFamilies: [],
-  // 인터루드 데이터
   currentInterlude: null,
+  // Phase 2+
+  unasked: [],
+  // Phase 3
+  lastScene: [],
+  overtime: [],
+  isFinalEpisode: false,
 }
 
 export default function useGameState() {
@@ -30,6 +35,10 @@ export default function useGameState() {
       patientsEncountered: [],
       episodeFamilies: [],
       currentInterlude: null,
+      unasked: [],
+      lastScene: [],
+      overtime: [],
+      isFinalEpisode: false,
     }))
   }, [])
 
@@ -37,7 +46,7 @@ export default function useGameState() {
     setState(prev => ({ ...prev, screen: 'consultation' }))
   }, [])
 
-  const endConsultation = useCallback((usedFamiliesSet) => {
+  const endConsultation = useCallback((usedFamiliesSet, extraInfo = {}) => {
     if (!currentEpisode) return
 
     setState(prev => {
@@ -51,10 +60,8 @@ export default function useGameState() {
         },
       ]
 
-      // Phase 2+: unasked 계산
-      const families = usedFamiliesSet
-        ? Array.from(usedFamiliesSet)
-        : []
+      // unasked 계산
+      const families = usedFamiliesSet ? Array.from(usedFamiliesSet) : []
       const allFamilies = ['medical', 'life', 'emotional']
       const unusedFamilies = allFamilies.filter(f => !families.includes(f))
 
@@ -71,12 +78,41 @@ export default function useGameState() {
         }
       }
 
+      // Phase 3: lastScene
+      const lastScene = [...prev.lastScene]
+      if (dayEndExtra?.lastScene) {
+        const sceneText = extraInfo.rapportUnlocked && dayEndExtra.lastSceneGated
+          ? dayEndExtra.lastSceneGated
+          : dayEndExtra.lastScene
+        lastScene.push({
+          patientName: patient.name,
+          description: sceneText,
+        })
+      }
+
+      // Phase 3: overtime
+      const overtime = [...prev.overtime]
+      if (extraInfo.isOvertime && extraInfo.overtimeTurns > 0) {
+        const waitMinutes = extraInfo.overtimeTurns * 5
+        overtime.push({
+          patientName: patient.name,
+          note: `다음 환자가 ${waitMinutes}분 더 기다렸습니다.`,
+        })
+      }
+
+      // 마지막 에피소드 여부
+      const nextIndex = prev.currentEpisodeIndex + 1
+      const isFinalEpisode = nextIndex >= allEpisodes.length
+
       return {
         ...prev,
         screen: 'dayEnd',
         patientsEncountered: updatedPatients,
         episodeFamilies: families,
         unasked,
+        lastScene,
+        overtime,
+        isFinalEpisode,
       }
     })
   }, [currentEpisode])
@@ -91,8 +127,9 @@ export default function useGameState() {
 
       const nextEp = allEpisodes[nextIndex]
       const isNewPhase = nextEp.phase !== prev.currentPhase
+      const isNewDay = nextEp.day !== allEpisodes[prev.currentEpisodeIndex]?.day
 
-      // 인터루드 체크: 다음 에피소드에 interludeBefore가 있으면
+      // 인터루드 체크
       if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
         return {
           ...prev,
@@ -100,7 +137,9 @@ export default function useGameState() {
           currentPhase: nextEp.phase,
           currentInterlude: interludes[nextEp.interludeBefore],
           screen: 'interlude',
-          patientsEncountered: isNewPhase ? [] : prev.patientsEncountered,
+          patientsEncountered: isNewDay ? [] : prev.patientsEncountered,
+          lastScene: isNewDay ? [] : prev.lastScene,
+          overtime: isNewDay ? [] : prev.overtime,
         }
       }
 
@@ -109,7 +148,9 @@ export default function useGameState() {
         currentEpisodeIndex: nextIndex,
         currentPhase: nextEp.phase,
         screen: isNewPhase ? 'phaseIntro' : 'consultation',
-        patientsEncountered: isNewPhase ? [] : prev.patientsEncountered,
+        patientsEncountered: isNewDay ? [] : prev.patientsEncountered,
+        lastScene: isNewDay ? [] : prev.lastScene,
+        overtime: isNewDay ? [] : prev.overtime,
       }
     })
   }, [])

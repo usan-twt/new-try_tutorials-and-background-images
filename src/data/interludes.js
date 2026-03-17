@@ -21,6 +21,14 @@ const interludes = {
       { speaker: '동기', text: '사람마다 다른 게, 같은 걸 물어봐도 다른 답이 나와.' },
     ],
   },
+  before_ep3_3: {
+    character: '동기',
+    lines: [
+      { speaker: '동기', text: '아까 그 환자 말이 별로 없더라.' },
+      { speaker: '동기', text: '원래 그런 사람도 있어. 처음부터 다 얘기하는 사람이 어딨어.' },
+      { speaker: '동기', text: '근데 그런 사람일수록, 한마디가 나오면 그게 진짜인 것 같아.', pause: true },
+    ],
+  },
 }
 
 export default interludes

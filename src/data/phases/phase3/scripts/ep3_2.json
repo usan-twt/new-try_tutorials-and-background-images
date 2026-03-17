@@ -1,0 +1,203 @@
+{
+  "opening": {
+    "speaker": "system",
+    "text": "젊은 여성이 들어온다. 아이를 안고 있다. 아이가 칭얼거린다."
+  },
+  "turns": [
+    {
+      "firstChoices": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "아이의 증상을 확인하자",
+          "text": "아이가 어디가 아파요?",
+          "intent": "child_symptom"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "엄마가 많이 걱정되는 것 같다",
+          "text": "많이 걱정되시죠. 천천히 말씀해주세요.",
+          "intent": "rapport_mom"
+        }
+      ],
+      "responses": {
+        "child_symptom": {
+          "text": "열이 나요. 어제 밤부터. 38도 넘게.",
+          "emotion": "anxious"
+        },
+        "rapport_mom": {
+          "text": "어제 밤부터 열이 나는데... 안 떨어져요.",
+          "emotion": "anxious"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "열 외에 다른 증상이 있는지",
+          "text": "열 말고 기침이나 콧물, 설사 같은 건 있어요?",
+          "intent": "associated"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "어린이집이나 주변 상황을 확인하자",
+          "text": "어린이집 다니나요? 주변에 아픈 아이가 있었나요?",
+          "intent": "daycare"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "밤새 힘드셨을 것이다",
+          "text": "어젯밤에 많이 못 주무셨겠어요.",
+          "intent": "empathy_sleepless"
+        }
+      ],
+      "responses": {
+        "associated": {
+          "text": "콧물은 좀 나오고... 기침은 심하진 않아요. 밥은 잘 안 먹으려 해요.",
+          "emotion": "anxious"
+        },
+        "daycare": {
+          "text": "어린이집에서 요즘 감기가 돌긴 해요.",
+          "emotion": "neutral"
+        },
+        "empathy_sleepless": {
+          "text": "한숨도 못 잤어요. 계속 열 재고... 혹시 심한 거 아닌가 싶어서.",
+          "emotion": "warming",
+          "innerVoice": "아이보다 엄마가 더 지쳐 있다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "아이를 진찰하자",
+          "text": "아이 목이랑 귀 좀 볼게요.",
+          "intent": "exam"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "도움을 줄 사람이 있는지",
+          "text": "아이 봐주시는 분이 있으세요? 혼자 오셨나요?",
+          "intent": "support"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "불안함을 좀 가라앉혀드리고 싶다",
+          "text": "많이 걱정되셨을 텐데, 일단 같이 확인해봐요.",
+          "intent": "empathy_reassure"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "해열제 복용 여부",
+          "text": "해열제는 먹였어요?",
+          "intent": "medication"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "직장은 괜찮은지",
+          "text": "직장에는 연락하셨어요?",
+          "intent": "work_leave"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "처음 겪는 건 아닌 것 같다",
+          "text": "아이가 아프면 매번 이렇게 걱정되시죠?",
+          "intent": "empathy_pattern"
+        }
+      },
+      "responses": {
+        "exam": {
+          "text": "목이 좀 빨개요. 귀는... 조금 신경 쓰이네요.",
+          "emotion": "neutral",
+          "speakerOverride": "doctor_narration"
+        },
+        "support": {
+          "text": "남편이 출장이라... 시어머니한테 부탁하기도 그렇고.",
+          "emotion": "warming"
+        },
+        "empathy_reassure": {
+          "text": "...감사합니다. 응급실 갈까 말까 밤새 고민했어요.",
+          "emotion": "warming"
+        },
+        "medication": {
+          "text": "새벽에 한 번 먹였어요. 잠깐 내리다가 다시 올라서.",
+          "emotion": "anxious"
+        },
+        "work_leave": {
+          "text": "반차 냈어요. 오후에는... 어떻게 하지.",
+          "emotion": "anxious",
+          "innerVoice": "반차로는 부족할 수 있겠다."
+        },
+        "empathy_pattern": {
+          "text": "첫째라서... 뭘 해도 이게 맞나 싶어요.",
+          "emotion": "warming"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "처방을 정리하자",
+          "text": "감기인 것 같아요. 약 처방하고, 열이 안 떨어지면 다시 오세요.",
+          "intent": "plan_medical"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "오후 아이 돌봄이 걱정된다",
+          "text": "오후에 아이 봐줄 사람이 필요하면, 접수처에 보육 정보 안내가 있어요.",
+          "intent": "plan_info"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "엄마도 좀 쉬어야 한다",
+          "text": "아이도 중요하지만, 어머니도 좀 쉬셔야 해요.",
+          "intent": "plan_mom"
+        }
+      ],
+      "responses": {
+        "plan_medical": {
+          "text": "네, 감사합니다. 열이 몇 도 넘으면 다시 와야 하나요?",
+          "emotion": "neutral"
+        },
+        "plan_info": {
+          "text": "그런 게 있어요? 감사합니다, 진짜.",
+          "emotion": "warming"
+        },
+        "plan_mom": {
+          "text": "...(눈이 붉어진다) 네. 감사합니다.",
+          "emotion": "opened"
+        }
+      }
+    }
+  ],
+  "closing": {
+    "speaker": "system",
+    "text": "여성이 아이를 다시 안아 올린다. 아이가 어깨에 얼굴을 묻는다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "아이의 귀 쪽 소견을 더 확인하지 못했다.",
+      "life": "반차가 끝난 오후에 그녀가 어떻게 했는지, 알 수 없었다.",
+      "emotional": "첫째 아이를 키우며 늘 불안한 그 마음을, 더 들어주지 못했다."
+    },
+    "lastScene": "아이를 안고 나가는 뒷모습이 복도 끝에서 사라진다."
+  }
+}

@@ -19,6 +19,50 @@
 }
 
 
+/* ===== TurnIndicator (Phase 3) ===== */
+
+.turn-indicator {
+  flex: 0 0 auto;
+  padding: 16px 28px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.turn-indicator__dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.turn-indicator__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(232, 224, 208, 0.25);
+  transition: background 0.5s var(--ease-smooth), opacity 0.5s var(--ease-smooth);
+}
+
+.turn-indicator__dot--spent {
+  background: rgba(232, 224, 208, 0.06);
+}
+
+.turn-indicator__dot--warning {
+  background: var(--emotion-warming);
+}
+
+.turn-indicator--overtime {
+  padding: 12px 28px 0;
+}
+
+.turn-indicator__overtime-text {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-style: italic;
+  color: rgba(184, 160, 128, 0.45);
+  letter-spacing: 0.03em;
+}
+
+
 /* ===== PatientArea — 상단 30~40% ===== */
 
 .patient-area {

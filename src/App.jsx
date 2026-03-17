@@ -45,6 +45,9 @@ function App() {
           dayEndData={{
             patients: state.patientsEncountered,
             unasked: state.unasked,
+            lastScene: state.lastScene,
+            overtime: state.overtime,
+            isFinalEpisode: state.isFinalEpisode,
           }}
           onNext={nextEpisode}
         />

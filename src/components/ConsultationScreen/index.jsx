@@ -1,13 +1,19 @@
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useScriptEngine from '../../hooks/useScriptEngine'
 import PatientArea from './PatientArea'
 import DialogArea from './DialogArea'
 import ChoicePanel from './ChoicePanel'
 import InnerVoice from './InnerVoice'
+import TurnIndicator from './TurnIndicator'
 import NotebookPanel from '../NotebookPanel'
 import './ConsultationScreen.css'
 
 export default function ConsultationScreen({ episode, onEnd }) {
+  const episodeConfig = {
+    maxTurns: episode.maxTurns ?? null,
+    rapportGating: episode.rapportGating ?? null,
+  }
+
   const {
     phase,
     messages,
@@ -17,12 +23,17 @@ export default function ConsultationScreen({ episode, onEnd }) {
     showSeniorGuide,
     usedFamilies,
     innerVoice,
+    turnsRemaining,
+    maxTurns,
+    isOvertime,
+    overtimeTurns,
+    rapportUnlocked,
     beginPlaying,
     selectChoice,
     selectDirectionChoice,
     finishConsultation,
     reset,
-  } = useScriptEngine(episode.script)
+  } = useScriptEngine(episode.script, episodeConfig)
 
   const [currentEmotion, setCurrentEmotion] = useState(
     episode.patient.initialEmotion
@@ -31,13 +42,11 @@ export default function ConsultationScreen({ episode, onEnd }) {
 
   const showNotebook = episode.phase >= 2 && episode.notebook
 
-  // 진입 페이드인
   useEffect(() => {
     const t = setTimeout(() => setFadeIn(true), 50)
     return () => clearTimeout(t)
   }, [])
 
-  // 에피소드 변경 시 리셋
   useEffect(() => {
     reset()
     setCurrentEmotion(episode.patient.initialEmotion)
@@ -46,7 +55,6 @@ export default function ConsultationScreen({ episode, onEnd }) {
     return () => clearTimeout(t)
   }, [episode.id])
 
-  // 오프닝 → 플레이 자동 전환
   useEffect(() => {
     if (phase === 'opening') {
       const t = setTimeout(() => beginPlaying(), 1200)
@@ -54,7 +62,6 @@ export default function ConsultationScreen({ episode, onEnd }) {
     }
   }, [phase, beginPlaying])
 
-  // 감정 상태 추적
   useEffect(() => {
     const patientMessages = messages.filter(m => m.emotion)
     if (patientMessages.length > 0) {
@@ -63,7 +70,6 @@ export default function ConsultationScreen({ episode, onEnd }) {
     }
   }, [messages])
 
-  // 클로징 → 진료 종료
   useEffect(() => {
     if (phase === 'closing') {
       const t = setTimeout(() => finishConsultation(), 2000)
@@ -71,15 +77,21 @@ export default function ConsultationScreen({ episode, onEnd }) {
     }
   }, [phase, finishConsultation])
 
-  // 완료 → 상위 콜백 (usedFamilies 전달)
+  // 완료 → 상위 콜백 (usedFamilies + overtime 정보)
   useEffect(() => {
     if (phase === 'done') {
-      onEnd(usedFamilies)
+      onEnd(usedFamilies, { isOvertime, overtimeTurns, rapportUnlocked })
     }
   }, [phase, onEnd])
 
   return (
     <div className={`consultation-screen ${fadeIn ? 'consultation-screen--visible' : ''}`}>
+      <TurnIndicator
+        maxTurns={maxTurns}
+        turnsRemaining={turnsRemaining}
+        isOvertime={isOvertime}
+      />
+
       <PatientArea
         patient={episode.patient}
         currentEmotion={currentEmotion}

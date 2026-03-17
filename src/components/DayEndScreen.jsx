@@ -4,40 +4,72 @@ import './DayEndScreen.css'
 export default function DayEndScreen({ dayEndData, onNext }) {
   const [visibleCount, setVisibleCount] = useState(0)
   const [headerVisible, setHeaderVisible] = useState(false)
+  const [lastSceneVisible, setLastSceneVisible] = useState(false)
   const [unaskedVisible, setUnaskedVisible] = useState(false)
+  const [overtimeVisible, setOvertimeVisible] = useState(false)
+  const [finalVisible, setFinalVisible] = useState(false)
   const [nextVisible, setNextVisible] = useState(false)
 
   const patients = dayEndData?.patients || []
   const unasked = dayEndData?.unasked || []
+  const lastScene = dayEndData?.lastScene || []
+  const overtime = dayEndData?.overtime || []
+  const isFinalEpisode = dayEndData?.isFinalEpisode || false
 
   useEffect(() => {
     setVisibleCount(0)
     setHeaderVisible(false)
+    setLastSceneVisible(false)
     setUnaskedVisible(false)
+    setOvertimeVisible(false)
+    setFinalVisible(false)
     setNextVisible(false)
 
     const timers = []
+    let cursor = 0
 
     // 헤더
-    timers.push(setTimeout(() => setHeaderVisible(true), 600))
+    cursor = 600
+    timers.push(setTimeout(() => setHeaderVisible(true), cursor))
 
-    // 환자 정보 순차 페이드인
+    // 환자 순차 표시
+    cursor = 1600
     patients.forEach((_, i) => {
-      timers.push(setTimeout(() => setVisibleCount(i + 1), 1600 + i * 500))
+      timers.push(setTimeout(() => setVisibleCount(i + 1), cursor + i * 500))
     })
+    cursor += patients.length * 500
 
-    const afterPatients = 1600 + patients.length * 500
+    // lastScene (Phase 3)
+    if (lastScene.length > 0) {
+      cursor += 1000
+      timers.push(setTimeout(() => setLastSceneVisible(true), cursor))
+      cursor += 800
+    }
 
-    // Phase 2+: unasked 힌트
+    // unasked (Phase 2+)
     if (unasked.length > 0) {
-      timers.push(setTimeout(() => setUnaskedVisible(true), afterPatients + 1000))
+      cursor += 1000
+      timers.push(setTimeout(() => setUnaskedVisible(true), cursor))
+      cursor += 800
+    }
+
+    // overtime (Phase 3)
+    if (overtime.length > 0) {
+      cursor += 800
+      timers.push(setTimeout(() => setOvertimeVisible(true), cursor))
+      cursor += 800
+    }
+
+    // 마지막 에피소드 메시지
+    if (isFinalEpisode) {
+      cursor += 1200
+      timers.push(setTimeout(() => setFinalVisible(true), cursor))
+      cursor += 1000
     }
 
     // "다음 날" 버튼
-    const nextDelay = unasked.length > 0
-      ? afterPatients + 1000 + 1500
-      : afterPatients + 1500
-    timers.push(setTimeout(() => setNextVisible(true), nextDelay))
+    cursor += 1500
+    timers.push(setTimeout(() => setNextVisible(true), cursor))
 
     return () => timers.forEach(clearTimeout)
   }, [dayEndData])
@@ -63,6 +95,16 @@ export default function DayEndScreen({ dayEndData, onNext }) {
           ))}
         </div>
 
+        {lastScene.length > 0 && (
+          <div className={`day-end__last-scene ${lastSceneVisible ? 'visible' : ''}`}>
+            {lastScene.map((item, i) => (
+              <p key={i} className="day-end__last-scene-text">
+                {item.description}
+              </p>
+            ))}
+          </div>
+        )}
+
         {unasked.length > 0 && (
           <div className={`day-end__unasked ${unaskedVisible ? 'visible' : ''}`}>
             {unasked.map((item, i) => (
@@ -72,13 +114,29 @@ export default function DayEndScreen({ dayEndData, onNext }) {
             ))}
           </div>
         )}
+
+        {overtime.length > 0 && (
+          <div className={`day-end__overtime ${overtimeVisible ? 'visible' : ''}`}>
+            {overtime.map((item, i) => (
+              <p key={i} className="day-end__overtime-note">
+                {item.note}
+              </p>
+            ))}
+          </div>
+        )}
+
+        {isFinalEpisode && (
+          <p className={`day-end__final ${finalVisible ? 'visible' : ''}`}>
+            다음 주에 다시 옵니다.
+          </p>
+        )}
       </div>
 
       <button
         className={`day-end__next ${nextVisible ? 'visible' : ''}`}
         onClick={onNext}
       >
-        다음 날 →
+        {isFinalEpisode ? '...' : '다음 날 →'}
       </button>
     </div>
   )
