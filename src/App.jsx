@@ -1,68 +1,30 @@
-import useGameState from './hooks/useGameState'
+import useGame from './hooks/useGame'
 import TitleScreen from './components/TitleScreen'
 import PhaseIntro from './components/PhaseIntro'
 import ConsultationScreen from './components/ConsultationScreen'
 import DayEndScreen from './components/DayEndScreen'
 import InterludeScene from './components/InterludeScene'
-import './App.css'
+import NotebookPanel from './components/NotebookPanel'
 
 function App() {
-  const {
-    state,
-    currentEpisode,
-    startGame,
-    startConsultation,
-    endConsultation,
-    nextEpisode,
-    finishInterlude,
-  } = useGameState()
+  const game = useGame()
+  const { screen, currentPhase, ep, dayEndState, currentInterlude } = game
 
   return (
-    <div className="app">
-      {state.screen === 'title' && (
-        <TitleScreen
-          onStart={startGame}
-          hasSaveData={false}
-        />
+    <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', background: '#1A1815' }}>
+      {screen === 'title' && <TitleScreen onStart={game.startGame} />}
+      {screen === 'phaseIntro' && <PhaseIntro phase={currentPhase} onComplete={game.startConsultation} />}
+      {screen === 'consultation' && ep && (
+        <>
+          <ConsultationScreen game={game} />
+          {ep.phase >= 2 && ep.notebook && <NotebookPanel chart={ep.notebook.chart} />}
+        </>
       )}
-
-      {state.screen === 'phaseIntro' && (
-        <PhaseIntro
-          phase={state.currentPhase}
-          onComplete={startConsultation}
-        />
-      )}
-
-      {state.screen === 'consultation' && currentEpisode && (
-        <ConsultationScreen
-          episode={currentEpisode}
-          onEnd={endConsultation}
-        />
-      )}
-
-      {state.screen === 'dayEnd' && currentEpisode && (
-        <DayEndScreen
-          dayEndData={{
-            patients: state.patientsEncountered,
-            unasked: state.unasked,
-            lastScene: state.lastScene,
-            overtime: state.overtime,
-            isFinalEpisode: state.isFinalEpisode,
-          }}
-          onNext={nextEpisode}
-        />
-      )}
-
-      {state.screen === 'interlude' && state.currentInterlude && (
-        <InterludeScene
-          interlude={state.currentInterlude}
-          onComplete={finishInterlude}
-        />
-      )}
-
-      {state.screen === 'complete' && (
-        <div className="complete-screen">
-          <p className="complete-screen__text">다음 주에 다시 옵니다.</p>
+      {screen === 'dayEnd' && <DayEndScreen data={dayEndState} onNext={game.nextEpisode} />}
+      {screen === 'interlude' && currentInterlude && <InterludeScene interlude={currentInterlude} onComplete={game.finishInterlude} />}
+      {screen === 'complete' && (
+        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1A1815' }}>
+          <p style={{ fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 15, fontWeight: 300, color: 'rgba(232,224,208,0.5)', letterSpacing: '0.08em' }}>다음 주에 다시 옵니다.</p>
         </div>
       )}
     </div>

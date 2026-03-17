@@ -1,62 +1,42 @@
 import { useState, useEffect } from 'react'
-import './PhaseIntro.css'
 
-const PHASE_INTROS = {
-  1: [
-    { text: '첫째 날', delay: 0 },
-    { text: '선배가 옆에 있다.', delay: 1000 },
-  ],
-  2: [
-    { text: '둘째 날 아침', delay: 0 },
-    { text: '오늘 나 바빠서 못 갈 것 같아. 혼자 해봐.', delay: 1200, style: 'senior' },
-  ],
-  3: [
-    { text: '셋째 주', delay: 0 },
-    { text: '오늘 외래 환자가 좀 많아요.', delay: 1200, style: 'nurse' },
-  ],
+const INTROS = {
+  1: [{ text: '첫째 날', delay: 0 }, { text: '선배가 옆에 있다.', delay: 1000, style: 'sub' }],
+  2: [{ text: '둘째 날 아침', delay: 0 }, { text: '오늘 나 바빠서 못 갈 것 같아. 혼자 해봐.', delay: 1200, style: 'senior' }],
+  3: [{ text: '셋째 주', delay: 0 }, { text: '오늘 외래 환자가 좀 많아요.', delay: 1200, style: 'nurse' }],
+}
+
+const SUB_STYLES = {
+  sub: { fontSize: 14, color: 'rgba(232,224,208,0.5)' },
+  senior: { fontSize: 14, fontStyle: 'italic', color: 'rgba(176,160,112,0.6)' },
+  nurse: { fontSize: 14, fontStyle: 'italic', color: 'rgba(232,224,208,0.35)' },
 }
 
 export default function PhaseIntro({ phase, onComplete }) {
-  const [visibleLines, setVisibleLines] = useState(0)
-  const [fadingOut, setFadingOut] = useState(false)
-
-  const lines = PHASE_INTROS[phase] || PHASE_INTROS[1]
+  const [visible, setVisible] = useState(0)
+  const [fading, setFading] = useState(false)
+  const lines = INTROS[phase] || INTROS[1]
 
   useEffect(() => {
-    setVisibleLines(0)
-    setFadingOut(false)
-
-    // 첫 줄 즉시 표시
-    const t0 = setTimeout(() => setVisibleLines(1), 300)
-
-    // 이후 줄 순차 표시
-    const timers = lines.slice(1).map((line, i) =>
-      setTimeout(() => setVisibleLines(i + 2), 300 + line.delay)
-    )
-
-    // 모든 줄 표시 후 2초 대기 → 페이드아웃 → 전환
-    const totalDelay = 300 + (lines[lines.length - 1]?.delay || 0) + 2000
-    const fadeTimer = setTimeout(() => setFadingOut(true), totalDelay)
-    const completeTimer = setTimeout(() => onComplete(), totalDelay + 1000)
-
-    return () => {
-      clearTimeout(t0)
-      timers.forEach(clearTimeout)
-      clearTimeout(fadeTimer)
-      clearTimeout(completeTimer)
-    }
+    setVisible(0); setFading(false)
+    const timers = []
+    timers.push(setTimeout(() => setVisible(1), 300))
+    lines.slice(1).forEach((l, i) => timers.push(setTimeout(() => setVisible(i + 2), 300 + l.delay)))
+    const total = 300 + (lines[lines.length - 1]?.delay || 0) + 2000
+    timers.push(setTimeout(() => setFading(true), total))
+    timers.push(setTimeout(onComplete, total + 1000))
+    return () => timers.forEach(clearTimeout)
   }, [phase])
 
   return (
-    <div className={`phase-intro ${fadingOut ? 'phase-intro--fading' : ''}`}>
-      <div className="phase-intro__content">
-        {lines.map((line, i) => (
-          <p
-            key={i}
-            className={`phase-intro__line ${line.style ? `phase-intro__line--${line.style}` : ''} ${i < visibleLines ? 'visible' : ''}`}
-          >
-            {line.text}
-          </p>
+    <div style={{ width: '100%', height: '100%', background: '#0A0908', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'opacity 1s', opacity: fading ? 0 : 1 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+        {lines.map((l, i) => (
+          <p key={i} style={{
+            fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 18, fontWeight: 300, color: '#E8E0D0', letterSpacing: '0.08em',
+            opacity: i < visible ? 1 : 0, transform: i < visible ? 'translateY(0)' : 'translateY(4px)', transition: 'opacity 0.8s,transform 0.8s',
+            ...(SUB_STYLES[l.style] || {}),
+          }}>{l.text}</p>
         ))}
       </div>
     </div>
