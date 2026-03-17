@@ -1,25 +1,55 @@
-import { useState, useCallback } from 'react'
+import useGameState from './hooks/useGameState'
 import TitleScreen from './components/TitleScreen'
+import PhaseIntro from './components/PhaseIntro'
+import ConsultationScreen from './components/ConsultationScreen'
+import DayEndScreen from './components/DayEndScreen'
 import './App.css'
 
 function App() {
-  const [screen, setScreen] = useState('title')
-
-  const handleStart = useCallback(() => {
-    setScreen('phase1')
-  }, [])
+  const {
+    state,
+    currentEpisode,
+    startGame,
+    startConsultation,
+    endConsultation,
+    nextEpisode,
+  } = useGameState()
 
   return (
     <div className="app">
-      {screen === 'title' && (
+      {state.screen === 'title' && (
         <TitleScreen
-          onStart={handleStart}
+          onStart={startGame}
           hasSaveData={false}
         />
       )}
-      {screen === 'phase1' && (
-        <div className="placeholder-phase">
-          <p>Phase 1 — 진료실</p>
+
+      {state.screen === 'phaseIntro' && (
+        <PhaseIntro
+          phase={state.currentPhase}
+          onComplete={startConsultation}
+        />
+      )}
+
+      {state.screen === 'consultation' && currentEpisode && (
+        <ConsultationScreen
+          episode={currentEpisode}
+          onEnd={endConsultation}
+        />
+      )}
+
+      {state.screen === 'dayEnd' && currentEpisode && (
+        <DayEndScreen
+          dayEndData={{
+            patients: state.patientsEncountered,
+          }}
+          onNext={nextEpisode}
+        />
+      )}
+
+      {state.screen === 'complete' && (
+        <div className="complete-screen">
+          <p className="complete-screen__text">다음 주에 다시 옵니다.</p>
         </div>
       )}
     </div>

@@ -3,16 +3,22 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+  background: var(--bg-dark);
 }
 
-.placeholder-phase {
+.complete-screen {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-neutral);
-  color: var(--text-primary);
+  background: var(--bg-dark);
+}
+
+.complete-screen__text {
   font-family: var(--font-serif);
-  font-size: 20px;
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(232, 224, 208, 0.5);
+  letter-spacing: 0.08em;
 }

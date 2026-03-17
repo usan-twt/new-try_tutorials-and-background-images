@@ -1,0 +1,108 @@
+{
+  "opening": {
+    "speaker": "system",
+    "text": "진료실 문이 열린다. 중년 남성이 조심스럽게 들어온다."
+  },
+  "turns": [
+    {
+      "seniorGuide": {
+        "text": "환자분 이름부터 확인해볼까?",
+        "timing": "before",
+        "tone": "casual"
+      },
+      "choice": {
+        "text": "안녕하세요. 성함이 어떻게 되시나요?",
+        "intent": "greeting"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "이정수요. 이정수.",
+        "emotion": "anxious"
+      }
+    },
+    {
+      "seniorGuide": {
+        "text": "좋아. 어디가 불편한지 물어보자.",
+        "timing": "before",
+        "tone": "casual"
+      },
+      "choice": {
+        "text": "오늘 어디가 불편해서 오셨어요?",
+        "intent": "chief_complaint"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "머리가 아파요. 한 일주일 됐나... 계속 아프네요.",
+        "emotion": "anxious"
+      }
+    },
+    {
+      "seniorGuide": {
+        "text": "언제부터인지 좀 더 자세히 들어보자.",
+        "timing": "before",
+        "tone": "casual"
+      },
+      "choice": {
+        "text": "일주일 전에 갑자기 시작됐나요, 아니면 서서히?",
+        "intent": "onset"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "글쎄요... 어느 날 아침에 일어났는데 좀 아프더라고요. 그 뒤로 계속.",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "seniorGuide": {
+        "text": "어디가 어떻게 아픈지도 중요해.",
+        "timing": "before",
+        "tone": "encouraging"
+      },
+      "choice": {
+        "text": "머리 어느 쪽이 아프세요? 어떤 느낌인지 설명해주실 수 있나요?",
+        "intent": "location_quality"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "여기... 뒤통수 쪽이요. 묵직하게. 쪼이는 것 같기도 하고.",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "seniorGuide": {
+        "text": "다른 증상이 같이 있는지도 확인해보면 좋아.",
+        "timing": "before",
+        "tone": "casual"
+      },
+      "choice": {
+        "text": "두통 말고 다른 불편한 건 없으셨어요? 어지럽거나, 메스껍거나...",
+        "intent": "associated_symptoms"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "어지러운 건 좀 있어요. 메스꺼운 건... 아뇨, 그건 없는 것 같아요.",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "seniorGuide": {
+        "text": "잘했어. 마무리하자.",
+        "timing": "after",
+        "tone": "encouraging"
+      },
+      "choice": {
+        "text": "알겠습니다. 몇 가지 검사를 해보겠습니다.",
+        "intent": "closing"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "네... 감사합니다.",
+        "emotion": "neutral"
+      }
+    }
+  ],
+  "closing": {
+    "speaker": "system",
+    "text": "환자가 진료실을 나간다."
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "opening": {
+    "speaker": "system",
+    "text": "다음 환자가 들어온다. 젊은 여성이 의자에 앉는다."
+  },
+  "turns": [
+    {
+      "seniorGuide": {
+        "text": "이번엔 혼자 해봐.",
+        "timing": "before",
+        "tone": "encouraging"
+      },
+      "choice": {
+        "text": "안녕하세요. 어떻게 오셨어요?",
+        "intent": "greeting"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "소화가 안 돼요. 한 달 넘게요.",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "choice": {
+        "text": "한 달이면 꽤 오래됐네요. 어떤 식으로 안 되나요?",
+        "intent": "symptom_detail"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "밥을 먹으면 여기가 더부룩하고... 가끔 울렁거리기도 해요.",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "choice": {
+        "text": "특별히 더 심해지는 때가 있나요?",
+        "intent": "aggravating"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "밤에 좀 더 그런 것 같아요. 누우면.",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "seniorGuide": {
+        "text": "약 복용 이력도 체크해봐.",
+        "timing": "before",
+        "tone": "casual"
+      },
+      "choice": {
+        "text": "혹시 드시는 약이 있으세요?",
+        "intent": "medication"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "진통제를 좀 자주 먹어요. 두통 때문에.",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "choice": {
+        "text": "알겠습니다. 검사 한번 해보겠습니다.",
+        "intent": "closing"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "네, 감사합니다.",
+        "emotion": "neutral"
+      }
+    }
+  ],
+  "closing": {
+    "speaker": "system",
+    "text": "환자가 일어서서 나간다."
+  }
+}

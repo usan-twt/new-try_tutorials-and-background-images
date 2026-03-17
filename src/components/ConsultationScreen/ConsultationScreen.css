@@ -1,0 +1,270 @@
+/* ===== ConsultationScreen ===== */
+
+.consultation-screen {
+  width: 100%;
+  height: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  background: var(--bg-neutral);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 1s var(--ease-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.consultation-screen--visible {
+  opacity: 1;
+}
+
+
+/* ===== PatientArea — 상단 30~40% ===== */
+
+.patient-area {
+  flex: 0 0 auto;
+  padding: 48px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.patient-area__orb-container {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.patient-area__orb {
+  /* 크기/색상은 인라인 스타일로 동적 적용 */
+}
+
+.patient-area__orb--tremble {
+  animation: orb-tremble 2s ease-in-out infinite;
+}
+
+.patient-area__orb--tremble-fast {
+  animation: orb-tremble 0.8s ease-in-out infinite;
+}
+
+.patient-area__orb--pulse-slow {
+  animation: orb-pulse 3s ease-in-out infinite;
+}
+
+@keyframes orb-tremble {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(-1px, 0.5px); }
+  50%      { transform: translate(0.5px, -0.5px); }
+  75%      { transform: translate(-0.5px, -1px); }
+}
+
+@keyframes orb-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.04); opacity: 0.9; }
+}
+
+.patient-area__name {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: 0.2em;
+}
+
+.patient-area__info {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+}
+
+
+/* ===== DialogArea — 중앙 ===== */
+
+.dialog-area {
+  flex: 1 1 auto;
+  overflow: hidden;
+  padding: 0 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.dialog-area__messages {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 20px;
+}
+
+.dialog-area__message {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: message-appear 0.4s var(--ease-smooth) forwards;
+}
+
+@keyframes message-appear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dialog-area__message--fading {
+  animation: message-appear 0.4s var(--ease-smooth) forwards;
+  opacity: 0.35 !important;
+}
+
+/* 환자 발화 — 왼쪽, 세리프 */
+.dialog-area__message--patient {
+  text-align: left;
+}
+
+.dialog-area__message--patient .dialog-area__text {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+/* 의사 발화 — 오른쪽, 산세리프 */
+.dialog-area__message--doctor {
+  text-align: right;
+}
+
+.dialog-area__message--doctor .dialog-area__text {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* 시스템/간호사 — 중앙, 이탤릭 */
+.dialog-area__message--system {
+  text-align: center;
+}
+
+.dialog-area__message--system .dialog-area__text {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* 선배 발화 */
+.dialog-area__message--senior {
+  text-align: left;
+  padding-left: 12px;
+  border-left: 1px solid rgba(176, 160, 112, 0.2);
+}
+
+.dialog-area__speaker-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: var(--inner-voice);
+  letter-spacing: 0.05em;
+  margin-bottom: 3px;
+}
+
+.dialog-area__message--senior .dialog-area__text {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.7;
+  color: rgba(176, 160, 112, 0.7);
+}
+
+
+/* ===== ChoicePanel — 하단 ===== */
+
+.choice-panel {
+  flex: 0 0 auto;
+  padding: 16px 28px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  animation: choice-appear 0.3s var(--ease-smooth) 0.15s forwards;
+}
+
+@keyframes choice-appear {
+  to { opacity: 1; }
+}
+
+/* 선배 가이드 */
+.choice-panel__senior-guide {
+  padding: 0 4px 4px;
+}
+
+.choice-panel__senior-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: var(--inner-voice);
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.choice-panel__senior-text {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.6;
+  color: rgba(176, 160, 112, 0.6);
+}
+
+/* 선택지 버튼 */
+.choice-panel__button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s var(--ease-smooth), border-color 0.15s var(--ease-smooth);
+}
+
+.choice-panel__button:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.choice-panel__button:active {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.choice-panel__button-text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+
+/* ===== 반응형 ===== */
+
+@media (max-width: 768px) {
+  .patient-area {
+    padding: 36px 20px 16px;
+  }
+
+  .dialog-area {
+    padding: 0 20px;
+  }
+
+  .choice-panel {
+    padding: 12px 20px 32px;
+  }
+
+  .choice-panel__button-text {
+    font-size: 13px;
+  }
+}
