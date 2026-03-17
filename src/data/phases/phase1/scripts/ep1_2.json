@@ -6,9 +6,9 @@
   "turns": [
     {
       "seniorGuide": {
-        "text": "이번엔 혼자 해봐.",
+        "text": "좋아, 아까처럼 해봐. 인사부터.",
         "timing": "before",
-        "tone": "encouraging"
+        "tone": "casual"
       },
       "choice": {
         "text": "안녕하세요. 어떻게 오셨어요?",
@@ -21,6 +21,11 @@
       }
     },
     {
+      "seniorGuide": {
+        "text": "좀 더 구체적으로 물어봐.",
+        "timing": "before",
+        "tone": "casual"
+      },
       "choice": {
         "text": "한 달이면 꽤 오래됐네요. 어떤 식으로 안 되나요?",
         "intent": "symptom_detail"
@@ -32,6 +37,11 @@
       }
     },
     {
+      "seniorGuide": {
+        "text": "악화 요인을 확인해보자.",
+        "timing": "before",
+        "tone": "casual"
+      },
       "choice": {
         "text": "특별히 더 심해지는 때가 있나요?",
         "intent": "aggravating"
@@ -59,6 +69,11 @@
       }
     },
     {
+      "seniorGuide": {
+        "text": "잘했어. 마무리하면 돼.",
+        "timing": "after",
+        "tone": "encouraging"
+      },
       "choice": {
         "text": "알겠습니다. 검사 한번 해보겠습니다.",
         "intent": "closing"

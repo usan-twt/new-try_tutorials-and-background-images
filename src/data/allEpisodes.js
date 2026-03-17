@@ -1,5 +1,6 @@
 import ep1_1 from './phases/phase1/scripts/ep1_1.json'
 import ep1_2 from './phases/phase1/scripts/ep1_2.json'
+import ep1_3 from './phases/phase1/scripts/ep1_3.json'
 import ep2_1 from './phases/phase2/scripts/ep2_1.json'
 import ep2_2 from './phases/phase2/scripts/ep2_2.json'
 import ep2_3 from './phases/phase2/scripts/ep2_3.json'
@@ -8,6 +9,20 @@ import ep3_2 from './phases/phase3/scripts/ep3_2.json'
 import ep3_3 from './phases/phase3/scripts/ep3_3.json'
 
 export const interludes = {
+  after_phase1: {
+    character: '선배',
+    lines: [
+      { speaker: '선배', text: '오늘 하루 수고했어.' },
+      { speaker: '선배', text: '아까 환자들 기억나? 증상만 물어봤지?' },
+      { speaker: '선배', text: '근데 사람이 아프면, 그게 생활이랑 연결돼 있을 때가 많아.', pause: true },
+      { speaker: '선배', text: '가족이 어떤지, 직장에서 뭘 하는지... 그런 걸 알면 보이는 게 달라져.' },
+      { speaker: '선배', text: '내일부터는 나 없이 해봐야 해. 네가 직접 뭘 물어볼지 골라야 돼.', pause: true },
+    ],
+    reactions: [
+      { text: '좀 긴장되네요.', tone: 'nervous' },
+      { text: '해볼게요.', tone: 'confident' },
+    ],
+  },
   after_ep2_1: {
     character: '동기',
     lines: [
@@ -46,24 +61,23 @@ const allEpisodes = [
     id: 'phase1_ep1', phase: 1, day: 1,
     patient: { name: '이정수', age: 62, chiefComplaint: '두통', initialEmotion: 'neutral' },
     script: ep1_1,
-    dayEndData: { patients: [{ name: '이정수', age: 62, chiefComplaint: '두통' }] },
   },
   {
     id: 'phase1_ep2', phase: 1, day: 1,
     patient: { name: '박수진', age: 34, chiefComplaint: '소화불량', initialEmotion: 'anxious' },
     script: ep1_2,
-    dayEndData: {
-      patients: [
-        { name: '이정수', age: 62, chiefComplaint: '두통' },
-        { name: '박수진', age: 34, chiefComplaint: '소화불량' },
-      ],
-    },
+  },
+  {
+    id: 'phase1_ep3', phase: 1, day: 1,
+    patient: { name: '김미영', age: 52, chiefComplaint: '만성 피로', initialEmotion: 'neutral' },
+    script: ep1_3,
   },
   // ── Phase 2 ──
   {
     id: 'phase2_ep1', phase: 2, day: 2,
     patient: { name: '김영희', age: 47, chiefComplaint: '허리 통증', initialEmotion: 'neutral' },
     directionTags: true, script: ep2_1,
+    interludeBefore: 'after_phase1',
     dayEndData: { patients: [{ name: '김영희', age: 47, chiefComplaint: '허리 통증' }] },
     notebook: { chart: '김영희 / 47세 / 여 / 주증상: 허리 통증 2주' },
   },

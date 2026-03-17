@@ -1,0 +1,93 @@
+{
+  "opening": {
+    "speaker": "system",
+    "text": "세 번째 환자가 들어온다. 중년 여성이 천천히 의자에 앉는다."
+  },
+  "turns": [
+    {
+      "seniorGuide": {
+        "text": "이번엔 네가 주도해봐. 내가 지켜볼게.",
+        "timing": "before",
+        "tone": "encouraging"
+      },
+      "choice": {
+        "text": "안녕하세요. 어디가 불편하셔서 오셨나요?",
+        "intent": "greeting"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "요즘 너무 피곤해요. 몸이 무겁고... 가만히 있어도 축 처져요.",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "seniorGuide": {
+        "text": "기간이랑 양상을 좀 더 들어봐.",
+        "timing": "before",
+        "tone": "casual"
+      },
+      "choice": {
+        "text": "언제부터 그러셨어요? 갑자기 시작됐나요?",
+        "intent": "onset"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "한 두세 달 된 것 같아요. 점점 심해지는 것 같기도 하고...",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "seniorGuide": {
+        "text": "동반 증상도 확인해보자.",
+        "timing": "before",
+        "tone": "casual"
+      },
+      "choice": {
+        "text": "피곤한 것 말고 다른 증상은 없으세요? 어지럽거나...",
+        "intent": "associated_symptoms"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "어지러워요. 갑자기 일어나면 핑 돌고... 가끔 손발이 저린 것도 같고.",
+        "emotion": "anxious"
+      }
+    },
+    {
+      "choice": {
+        "text": "식사는 잘 하고 계세요?",
+        "intent": "diet"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "입맛이 없어서... 대충 먹어요. 혼자 사니까 챙겨 먹기가 귀찮아서.",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "choice": {
+        "text": "혹시 드시는 약이 있으세요?",
+        "intent": "medication"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "혈압약 먹고 있어요. 한 3년 됐나.",
+        "emotion": "neutral"
+      }
+    },
+    {
+      "choice": {
+        "text": "알겠습니다. 혈액검사 한번 해보겠습니다.",
+        "intent": "closing"
+      },
+      "response": {
+        "speaker": "patient",
+        "text": "네... 큰 거 아니겠죠?",
+        "emotion": "anxious"
+      }
+    }
+  ],
+  "closing": {
+    "speaker": "system",
+    "text": "환자가 걱정스러운 표정으로 나간다."
+  }
+}

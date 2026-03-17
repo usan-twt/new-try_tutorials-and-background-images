@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const EMOTION_MAP = {
   neutral:    { color: '#A8B0A0', scale: 1.0 },
@@ -19,6 +19,7 @@ export default function ConsultationScreen({ game }) {
     beginPlaying, send,
   } = game
 
+  const [choiceDelayDone, setChoiceDelayDone] = useState(false)
   const endRef = useRef(null)
   const patient = ep.patient
   const emo = EMOTION_MAP[currentEmotion] || EMOTION_MAP.neutral
@@ -30,6 +31,22 @@ export default function ConsultationScreen({ game }) {
       return () => clearTimeout(t)
     }
   }, [phase, beginPlaying])
+
+  // Phase 1 before 가이드 → 선택지 2단계 연출 (가이드 먼저, 선택지는 지연 등장)
+  useEffect(() => {
+    if (!waitingForChoice || !currentTurn?.choice) return
+    const hasBefore = showSeniorGuide && currentTurn.seniorGuide?.timing === 'before'
+    const t = setTimeout(() => setChoiceDelayDone(true), hasBefore ? 900 : 0)
+    return () => clearTimeout(t)
+  }, [waitingForChoice, currentTurn, showSeniorGuide])
+
+  // 턴 변경 시 딜레이 리셋 (messages.length가 바뀌면 새 턴)
+  useEffect(() => { const t = setTimeout(() => setChoiceDelayDone(false), 0); return () => clearTimeout(t) }, [messages.length])
+
+  // 선택지 표시 조건: Phase 1 before 가이드가 있으면 딜레이 후 표시, 아니면 바로 표시
+  const isPhase1 = !!currentTurn?.choice
+  const hasBefore = isPhase1 && showSeniorGuide && currentTurn?.seniorGuide?.timing === 'before'
+  const showP1Choice = isPhase1 && waitingForChoice && (!hasBefore || choiceDelayDone)
 
   // 클로징 → done 자동 전환
   useEffect(() => {
@@ -137,21 +154,35 @@ export default function ConsultationScreen({ game }) {
       {currentTurn && waitingForChoice && (
         <div style={{ flex: '0 0 auto', padding: '16px 28px 40px', display: 'flex', flexDirection: 'column', gap: 12, animation: 'fadeIn 0.3s ease' }}>
 
-          {/* Phase 1: 선배 가이드 + 단일 버튼 */}
+          {/* Phase 1: 선배 가이드 카드 + 단일 버튼 */}
           {currentTurn.choice && <>
             {showSeniorGuide && currentTurn.seniorGuide?.timing === 'before' && (
-              <div style={{ padding: '0 4px 4px' }}>
-                <span style={{ display: 'block', fontFamily: 'system-ui,sans-serif', fontSize: 10, color: '#B0A070', letterSpacing: '0.05em', marginBottom: 4 }}>선배</span>
-                <p style={{ fontFamily: 'system-ui,sans-serif', fontSize: 12, fontStyle: 'italic', lineHeight: 1.6, color: 'rgba(176,160,112,0.6)' }}>{currentTurn.seniorGuide.text}</p>
+              <div style={{
+                padding: '12px 16px', borderRadius: 8,
+                background: 'rgba(176,160,112,0.08)',
+                border: '1px solid rgba(176,160,112,0.15)',
+                animation: 'fadeUp 0.4s ease forwards',
+              }}>
+                <span style={{
+                  display: 'block', fontFamily: 'system-ui,sans-serif', fontSize: 10, fontWeight: 500,
+                  color: '#B0A070', letterSpacing: '0.06em', marginBottom: 6,
+                }}>선배</span>
+                <p style={{
+                  fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 13, fontStyle: 'italic',
+                  lineHeight: 1.7, color: 'rgba(176,160,112,0.85)',
+                }}>{currentTurn.seniorGuide.text}</p>
               </div>
             )}
-            <button onClick={() => send()} style={{
-              display: 'block', width: '100%', textAlign: 'left', padding: '14px 18px',
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)',
-              borderRadius: 6, cursor: 'pointer', fontFamily: 'system-ui,sans-serif', fontSize: 14, lineHeight: 1.6, color: '#E8E0D0',
-            }}>
-              "{currentTurn.choice.text}"
-            </button>
+            {showP1Choice && (
+              <button onClick={() => send()} style={{
+                display: 'block', width: '100%', textAlign: 'left', padding: '14px 18px',
+                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)',
+                borderRadius: 6, cursor: 'pointer', fontFamily: 'system-ui,sans-serif', fontSize: 14, lineHeight: 1.6, color: '#E8E0D0',
+                animation: 'fadeUp 0.3s ease forwards',
+              }}>
+                "{currentTurn.choice.text}"
+              </button>
+            )}
           </>}
 
           {/* Phase 2+: 방향 선택지 */}

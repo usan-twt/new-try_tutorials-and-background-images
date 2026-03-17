@@ -1,9 +1,10 @@
-import { useState, useCallback, useMemo, useRef } from 'react'
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import allEpisodes, { interludes } from '../data/allEpisodes'
 
 // ── 화면 전환 FSM ──
 const TRANSITIONS = {
-  title:        { START: 'phaseIntro' },
+  title:        { START: 'corridor' },
+  corridor:     { DONE: 'phaseIntro' },
   phaseIntro:   { READY: 'consultation' },
   consultation: { END: 'dayEnd' },
   dayEnd:       { NEXT: 'interlude', SKIP: 'phaseIntro', DONE: 'complete' },
@@ -36,12 +37,15 @@ export default function useGame() {
   const [screen, setScreen] = useState('title')
   const [epIndex, setEpIndex] = useState(0)
   const [currentPhase, setCurrentPhase] = useState(1)
+  const [playerName, setPlayerName] = useState('')
 
   // ── DayEnd 데이터 ──
   const [dayEndState, setDayEndState] = useState({
     patients: [], unasked: [], lastScene: [], overtime: [],
     isFinalEpisode: false,
   })
+  const dayEndStateRef = useRef(dayEndState)
+  useEffect(() => { dayEndStateRef.current = dayEndState }, [dayEndState])
 
   // ── 인터루드 ──
   const [currentInterlude, setCurrentInterlude] = useState(null)
@@ -124,6 +128,10 @@ export default function useGame() {
     setEpIndex(0)
     setCurrentPhase(1)
     setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false })
+    setScreen('corridor')
+  }, [])
+
+  const finishCorridor = useCallback(() => {
     setScreen('phaseIntro')
   }, [])
 
@@ -146,6 +154,7 @@ export default function useGame() {
   }, [])
 
   // phase === 'done'이 되면 App에서 호출
+  // Phase 마지막 에피소드면 DayEnd 화면으로, 아니면 누적 후 다음 consultation
   const buildDayEnd = useCallback((usedFams, extraInfo = {}) => {
     if (!ep) return
     const patient = ep.patient
@@ -176,16 +185,37 @@ export default function useGame() {
     }
 
     const isFinal = epIndex + 1 >= allEpisodes.length
+    const nextEp = allEpisodes[epIndex + 1]
+    const isPhaseEnd = isFinal || !nextEp || nextEp.phase !== ep.phase
 
-    setDayEndState(prev => ({
-      patients: [...prev.patients, { name: patient.name, age: patient.age, chiefComplaint: patient.chiefComplaint }],
-      unasked: [...prev.unasked, ...unasked],
-      lastScene: [...prev.lastScene, ...lastScene],
-      overtime: [...prev.overtime, ...overtime],
+    // 환자 정보 누적
+    const newState = {
+      patients: [...dayEndStateRef.current.patients, { name: patient.name, age: patient.age, chiefComplaint: patient.chiefComplaint }],
+      unasked: [...dayEndStateRef.current.unasked, ...unasked],
+      lastScene: [...dayEndStateRef.current.lastScene, ...lastScene],
+      overtime: [...dayEndStateRef.current.overtime, ...overtime],
       isFinalEpisode: isFinal,
-    }))
-    setScreen('dayEnd')
-  }, [ep, epIndex])
+    }
+    setDayEndState(newState)
+
+    if (isPhaseEnd) {
+      // Phase 마지막 → DayEnd 화면 표시
+      setScreen('dayEnd')
+    } else {
+      // Phase 중간 → DayEnd 건너뛰고 바로 다음 에피소드
+      const next = epIndex + 1
+      setEpIndex(next)
+
+      // 인터루드 체크
+      if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
+        setCurrentInterlude(interludes[nextEp.interludeBefore])
+        setScreen('interlude')
+      } else {
+        resetScript(nextEp)
+        setScreen('consultation')
+      }
+    }
+  }, [ep, epIndex, resetScript])
 
   const nextEpisode = useCallback(() => {
     const next = epIndex + 1
@@ -196,12 +226,11 @@ export default function useGame() {
 
     const nextEp = allEpisodes[next]
     const isNewPhase = nextEp.phase !== currentPhase
-    const isNewDay = nextEp.day !== allEpisodes[epIndex]?.day
 
     setEpIndex(next)
     setCurrentPhase(nextEp.phase)
 
-    if (isNewDay) {
+    if (isNewPhase) {
       setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false })
     }
 
@@ -316,7 +345,8 @@ export default function useGame() {
   return {
     // 네비게이션
     screen, currentPhase, ep, dayEndState, currentInterlude,
-    startGame, startConsultation, nextEpisode, finishInterlude,
+    playerName, setPlayerName, startGame, finishCorridor,
+    startConsultation, nextEpisode, finishInterlude,
     // 스크립트 엔진
     phase, messages, currentTurn, currentChoices, currentEmotion,
     waitingForChoice, showSeniorGuide, innerVoice,
