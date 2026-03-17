@@ -1,0 +1,201 @@
+{
+  "opening": {
+    "speaker": "system",
+    "text": "청년이 들어온다. 후드를 깊이 눌러쓰고, 고개를 약간 숙이고 있다."
+  },
+  "turns": [
+    {
+      "firstChoices": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "증상을 확인하자",
+          "text": "어디가 불편하세요?",
+          "intent": "chief_complaint"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "좀 힘들어 보인다",
+          "text": "좀 피곤해 보이시는데, 많이 힘드셨어요?",
+          "intent": "rapport"
+        }
+      ],
+      "responses": {
+        "chief_complaint": {
+          "text": "잠을 못 자요. 한 세 달 됐나.",
+          "emotion": "guarded"
+        },
+        "rapport": {
+          "text": "...좀요.",
+          "emotion": "guarded"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "수면 패턴을 파악해야 한다",
+          "text": "잠이 안 오는 건가요, 자다가 깨는 건가요?",
+          "intent": "sleep_pattern"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "무슨 일을 하는 사람일까",
+          "text": "요즘 어떻게 지내세요? 일이나 학교는요?",
+          "intent": "occupation"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "세 달이면 꽤 오래 견딘 것이다",
+          "text": "세 달이면 꽤 오래됐네요. 힘드셨겠다.",
+          "intent": "empathy_duration"
+        }
+      ],
+      "responses": {
+        "sleep_pattern": {
+          "text": "누우면 안 와요. 새벽 3시, 4시까지 그냥 천장 보고 있어요.",
+          "emotion": "neutral"
+        },
+        "occupation": {
+          "text": "편의점이요. 야간. 끝나고 자야 되는데 그게 안 돼서.",
+          "emotion": "neutral"
+        },
+        "empathy_duration": {
+          "text": "...약 먹으면 나을 줄 알고 왔는데. 그냥 약 주시면 안 되나요?",
+          "emotion": "guarded"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "동반 증상을 확인하자",
+          "text": "낮에 많이 졸리시거나, 집중이 안 되시거나 하는 건 있어요?",
+          "intent": "daytime_symptoms"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "야간 근무가 문제일 수 있다",
+          "text": "야간 근무는 언제부터 하신 거예요?",
+          "intent": "work_history"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "약만 원하는 이유가 있을 것이다",
+          "text": "빨리 해결하고 싶으신 거죠. 좀 더 얘기해주시면 도움이 될 거예요.",
+          "intent": "empathy_patience"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "카페인이나 약물 확인",
+          "text": "커피나 에너지 드링크는 많이 드세요?",
+          "intent": "caffeine"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "야간 말고 다른 일은 없나",
+          "text": "편의점 말고 낮에 다른 일도 하세요?",
+          "intent": "double_job"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "좀 더 편하게 해드리자",
+          "text": "천천히 말씀하셔도 돼요. 급하지 않으니까.",
+          "intent": "empathy_pace"
+        }
+      },
+      "responses": {
+        "daytime_symptoms": {
+          "text": "졸리죠. 근데 졸리면서 또 잠이 안 와요. 이상하죠?",
+          "emotion": "neutral"
+        },
+        "work_history": {
+          "text": "한 6개월? 낮에 하던 데가 잘려서. 야간밖에 없었어요.",
+          "emotion": "neutral"
+        },
+        "empathy_patience": {
+          "text": "...뭘요. 그냥 잠을 못 자는 건데.",
+          "emotion": "guarded"
+        },
+        "caffeine": {
+          "text": "커피 한 네다섯 잔? 안 그러면 못 버텨요.",
+          "emotion": "neutral"
+        },
+        "double_job": {
+          "text": "낮에는... 이것저것요. 배달도 좀 하고.",
+          "emotion": "guarded",
+          "innerVoice": "낮에도 쉬지 못하는 거구나."
+        },
+        "empathy_pace": {
+          "text": "(잠시 침묵) ...사실 좀 불안한 것도 있어요. 잠이 안 올 때.",
+          "emotion": "warming",
+          "innerVoice": "불면 뒤에 불안이 있었다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "치료 계획을 세우자",
+          "text": "수면 위생부터 정리하고, 필요하면 약도 처방해드릴게요.",
+          "intent": "plan_medical"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "근무 시간 조정이 필요해 보인다",
+          "text": "근무 시간을 바꿀 수 있는 방법은 없을까요?",
+          "intent": "plan_life"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "혼자 감당하기 힘들었을 것이다",
+          "text": "혼자서 많이 버티셨네요.",
+          "intent": "plan_empathy"
+        }
+      ],
+      "responses": {
+        "plan_medical": {
+          "text": "네. 약은 빨리 줬으면 좋겠어요.",
+          "emotion": "neutral"
+        },
+        "plan_life": {
+          "text": "바꾸면 좋죠. 근데 야간이 시급이 더 높아서.",
+          "emotion": "neutral"
+        },
+        "plan_empathy": {
+          "text": "...(고개를 잠깐 숙인다) 네.",
+          "emotion": "warming"
+        }
+      }
+    }
+  ],
+  "closing": {
+    "speaker": "system",
+    "text": "청년이 후드를 다시 여미고, 고개를 살짝 끄덕이며 나간다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "그의 카페인 의존이 어디까지인지, 물어보지 못했다.",
+      "life": "낮에 그가 어떤 하루를 보내는지, 끝내 묻지 못했다.",
+      "emotional": "잠이 오지 않는 새벽에 그가 무엇을 느끼는지, 물어보지 못했다."
+    }
+  }
+}

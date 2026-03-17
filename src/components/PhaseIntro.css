@@ -41,3 +41,9 @@
   font-size: 14px;
   color: rgba(232, 224, 208, 0.5);
 }
+
+.phase-intro__line--senior {
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(176, 160, 112, 0.6);
+}

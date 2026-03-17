@@ -1,0 +1,201 @@
+{
+  "opening": {
+    "speaker": "system",
+    "text": "문이 열리고, 중년 여성이 자리에 앉는다. 손을 무릎 위에 가지런히 모으고 있다."
+  },
+  "turns": [
+    {
+      "firstChoices": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "증상부터 확인하자",
+          "text": "어디가 불편하셔서 오셨어요?",
+          "intent": "chief_complaint"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "좀 긴장하신 것 같다",
+          "text": "오래 기다리셨죠? 편하게 말씀하세요.",
+          "intent": "rapport"
+        }
+      ],
+      "responses": {
+        "chief_complaint": {
+          "text": "허리가 아파요. 한 두 달 됐는데, 점점 심해지는 것 같아서요.",
+          "emotion": "anxious"
+        },
+        "rapport": {
+          "text": "아, 네... 감사합니다. 사실 좀 긴장이 돼서요.",
+          "emotion": "warming"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "통증 양상을 파악하자",
+          "text": "허리 어디가 어떻게 아프세요?",
+          "intent": "pain_detail"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "평소 생활이 궁금하다",
+          "text": "보통 하루를 어떻게 보내세요?",
+          "intent": "daily_life"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "걱정이 많으신 것 같다",
+          "text": "점점 심해진다니 걱정이 많으셨겠어요.",
+          "intent": "empathy_worry"
+        }
+      ],
+      "responses": {
+        "pain_detail": {
+          "text": "여기... 아래쪽이요. 쪼이는 것 같기도 하고, 뻐근하기도 하고. 오래 앉아 있으면 특히.",
+          "emotion": "neutral"
+        },
+        "daily_life": {
+          "text": "공장에서 일해요. 서서 하는 일이라... 하루 종일 서 있으면 저녁에는 꼼짝도 못 해요.",
+          "emotion": "neutral"
+        },
+        "empathy_worry": {
+          "text": "...네, 사실 이러다 못 걷게 되는 건 아닌가 싶어서요.",
+          "emotion": "warming",
+          "innerVoice": "못 걷게 될까 봐 두려운 거구나."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "다른 증상도 확인해야 한다",
+          "text": "다리 쪽으로 저린 느낌이 있으신가요?",
+          "intent": "radiating"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "일이 몸에 무리가 가는 것 같다",
+          "text": "공장에서 쉬는 시간은 좀 있으세요?",
+          "intent": "work_condition"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "두려움을 좀 더 들어보고 싶다",
+          "text": "못 걷게 될까 봐 걱정이 되셨군요.",
+          "intent": "empathy_fear"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "기존 치료 이력을 확인하자",
+          "text": "전에 허리 때문에 병원에 가보신 적 있으세요?",
+          "intent": "past_treatment"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "집에서의 생활도 물어보자",
+          "text": "집에 오시면 좀 쉬실 수 있어요?",
+          "intent": "home_life"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "병원에 오기까지 쉽지 않았을 것 같다",
+          "text": "병원 오시기까지 고민이 많으셨겠어요.",
+          "intent": "empathy_hesitation"
+        }
+      },
+      "responses": {
+        "radiating": {
+          "text": "왼쪽 다리가 좀 저릴 때가 있어요. 항상은 아닌데.",
+          "emotion": "neutral"
+        },
+        "work_condition": {
+          "text": "쉬는 시간이요... 점심에 30분? 그것도 밥 먹으면 끝이에요.",
+          "emotion": "neutral"
+        },
+        "empathy_fear": {
+          "text": "...엄마가 허리 수술하고 잘 못 걸으시거든요. 그게 자꾸 생각나서.",
+          "emotion": "opened",
+          "innerVoice": "어머니의 경험이 두려움의 뿌리였구나."
+        },
+        "past_treatment": {
+          "text": "파스 붙이고 약국에서 약 사먹은 게 다예요. 병원은 처음이에요.",
+          "emotion": "neutral"
+        },
+        "home_life": {
+          "text": "딸이 대학생인데, 요즘은 저보다 늦게 들어와서... 혼자 있는 시간이 많아요.",
+          "emotion": "warming"
+        },
+        "empathy_hesitation": {
+          "text": "일을 쉬면 안 되니까... 계속 참다가, 딸이 제발 가보라고 해서요.",
+          "emotion": "warming"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "검사 방향을 정리하자",
+          "text": "엑스레이를 한번 찍어보겠습니다. 필요하면 추가 검사도 할 수 있어요.",
+          "intent": "plan_medical"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "일을 쉴 수 있는지 물어봐야 한다",
+          "text": "치료하려면 좀 쉬셔야 할 수 있는데, 일은 괜찮으세요?",
+          "intent": "plan_life"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "걱정을 좀 덜어드리고 싶다",
+          "text": "일단 검사해보고, 같이 방법을 찾아봐요.",
+          "intent": "plan_reassure"
+        }
+      ],
+      "responses": {
+        "plan_medical": {
+          "text": "네, 알겠습니다. 감사합니다.",
+          "emotion": "neutral"
+        },
+        "plan_life": {
+          "text": "쉬면... 돈이 안 나오는데. 그래도 방법이 있을까요?",
+          "emotion": "anxious"
+        },
+        "plan_reassure": {
+          "text": "...네. 감사합니다, 선생님.",
+          "emotion": "warming"
+        }
+      }
+    }
+  ],
+  "closing": {
+    "speaker": "system",
+    "text": "환자가 고개를 숙여 인사하고 나간다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "그녀의 왼쪽 다리에는 물어보지 못한 이야기가 있었다.",
+      "life": "공장에서의 하루가 어떤 것인지, 끝내 듣지 못했다.",
+      "emotional": "그녀가 정말 두려워하는 것이 무엇인지, 물어보지 못했다."
+    }
+  }
+}

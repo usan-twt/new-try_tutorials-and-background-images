@@ -4,34 +4,42 @@ import './DayEndScreen.css'
 export default function DayEndScreen({ dayEndData, onNext }) {
   const [visibleCount, setVisibleCount] = useState(0)
   const [headerVisible, setHeaderVisible] = useState(false)
+  const [unaskedVisible, setUnaskedVisible] = useState(false)
   const [nextVisible, setNextVisible] = useState(false)
 
   const patients = dayEndData?.patients || []
+  const unasked = dayEndData?.unasked || []
 
   useEffect(() => {
     setVisibleCount(0)
     setHeaderVisible(false)
+    setUnaskedVisible(false)
     setNextVisible(false)
 
-    // 헤더 먼저
-    const headerTimer = setTimeout(() => setHeaderVisible(true), 600)
+    const timers = []
 
-    // 환자 정보 하나씩 페이드인
-    const patientTimers = patients.map((_, i) =>
-      setTimeout(() => setVisibleCount(i + 1), 1600 + i * 500)
-    )
+    // 헤더
+    timers.push(setTimeout(() => setHeaderVisible(true), 600))
 
-    // "다음 날" 버튼 — 마지막 환자 표시 후 1.5초
-    const nextTimer = setTimeout(
-      () => setNextVisible(true),
-      1600 + patients.length * 500 + 1500
-    )
+    // 환자 정보 순차 페이드인
+    patients.forEach((_, i) => {
+      timers.push(setTimeout(() => setVisibleCount(i + 1), 1600 + i * 500))
+    })
 
-    return () => {
-      clearTimeout(headerTimer)
-      patientTimers.forEach(clearTimeout)
-      clearTimeout(nextTimer)
+    const afterPatients = 1600 + patients.length * 500
+
+    // Phase 2+: unasked 힌트
+    if (unasked.length > 0) {
+      timers.push(setTimeout(() => setUnaskedVisible(true), afterPatients + 1000))
     }
+
+    // "다음 날" 버튼
+    const nextDelay = unasked.length > 0
+      ? afterPatients + 1000 + 1500
+      : afterPatients + 1500
+    timers.push(setTimeout(() => setNextVisible(true), nextDelay))
+
+    return () => timers.forEach(clearTimeout)
   }, [dayEndData])
 
   return (
@@ -54,6 +62,16 @@ export default function DayEndScreen({ dayEndData, onNext }) {
             </div>
           ))}
         </div>
+
+        {unasked.length > 0 && (
+          <div className={`day-end__unasked ${unaskedVisible ? 'visible' : ''}`}>
+            {unasked.map((item, i) => (
+              <p key={i} className="day-end__unasked-hint">
+                {item.hint}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
 
       <button

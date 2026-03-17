@@ -3,6 +3,7 @@ import TitleScreen from './components/TitleScreen'
 import PhaseIntro from './components/PhaseIntro'
 import ConsultationScreen from './components/ConsultationScreen'
 import DayEndScreen from './components/DayEndScreen'
+import InterludeScene from './components/InterludeScene'
 import './App.css'
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
     startConsultation,
     endConsultation,
     nextEpisode,
+    finishInterlude,
   } = useGameState()
 
   return (
@@ -42,8 +44,16 @@ function App() {
         <DayEndScreen
           dayEndData={{
             patients: state.patientsEncountered,
+            unasked: state.unasked,
           }}
           onNext={nextEpisode}
+        />
+      )}
+
+      {state.screen === 'interlude' && state.currentInterlude && (
+        <InterludeScene
+          interlude={state.currentInterlude}
+          onComplete={finishInterlude}
         />
       )}
 

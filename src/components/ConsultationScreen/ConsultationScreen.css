@@ -249,6 +249,85 @@
 }
 
 
+/* ===== InnerVoice ===== */
+
+.inner-voice {
+  flex: 0 0 auto;
+  padding: 8px 28px;
+  opacity: 0;
+  animation: inner-voice-appear 0.5s var(--ease-smooth) forwards;
+}
+
+@keyframes inner-voice-appear {
+  to { opacity: 1; }
+}
+
+.inner-voice__text {
+  font-family: var(--font-serif);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--inner-voice);
+  background: var(--inner-voice-bg);
+  padding: 10px 16px;
+  border-radius: 4px;
+}
+
+
+/* ===== Phase 2+ 방향 선택지 ===== */
+
+.choice-panel__direction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.choice-panel__direction-button {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s var(--ease-smooth), border-color 0.15s var(--ease-smooth);
+}
+
+.choice-panel__direction-button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.choice-panel__direction-button:active {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.choice-panel__tag {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.choice-panel__direction-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.choice-panel__direction-text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+
 /* ===== 반응형 ===== */
 
 @media (max-width: 768px) {

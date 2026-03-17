@@ -72,6 +72,35 @@
 }
 
 
+/* ===== Unasked (Phase 2+) ===== */
+
+.day-end__unasked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth);
+}
+
+.day-end__unasked.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.day-end__unasked-hint {
+  font-family: var(--font-serif);
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(232, 224, 208, 0.25);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+
 /* ===== 다음 날 버튼 ===== */
 
 .day-end__next {

@@ -6,6 +6,10 @@ const PHASE_INTROS = {
     { text: '첫째 날', delay: 0 },
     { text: '선배가 옆에 있다.', delay: 1000 },
   ],
+  2: [
+    { text: '둘째 날 아침', delay: 0 },
+    { text: '오늘 나 바빠서 못 갈 것 같아. 혼자 해봐.', delay: 1200, style: 'senior' },
+  ],
 }
 
 export default function PhaseIntro({ phase, onComplete }) {
@@ -45,7 +49,7 @@ export default function PhaseIntro({ phase, onComplete }) {
         {lines.map((line, i) => (
           <p
             key={i}
-            className={`phase-intro__line ${i < visibleLines ? 'visible' : ''}`}
+            className={`phase-intro__line ${line.style === 'senior' ? 'phase-intro__line--senior' : ''} ${i < visibleLines ? 'visible' : ''}`}
           >
             {line.text}
           </p>

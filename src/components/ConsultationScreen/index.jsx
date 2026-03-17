@@ -3,6 +3,8 @@ import useScriptEngine from '../../hooks/useScriptEngine'
 import PatientArea from './PatientArea'
 import DialogArea from './DialogArea'
 import ChoicePanel from './ChoicePanel'
+import InnerVoice from './InnerVoice'
+import NotebookPanel from '../NotebookPanel'
 import './ConsultationScreen.css'
 
 export default function ConsultationScreen({ episode, onEnd }) {
@@ -10,10 +12,14 @@ export default function ConsultationScreen({ episode, onEnd }) {
     phase,
     messages,
     currentTurn,
+    currentChoices,
     waitingForChoice,
     showSeniorGuide,
+    usedFamilies,
+    innerVoice,
     beginPlaying,
     selectChoice,
+    selectDirectionChoice,
     finishConsultation,
     reset,
   } = useScriptEngine(episode.script)
@@ -22,6 +28,8 @@ export default function ConsultationScreen({ episode, onEnd }) {
     episode.patient.initialEmotion
   )
   const [fadeIn, setFadeIn] = useState(false)
+
+  const showNotebook = episode.phase >= 2 && episode.notebook
 
   // 진입 페이드인
   useEffect(() => {
@@ -46,7 +54,7 @@ export default function ConsultationScreen({ episode, onEnd }) {
     }
   }, [phase, beginPlaying])
 
-  // 감정 상태 추적 — 환자 반응 메시지에서 추출
+  // 감정 상태 추적
   useEffect(() => {
     const patientMessages = messages.filter(m => m.emotion)
     if (patientMessages.length > 0) {
@@ -58,17 +66,15 @@ export default function ConsultationScreen({ episode, onEnd }) {
   // 클로징 → 진료 종료
   useEffect(() => {
     if (phase === 'closing') {
-      const t = setTimeout(() => {
-        finishConsultation()
-      }, 2000)
+      const t = setTimeout(() => finishConsultation(), 2000)
       return () => clearTimeout(t)
     }
   }, [phase, finishConsultation])
 
-  // 완료 → 상위 콜백
+  // 완료 → 상위 콜백 (usedFamilies 전달)
   useEffect(() => {
     if (phase === 'done') {
-      onEnd()
+      onEnd(usedFamilies)
     }
   }, [phase, onEnd])
 
@@ -81,12 +87,20 @@ export default function ConsultationScreen({ episode, onEnd }) {
 
       <DialogArea messages={messages} />
 
+      <InnerVoice text={innerVoice} />
+
       <ChoicePanel
         currentTurn={currentTurn}
+        currentChoices={currentChoices}
         waitingForChoice={waitingForChoice}
         showSeniorGuide={showSeniorGuide}
         onSelect={selectChoice}
+        onSelectDirection={selectDirectionChoice}
       />
+
+      {showNotebook && (
+        <NotebookPanel chart={episode.notebook.chart} />
+      )}
     </div>
   )
 }

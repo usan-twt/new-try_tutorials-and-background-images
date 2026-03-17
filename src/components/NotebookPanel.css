@@ -1,0 +1,95 @@
+/* ===== Notebook Toggle ===== */
+
+.notebook-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 100;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(42, 37, 32, 0.9);
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s var(--ease-smooth), transform 0.2s var(--ease-smooth);
+}
+
+.notebook-toggle:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.notebook-toggle--active {
+  border-color: rgba(176, 160, 112, 0.3);
+  transform: scale(0.95);
+}
+
+
+/* ===== Notebook Panel ===== */
+
+.notebook-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 280px;
+  height: 100%;
+  background: var(--notebook-bg);
+  transform: translateX(-100%);
+  transition: transform 0.35s var(--ease-smooth);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+}
+
+.notebook-panel--open {
+  transform: translateX(0);
+}
+
+.notebook-panel__inner {
+  padding: 60px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.notebook-panel__section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.notebook-panel__label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: rgba(58, 53, 48, 0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.notebook-panel__chart {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--notebook-text);
+  white-space: pre-wrap;
+}
+
+.notebook-panel__memo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--notebook-text);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(58, 53, 48, 0.1);
+  outline: none;
+  resize: none;
+  padding: 8px 0;
+}
+
+.notebook-panel__memo::placeholder {
+  color: rgba(58, 53, 48, 0.25);
+}
