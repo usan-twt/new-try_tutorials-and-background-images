@@ -153,6 +153,241 @@
         {
           "tag": "증상",
           "family": "medical",
+          "label": "열이 언제부터 얼마나 높았는지",
+          "text": "열이 가장 높았을 때가 언제였어요? 최고 몇 도 정도 됐나요?",
+          "intent": "fever_peak"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "평소 건강 상태를 파악하자",
+          "text": "수아가 평소에 자주 아픈 편이에요?",
+          "intent": "health_history"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "혼자 감당하기 너무 힘들었겠다",
+          "text": "남편도 없고, 혼자 밤새 아이 곁에 계셨던 거잖아요.",
+          "intent": "empathy_alone"
+        }
+      ],
+      "responses": {
+        "fever_peak": {
+          "text": "새벽 두 시쯤에... 38.7도까지 올라갔어요. 그때 해열제 먹이고 나서 조금 내려갔는데, 아침에 재니까 또 38.5도였어요.",
+          "emotion": "anxious"
+        },
+        "health_history": {
+          "text": "어린이집 다니기 시작하면서부터 달에 한 번은 감기 걸리는 것 같아요. 이번엔 열이 좀 더 높아서...",
+          "emotion": "anxious",
+          "innerVoice": "어린이집 감염이 반복되는 패턴이다."
+        },
+        "empathy_alone": {
+          "text": "...(잠깐 말을 잃는다) 새벽에 혼자 이러고 있으니까 무서웠어요. 뭔가 잘못되면 어쩌나 싶고.",
+          "emotion": "warming",
+          "innerVoice": "그 새벽의 공포가 여기까지 따라왔다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "귀 소견을 다시 확인하자",
+          "text": "아까 귀가 좀 신경 쓰인다고 했는데, 한 번 더 자세히 볼게요.",
+          "intent": "ear_exam"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "아이의 수면 상태를 확인하자",
+          "text": "수아가 어젯밤에 잠은 잤어요? 많이 깼나요?",
+          "intent": "sleep_child"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "초보 엄마의 불안함을 인정해주자",
+          "text": "첫째 아이니까 더 무섭죠. 당연한 거예요.",
+          "intent": "empathy_firsttime"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "중이염 가능성을 확인하자",
+          "text": "귀를 자꾸 잡아당기거나 만지진 않았어요?",
+          "intent": "ear_touch"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "수분 섭취가 중요하다",
+          "text": "물이나 분유는 잘 마셨어요?",
+          "intent": "hydration"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "잘 하고 있다고 말해주고 싶다",
+          "text": "그런데도 밤새 곁에 계신 거잖아요. 그게 제일 중요한 거예요.",
+          "intent": "empathy_doing_well"
+        }
+      },
+      "responses": {
+        "ear_exam": {
+          "text": "오른쪽 고막이 약간 충혈되어 있다. 중이염 초기 가능성을 배제할 수 없다.",
+          "emotion": "neutral",
+          "speakerOverride": "doctor_narration"
+        },
+        "sleep_child": {
+          "text": "새벽 두 시에 깨서 한 시간 넘게 울었어요. 그 다음엔 좀 잠들었는데 뒤척이더라고요.",
+          "emotion": "anxious"
+        },
+        "empathy_firsttime": {
+          "text": "주변에서는 다들 그냥 두라고 하는데... 저는 그게 안 돼요.",
+          "emotion": "warming",
+          "innerVoice": "불안과 육아를 동시에 감당하고 있다."
+        },
+        "ear_touch": {
+          "text": "아... 맞아요, 어젯밤에 계속 오른쪽 귀 부분 잡아당겼어요. 그게 관련 있는 건가요?",
+          "emotion": "anxious"
+        },
+        "hydration": {
+          "text": "분유는 평소 반 정도만 먹고 있어요. 열 때문에 더 안 마시는 것 같아서 걱정이에요.",
+          "emotion": "anxious"
+        },
+        "empathy_doing_well": {
+          "text": "...(눈이 촉촉해진다) 감사해요. 저도 잘 하고 싶은데, 모르겠어요.",
+          "emotion": "opened"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "중이염 치료 방향을 설명하자",
+          "text": "오른쪽 귀에 염증 소견이 조금 있어요. 항생제를 쓸지 지켜볼지 결정해야 할 것 같아요.",
+          "intent": "otitis_plan"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "오늘 이후 돌봄 계획을 파악하자",
+          "text": "오늘 오후에 아이를 어디서 봐주실 건지 생각해두셨어요?",
+          "intent": "afternoon_care"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "지금 많이 지쳐 있을 것이다",
+          "text": "밤을 꼬박 새셨는데, 지금 몸은 좀 괜찮으세요?",
+          "intent": "empathy_mom_health"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "열이 올랐을 때 대처법을 알려주자",
+          "text": "해열제는 열이 38.5도 넘으면 바로 주세요. 간격은 최소 네 시간이고요.",
+          "intent": "fever_guide"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "남편과 연락이 가능한지",
+          "text": "남편분께는 연락하셨어요? 출장 중에도 알고 계시면 도움이 될 것 같아서요.",
+          "intent": "husband_contact"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "엄마도 쓰러지면 안 된다",
+          "text": "엄마가 건강해야 아이도 지킬 수 있어요. 오늘만큼은 좀 쉬셔야 해요.",
+          "intent": "empathy_mom_rest"
+        }
+      },
+      "responses": {
+        "otitis_plan": {
+          "text": "귀요? 그게... 많이 심한 건가요? 항생제를 꼭 먹어야 해요?",
+          "emotion": "anxious"
+        },
+        "afternoon_care": {
+          "text": "아직... 못 정했어요. 시어머니한테 연락해봐야 하는데 선뜻 전화하기가 어렵네요.",
+          "emotion": "anxious",
+          "innerVoice": "도움을 요청하는 것조차 부담스러운 상황이다."
+        },
+        "empathy_mom_health": {
+          "text": "저요? 괜찮아요. 아이가 먼저니까요.",
+          "emotion": "warming",
+          "innerVoice": "자기 자신은 마지막 순위에 두고 있다."
+        },
+        "fever_guide": {
+          "text": "네, 알겠어요. 온도계 항상 가지고 다니거든요. 정확히 알려주셔서 감사해요.",
+          "emotion": "neutral"
+        },
+        "husband_contact": {
+          "text": "새벽에 카톡은 보냈어요. 출장 중이라 바쁠 것 같아서 전화는 못 했고... 답장은 왔는데 걱정하지 말라고만.",
+          "emotion": "anxious",
+          "innerVoice": "혼자 감당하는 게 익숙해진 것 같다."
+        },
+        "empathy_mom_rest": {
+          "text": "...(작게 웃는다) 네. 알아요. 그런데 아이가 자야 저도 자거든요.",
+          "emotion": "warming"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "경과 관찰 기준을 명확히 하자",
+          "text": "열이 39도 넘거나, 처지거나, 숨쉬기 힘들어 보이면 바로 응급실 가셔야 해요.",
+          "intent": "warning_signs"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "시어머니께 연락을 권유하자",
+          "text": "오늘만큼은 어머니께 연락해보시는 게 어떨까요? 아이가 아플 때는 도움 받으셔도 돼요.",
+          "intent": "ask_help"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "오늘 얼마나 힘들었는지 들어주고 싶다",
+          "text": "오늘 정말 고생 많으셨어요. 이 상황에서 여기까지 오신 게 쉬운 일이 아니에요.",
+          "intent": "empathy_effort"
+        }
+      ],
+      "responses": {
+        "warning_signs": {
+          "text": "처진다는 게... 어떤 걸 말하는 건가요?",
+          "emotion": "anxious"
+        },
+        "ask_help": {
+          "text": "...(잠시 생각한다) 그렇죠. 제가 너무 혼자 하려 했나봐요.",
+          "emotion": "warming",
+          "innerVoice": "혼자서 다 하는 게 당연하다고 생각해왔을 것이다."
+        },
+        "empathy_effort": {
+          "text": "밤새 울면서 아이 안고 있었는데... 선생님이 그렇게 말씀해 주시니까 좀 괜찮아지는 것 같아요.",
+          "emotion": "opened",
+          "innerVoice": "누군가에게 인정받고 싶었던 마음이 있었던 것 같다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
           "label": "처방을 정리하자",
           "text": "감기인 것 같아요. 약 처방하고, 열이 안 떨어지면 다시 오세요.",
           "intent": "plan_medical"
