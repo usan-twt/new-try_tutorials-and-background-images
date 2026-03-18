@@ -22,6 +22,10 @@ export const interludes = {
       { text: '좀 긴장되네요.', tone: 'nervous' },
       { text: '해볼게요.', tone: 'confident' },
     ],
+    afterReaction: [
+      { speaker: '선배', text: '처음엔 다 그래. 나도 그랬어.' },
+      { speaker: '선배', text: '내일 보자.', pause: true },
+    ],
   },
   after_ep2_1: {
     character: '동기',
@@ -35,6 +39,10 @@ export const interludes = {
       { text: '나는 증상 위주로 물어봤어.', tone: 'neutral' },
       { text: '나도 비슷하게 들었어.', tone: 'neutral' },
     ],
+    afterReaction: [
+      { speaker: '동기', text: '그렇구나. 같은 환자인데도 다르게 보이네.' },
+      { speaker: '동기', text: '다음 환자 곧 들어올 텐데, 밥이나 빨리 먹자.' },
+    ],
   },
   after_ep2_2: {
     character: '동기',
@@ -44,6 +52,13 @@ export const interludes = {
       { speaker: '동기', text: '좀 더 들어보니까, 그게 단순한 불면이 아니더라.', pause: true },
       { speaker: '동기', text: '사람마다 다른 게, 같은 걸 물어봐도 다른 답이 나와.' },
     ],
+    reactions: [
+      { text: '맞아, 나도 좀 느꼈어.', tone: 'neutral' },
+      { text: '어렵다, 진짜.', tone: 'neutral' },
+    ],
+    afterReaction: [
+      { speaker: '동기', text: '그치? 점점 감이 오는 것 같기도 하고.' },
+    ],
   },
   before_ep3_3: {
     character: '동기',
@@ -51,6 +66,14 @@ export const interludes = {
       { speaker: '동기', text: '아까 그 환자 말이 별로 없더라.' },
       { speaker: '동기', text: '원래 그런 사람도 있어. 처음부터 다 얘기하는 사람이 어딨어.' },
       { speaker: '동기', text: '근데 그런 사람일수록, 한마디가 나오면 그게 진짜인 것 같아.', pause: true },
+    ],
+    reactions: [
+      { text: '기다려보는 수밖에 없겠다.', tone: 'neutral' },
+      { text: '어떻게 꺼내게 하지?', tone: 'neutral' },
+    ],
+    afterReaction: [
+      { speaker: '동기', text: '글쎄. 나도 아직 잘 모르겠어.' },
+      { speaker: '동기', text: '근데 적어도, 기다려주는 건 할 수 있잖아.' },
     ],
   },
 }

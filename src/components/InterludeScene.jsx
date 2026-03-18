@@ -1,31 +1,54 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 export default function InterludeScene({ interlude, onComplete }) {
   const [visible, setVisible] = useState(0)
   const [showReactions, setShowReactions] = useState(false)
+  const [afterLines, setAfterLines] = useState([])
+  const [afterVisible, setAfterVisible] = useState(0)
   const [fading, setFading] = useState(false)
   const lines = interlude?.lines || []
   const reactions = interlude?.reactions || null
+  const afterReaction = interlude?.afterReaction || null
+  const timersRef = useRef([])
+
+  const clearTimers = useCallback(() => { timersRef.current.forEach(clearTimeout); timersRef.current = [] }, [])
+  const addTimer = useCallback((fn, ms) => { timersRef.current.push(setTimeout(fn, ms)) }, [])
 
   useEffect(() => {
-    setVisible(0); setShowReactions(false); setFading(false)
-    const timers = []
+    clearTimers()
+    setVisible(0); setShowReactions(false); setAfterLines([]); setAfterVisible(0); setFading(false)
     let cur = 0
     const showNext = () => {
       cur++; setVisible(cur)
       if (cur < lines.length) {
-        timers.push(setTimeout(showNext, lines[cur - 1]?.pause ? 1500 : 800))
+        addTimer(showNext, lines[cur - 1]?.pause ? 1500 : 800)
       } else if (reactions) {
-        timers.push(setTimeout(() => setShowReactions(true), 1000))
+        addTimer(() => setShowReactions(true), 1000)
       } else {
-        timers.push(setTimeout(() => { setFading(true); timers.push(setTimeout(onComplete, 1000)) }, 3000))
+        addTimer(() => { setFading(true); addTimer(onComplete, 1000) }, 3000)
       }
     }
-    timers.push(setTimeout(showNext, 600))
-    return () => timers.forEach(clearTimeout)
+    addTimer(showNext, 600)
+    return clearTimers
   }, [interlude])
 
-  const react = useCallback(() => { setFading(true); setTimeout(onComplete, 1000) }, [onComplete])
+  const react = useCallback(() => {
+    setShowReactions(false)
+
+    if (afterReaction && afterReaction.length > 0) {
+      // afterReaction 대사를 순차 표시 후 fadeOut
+      setAfterLines(afterReaction)
+      let delay = 600
+      afterReaction.forEach((_, i) => {
+        addTimer(() => setAfterVisible(i + 1), delay)
+        delay += afterReaction[i]?.pause ? 1500 : 1000
+      })
+      addTimer(() => { setFading(true); addTimer(onComplete, 1000) }, delay + 1000)
+    } else {
+      setFading(true)
+      addTimer(onComplete, 1000)
+    }
+  }, [onComplete, afterReaction, addTimer])
 
   return (
     <div style={{ width: '100%', height: '100%', background: '#1A1815', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'opacity 1s', opacity: fading ? 0 : 1 }}>
@@ -46,6 +69,16 @@ export default function InterludeScene({ interlude, onComplete }) {
                 textAlign: 'left', padding: '10px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)',
                 borderRadius: 5, cursor: 'pointer', fontFamily: 'system-ui,sans-serif', fontSize: 13, color: 'rgba(232,224,208,0.5)',
               }}>"{r.text}"</button>
+            ))}
+          </div>
+        )}
+        {afterLines.length > 0 && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8 }}>
+            {afterLines.map((l, i) => (
+              <p key={`after-${i}`} style={{
+                fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: 'rgba(232,224,208,0.7)',
+                opacity: i < afterVisible ? 1 : 0, transform: i < afterVisible ? 'translateY(0)' : 'translateY(4px)', transition: 'opacity 0.6s,transform 0.6s',
+              }}>{l.text}</p>
             ))}
           </div>
         )}

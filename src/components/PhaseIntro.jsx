@@ -2,7 +2,13 @@ import { useState, useEffect } from 'react'
 
 const INTROS = {
   1: [{ text: '첫째 날', delay: 0 }, { text: '선배가 옆에 있다.', delay: 1000, style: 'sub' }],
-  2: [{ text: '둘째 날 아침', delay: 0 }, { text: '오늘 나 바빠서 못 갈 것 같아. 혼자 해봐.', delay: 1200, style: 'senior' }],
+  2: [
+    { text: '둘째 날 아침', delay: 0 },
+    { text: '오늘 나 바빠서 못 갈 것 같아.', delay: 1200, style: 'senior' },
+    { text: '근데 이거 하나 줄게.', delay: 2800, style: 'senior' },
+    { text: '수첩인데, 환자 정보가 적혀 있어. 진료 중에 참고하면 도움이 될 거야.', delay: 4200, style: 'senior' },
+    { text: '잘할 수 있어. 어제 잘했잖아.', delay: 6200, style: 'senior' },
+  ],
   3: [{ text: '셋째 주', delay: 0 }, { text: '오늘 외래 환자가 좀 많아요.', delay: 1200, style: 'nurse' }],
 }
 
