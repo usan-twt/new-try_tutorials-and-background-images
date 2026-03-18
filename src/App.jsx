@@ -6,6 +6,7 @@ import ConsultationScreen from './components/ConsultationScreen'
 import DayEndScreen from './components/DayEndScreen'
 import InterludeScene from './components/InterludeScene'
 import NotebookPanel from './components/NotebookPanel'
+import NavigationScreen from './components/NavigationScreen'
 
 function App() {
   const game = useGame()
@@ -15,6 +16,19 @@ function App() {
     <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', background: '#1A1815' }}>
       {screen === 'title' && <TitleScreen onStart={game.startGame} />}
       {screen === 'corridor' && <CorridorScene onComplete={game.finishCorridor} onNameSet={game.setPlayerName} />}
+      {screen === 'morningNav' && (
+        <NavigationScreen
+          timeOfDay="morning"
+          onEnterClinic={game.finishMorningNav}
+          onComplete={game.finishMorningNav}
+        />
+      )}
+      {screen === 'eveningNav' && (
+        <NavigationScreen
+          timeOfDay="evening"
+          onComplete={game.finishEveningNav}
+        />
+      )}
       {screen === 'phaseIntro' && <PhaseIntro phase={currentPhase} onComplete={game.startConsultation} />}
       {screen === 'consultation' && ep && (
         <>

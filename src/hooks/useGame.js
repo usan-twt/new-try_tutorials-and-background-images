@@ -132,7 +132,15 @@ export default function useGame() {
   }, [])
 
   const finishCorridor = useCallback(() => {
+    setScreen('morningNav')
+  }, [])
+
+  const finishMorningNav = useCallback(() => {
     setScreen('phaseIntro')
+  }, [])
+
+  const finishEveningNav = useCallback(() => {
+    setScreen('dayEnd')
   }, [])
 
   const startConsultation = useCallback(() => {
@@ -199,8 +207,8 @@ export default function useGame() {
     setDayEndState(newState)
 
     if (isPhaseEnd) {
-      // Phase 마지막 → DayEnd 화면 표시
-      setScreen('dayEnd')
+      // Phase 마지막 → 저녁 네비 → DayEnd 화면
+      setScreen('eveningNav')
     } else {
       // Phase 중간 → DayEnd 건너뛰고 바로 다음 에피소드
       const next = epIndex + 1
@@ -242,7 +250,7 @@ export default function useGame() {
     }
 
     if (isNewPhase) {
-      setScreen('phaseIntro')
+      setScreen('morningNav')
     } else {
       resetScript(nextEp)
       setScreen('consultation')
@@ -346,6 +354,7 @@ export default function useGame() {
     // 네비게이션
     screen, currentPhase, ep, dayEndState, currentInterlude,
     playerName, setPlayerName, startGame, finishCorridor,
+    finishMorningNav, finishEveningNav,
     startConsultation, nextEpisode, finishInterlude,
     // 스크립트 엔진
     phase, messages, currentTurn, currentChoices, currentEmotion,
