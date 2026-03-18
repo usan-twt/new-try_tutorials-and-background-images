@@ -152,6 +152,165 @@
         {
           "tag": "증상",
           "family": "medical",
+          "label": "불안 증상을 더 파악해야 한다",
+          "text": "잠이 안 올 때 불안하다고 하셨는데, 어떤 느낌이에요? 심장이 빨리 뛰거나 하지는 않아요?",
+          "intent": "anxiety_symptoms"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "잠 못 자는 새벽에 뭘 하는지 궁금하다",
+          "text": "새벽에 잠이 안 오면 그냥 누워 계세요, 아니면 뭔가 하세요?",
+          "intent": "night_routine"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "불안이 뭔지 더 들어보고 싶다",
+          "text": "잠이 안 올 때 불안하다고 하셨잖아요. 그게 어떤 건지 좀 더 말해줄 수 있어요?",
+          "intent": "empathy_anxiety"
+        }
+      ],
+      "responses": {
+        "anxiety_symptoms": {
+          "text": "심장이요? 잘 모르겠어요. 그냥... 머릿속이 안 꺼져요. 계속 뭔가 생각이 돌아요.",
+          "emotion": "neutral"
+        },
+        "night_routine": {
+          "text": "폰 보다가 유튜브 보다가... 그러다 보면 알람 울려요.",
+          "emotion": "neutral",
+          "innerVoice": "빛과 자극이 수면을 더 방해하고 있겠구나."
+        },
+        "empathy_anxiety": {
+          "text": "...그냥 쓸데없는 생각이요. 돈이라든가. 내일 일이라든가. 근데 잠이 와야 쉬어지잖아요.",
+          "emotion": "warming",
+          "innerVoice": "경제적 걱정이 수면 위로 올라오는 것이다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "잠들기 전 환경도 중요하다",
+          "text": "자려고 누울 때 방이 밝거나 시끄럽지는 않아요? 커튼은 어때요?",
+          "intent": "sleep_environment"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "경제적 압박이 있는 것 같다",
+          "text": "돈 걱정이 많으신 것 같아요. 요즘 많이 빠듯해요?",
+          "intent": "financial_stress"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "혼자 다 짊어지고 있는 것 같다",
+          "text": "야간 일하면서 낮에도 배달하고, 그러면 쉬는 시간이 거의 없겠네요.",
+          "intent": "empathy_burden"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "규칙적인 기상 시간이 있는지 확인",
+          "text": "그럼 매일 일어나는 시간은 일정한 편이에요?",
+          "intent": "wake_time"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "가족이나 주변 지지가 있는지 확인",
+          "text": "가족이랑 같이 사세요, 혼자예요?",
+          "intent": "living_situation"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "그 상황에서 버티고 있다는 걸 인정해주고 싶다",
+          "text": "그 상황에서 여기까지 왔다는 게, 쉬운 일이 아니었을 거예요.",
+          "intent": "empathy_effort"
+        }
+      },
+      "responses": {
+        "sleep_environment": {
+          "text": "방에 암막 커튼도 없어요. 낮에 자려면 햇빛이 다 들어오는데.",
+          "emotion": "neutral"
+        },
+        "financial_stress": {
+          "text": "...뭐 그렇죠. 월세가 있으니까. 딱히 지출을 줄일 데도 없어서.",
+          "emotion": "guarded",
+          "innerVoice": "그 무게를 혼자 지고 있었던 거다."
+        },
+        "empathy_burden": {
+          "text": "쉬는 게 사치예요. 쉬면 불안하고.",
+          "emotion": "warming",
+          "innerVoice": "쉬지 못하는 것이 선택이 아닌 공포에서 온다."
+        },
+        "wake_time": {
+          "text": "아뇨. 출근 있는 날은 밤 열 시, 없는 날은 오후 두세 시에 일어나고.",
+          "emotion": "neutral"
+        },
+        "living_situation": {
+          "text": "혼자요. 고시원이요.",
+          "emotion": "guarded"
+        },
+        "empathy_effort": {
+          "text": "(잠깐 위를 보다가) ...그냥 해야 하니까 한 거예요.",
+          "emotion": "warming"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "수면제 이외의 시도를 확인하자",
+          "text": "지금까지 잠을 자려고 뭔가 해보신 게 있어요? 술이라든가.",
+          "intent": "sleep_attempts"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "야간 근무 패턴을 좀 더 파악하자",
+          "text": "편의점 야간이면 몇 시부터 몇 시까지예요? 주말도요?",
+          "intent": "work_schedule"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "병원까지 온 게 쉬운 결정이 아니었을 것이다",
+          "text": "이런 데 오는 게 쉽지 않으셨을 텐데, 잘 오셨어요.",
+          "intent": "empathy_visit"
+        }
+      ],
+      "responses": {
+        "sleep_attempts": {
+          "text": "술은 좀 마셔봤어요. 근데 오히려 새벽에 깨더라고요. 그다음부턴 안 했어요.",
+          "emotion": "neutral",
+          "innerVoice": "스스로 술이 답이 아님을 깨달았다."
+        },
+        "work_schedule": {
+          "text": "열 시부터 아침 여섯 시. 주말은 없이 거의 매일이요.",
+          "emotion": "neutral",
+          "innerVoice": "생체리듬이 완전히 흐트러져 있을 수밖에 없다."
+        },
+        "empathy_visit": {
+          "text": "...친구가 한번 가보라고 해서요. 저 혼자였으면 그냥 참았을 것 같아요.",
+          "emotion": "warming",
+          "innerVoice": "혼자는 못 왔을 것이다. 그 친구가 없었다면."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
           "label": "치료 계획을 세우자",
           "text": "수면 위생부터 정리하고, 필요하면 약도 처방해드릴게요.",
           "intent": "plan_medical"

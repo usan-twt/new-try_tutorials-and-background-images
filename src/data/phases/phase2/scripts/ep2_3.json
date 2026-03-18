@@ -152,6 +152,165 @@
         {
           "tag": "증상",
           "family": "medical",
+          "label": "담배 끊은 후 변화를 더 알아보자",
+          "text": "담배 끊으신 뒤로 기침이 생긴 건가요, 아니면 전부터 있었나요?",
+          "intent": "smoking_timeline"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "식사는 제대로 하시는지",
+          "text": "혼자 사시면 밥 챙겨 드시는 게 쉽지 않으실 텐데요.",
+          "intent": "meal_habit"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "마누라 생각이 날 것 같다",
+          "text": "혼자 지내신 지 5년이 됐으면... 외로우실 때가 많으시겠어요.",
+          "intent": "empathy_loneliness"
+        }
+      ],
+      "responses": {
+        "smoking_timeline": {
+          "text": "전부터 조금씩 있었는데, 요즘 들어 부쩍 심해진 거야. 끊고 나서 더 나빠진 것 같기도 하고.",
+          "emotion": "neutral",
+          "innerVoice": "금연 후 오히려 기침이 심해지는 경우도 있다. 기도 점막이 회복되면서 그런 거지만, 다른 원인도 배제해야 한다."
+        },
+        "meal_habit": {
+          "text": "라면이나 끓여 먹지 뭐. 밥맛도 없는데 뭘 차려 먹어.",
+          "emotion": "neutral"
+        },
+        "empathy_loneliness": {
+          "text": "...(잠시 침묵) 뭐, 익숙해지는 거야. 별수 없잖아.",
+          "emotion": "guarded",
+          "innerVoice": "익숙해졌다고 하시지만, 쉽게 지나치기 어려운 말이다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "다른 증상도 확인해보자",
+          "text": "기침 말고 숨이 차거나, 가슴이 답답한 느낌은 없으셨어요?",
+          "intent": "respiratory_symptoms"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "집 환경도 관계가 있을 수 있다",
+          "text": "집이 오래된 편인가요? 환기가 잘 되는지 여쭤봐도 될까요?",
+          "intent": "home_environment"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "스스로 병원에 오신 게 쉽지 않았을 것 같다",
+          "text": "한 달을 참으시다가 오늘 오신 거잖아요. 혼자 많이 걱정하셨겠다 싶어서요.",
+          "intent": "empathy_worry"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "열이나 오한도 있었는지",
+          "text": "열이 나거나 몸살 기운 같은 건 없으셨고요?",
+          "intent": "fever_check"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "밖에 나가시는 편인지",
+          "text": "산책이나 외출은 자주 하세요?",
+          "intent": "outdoor_activity"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "혼자 결정하고 오셨을 텐데",
+          "text": "아드님한테는 말씀하시고 오셨어요?",
+          "intent": "son_informed"
+        }
+      },
+      "responses": {
+        "respiratory_symptoms": {
+          "text": "계단 오르면 좀 차. 원래 그런 줄 알았는데 요즘은 평지에서도 가끔 그래.",
+          "emotion": "anxious"
+        },
+        "home_environment": {
+          "text": "오래됐지. 30년 넘은 집이야. 창문 여는 건 귀찮아서 잘 안 열어.",
+          "emotion": "neutral",
+          "innerVoice": "환기가 안 되는 오래된 주거 환경. 실내 공기질도 기침 원인이 될 수 있다."
+        },
+        "empathy_worry": {
+          "text": "걱정이야 되지. 근데 별것 아닐 거야, 아마. 늙으면 다 그렇지 뭐.",
+          "emotion": "guarded"
+        },
+        "fever_check": {
+          "text": "열은 없었어. 으슬으슬한 건 가끔 있었는데.",
+          "emotion": "neutral"
+        },
+        "outdoor_activity": {
+          "text": "예전엔 공원도 나가고 했는데. 요즘은 기침이 심해서 나가기가 좀 그래. 민망하잖아.",
+          "emotion": "neutral",
+          "innerVoice": "기침 때문에 외출을 꺼리고 계신 거다. 고립이 더 심해질 수 있다."
+        },
+        "son_informed": {
+          "text": "그런 것까지 일일이 얘기해야 해? 알아서 다녀왔지.",
+          "emotion": "guarded",
+          "innerVoice": "말하고 싶지 않으신 건지, 걱정 끼치기 싫으신 건지."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "기존에 진단받은 병이 있는지",
+          "text": "혹시 전에 폐 관련해서 진단받으신 게 있으세요? 천식이나 폐기종 같은 거요.",
+          "intent": "prior_diagnosis"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "가까운 사람이 돌봐주는지",
+          "text": "근처에 자주 들러주시는 분은 계세요?",
+          "intent": "social_support"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "담배 끊으신 게 쉽지 않으셨을 텐데",
+          "text": "40년 피우시다가 끊으셨으면 많이 힘드셨겠다 싶어요.",
+          "intent": "empathy_quit_smoking"
+        }
+      ],
+      "responses": {
+        "prior_diagnosis": {
+          "text": "그런 얘기 들은 적 없어. 그냥 담배 많이 피웠다고, 줄이라고만 했지.",
+          "emotion": "neutral"
+        },
+        "social_support": {
+          "text": "옆집 아주머니가 가끔 반찬 갖다 줘. 그게 다야.",
+          "emotion": "neutral",
+          "innerVoice": "지지 자원이 거의 없다. 아들도 멀리 있고, 의지할 사람이 많지 않다."
+        },
+        "empathy_quit_smoking": {
+          "text": "힘들긴 뭐가 힘들어. 끊을 때가 됐으니까 끊은 거지. 후회는 없어.",
+          "emotion": "neutral",
+          "innerVoice": "담담하게 말씀하시지만, 40년 습관을 끊는 게 쉬웠을 리 없다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
           "label": "검사 결과를 보고 다시 만나자",
           "text": "엑스레이 찍고, 결과 보고 다시 이야기하겠습니다.",
           "intent": "plan_medical"
