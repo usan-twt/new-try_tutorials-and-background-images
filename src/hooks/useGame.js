@@ -49,6 +49,7 @@ export default function useGame() {
 
   // ── 인터루드 ──
   const [currentInterlude, setCurrentInterlude] = useState(null)
+  const [postInterludeScreen, setPostInterludeScreen] = useState('consultation')
 
   // ── 스크립트 엔진 ──
   const [phase, setPhase] = useState('opening')   // opening | playing | closing | done
@@ -151,10 +152,15 @@ export default function useGame() {
 
   const finishInterlude = useCallback(() => {
     setCurrentInterlude(null)
-    setScreen('consultation')
-    const episode = allEpisodes[epIndex]
-    resetScript(episode)
-  }, [epIndex, resetScript])
+    if (postInterludeScreen === 'morningNav') {
+      setScreen('morningNav')
+    } else {
+      const episode = allEpisodes[epIndex]
+      resetScript(episode)
+      setScreen('consultation')
+    }
+    setPostInterludeScreen('consultation')
+  }, [epIndex, resetScript, postInterludeScreen])
 
   // ── 진료 종료 → dayEnd ──
   const endConsultation = useCallback(() => {
@@ -214,9 +220,10 @@ export default function useGame() {
       const next = epIndex + 1
       setEpIndex(next)
 
-      // 인터루드 체크
+      // 인터루드 체크 (Phase 중간 → 항상 consultation으로)
       if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
         setCurrentInterlude(interludes[nextEp.interludeBefore])
+        setPostInterludeScreen('consultation')
         setScreen('interlude')
       } else {
         resetScript(nextEp)
@@ -245,6 +252,7 @@ export default function useGame() {
     // 인터루드 체크
     if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
       setCurrentInterlude(interludes[nextEp.interludeBefore])
+      setPostInterludeScreen(isNewPhase ? 'morningNav' : 'consultation')
       setScreen('interlude')
       return
     }

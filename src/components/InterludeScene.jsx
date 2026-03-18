@@ -56,10 +56,28 @@ export default function InterludeScene({ interlude, onComplete }) {
         <span style={{ fontFamily: 'system-ui,sans-serif', fontSize: 11, color: 'rgba(168,176,160,0.4)', letterSpacing: '0.08em' }}>{interlude.character}</span>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {lines.map((l, i) => (
-            <p key={i} style={{
-              fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: 'rgba(232,224,208,0.7)',
-              opacity: i < visible ? 1 : 0, transform: i < visible ? 'translateY(0)' : 'translateY(4px)', transition: 'opacity 0.6s,transform 0.6s',
-            }}>{l.text}</p>
+            l.type === 'notebook' ? (
+              <div key={i} style={{
+                display: 'flex', justifyContent: 'center', padding: '12px 0',
+                opacity: i < visible ? 1 : 0,
+                transform: i < visible ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.9)',
+                transition: 'opacity 0.8s, transform 0.8s',
+              }}>
+                <div style={{
+                  width: 52, height: 52, borderRadius: '50%',
+                  background: 'rgba(176,160,112,0.1)',
+                  border: '1px solid rgba(176,160,112,0.25)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 24,
+                  animation: i < visible ? 'notebookGlow 1.5s ease-in-out 2' : 'none',
+                }}>📓</div>
+              </div>
+            ) : (
+              <p key={i} style={{
+                fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: 'rgba(232,224,208,0.7)',
+                opacity: i < visible ? 1 : 0, transform: i < visible ? 'translateY(0)' : 'translateY(4px)', transition: 'opacity 0.6s,transform 0.6s',
+              }}>{l.text}</p>
+            )
           ))}
         </div>
         {showReactions && reactions && (
@@ -83,7 +101,10 @@ export default function InterludeScene({ interlude, onComplete }) {
           </div>
         )}
       </div>
-      <style>{`@keyframes fadeIn{from{opacity:0}to{opacity:1}}`}</style>
+      <style>{`
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes notebookGlow{0%,100%{box-shadow:0 0 0 0 rgba(176,160,112,0)}50%{box-shadow:0 0 20px 8px rgba(176,160,112,0.25)}}
+      `}</style>
     </div>
   )
 }

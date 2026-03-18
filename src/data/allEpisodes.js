@@ -16,7 +16,12 @@ export const interludes = {
       { speaker: '선배', text: '아까 환자들 기억나? 증상만 물어봤지?' },
       { speaker: '선배', text: '근데 사람이 아프면, 그게 생활이랑 연결돼 있을 때가 많아.', pause: true },
       { speaker: '선배', text: '가족이 어떤지, 직장에서 뭘 하는지... 그런 걸 알면 보이는 게 달라져.' },
-      { speaker: '선배', text: '내일부터는 나 없이 해봐야 해. 네가 직접 뭘 물어볼지 골라야 돼.', pause: true },
+      { speaker: '선배', text: '내일부터는 네가 직접 뭘 물어볼지 골라야 돼.', pause: true },
+      { speaker: '선배', text: '나 내일 컨퍼런스 때문에 같이 못 들어가.' },
+      { speaker: '선배', text: '걱정되니까, 이거 하나 줄게.', pause: true },
+      { type: 'notebook', pause: true },
+      { speaker: '선배', text: '수첩이야. 환자 기본 정보가 적혀 있어. 이름, 나이, 주증상 같은 거.' },
+      { speaker: '선배', text: '진료 중에 헷갈리면 펴 봐. 그것만으로도 달라.' },
     ],
     reactions: [
       { text: '좀 긴장되네요.', tone: 'nervous' },
@@ -24,6 +29,7 @@ export const interludes = {
     ],
     afterReaction: [
       { speaker: '선배', text: '처음엔 다 그래. 나도 그랬어.' },
+      { speaker: '선배', text: '어제 잘했잖아. 할 수 있어.' },
       { speaker: '선배', text: '내일 보자.', pause: true },
     ],
   },

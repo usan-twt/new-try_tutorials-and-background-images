@@ -33,7 +33,7 @@ function App() {
       {screen === 'consultation' && ep && (
         <>
           <ConsultationScreen game={game} />
-          {ep.phase >= 2 && ep.notebook && <NotebookPanel chart={ep.notebook.chart} />}
+          {ep.phase >= 2 && ep.notebook && <NotebookPanel chart={ep.notebook.chart} isFirstAppearance={ep.id === 'phase2_ep1'} />}
         </>
       )}
       {screen === 'dayEnd' && <DayEndScreen data={dayEndState} onNext={game.nextEpisode} />}
