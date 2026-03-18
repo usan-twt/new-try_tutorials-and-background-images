@@ -181,6 +181,297 @@
         {
           "tag": "증상",
           "family": "medical",
+          "label": "잠 못 드는 시간에 무슨 생각을 하는지",
+          "text": "누워서 잠이 안 올 때, 어떤 상태예요? 생각이 많으신가요?",
+          "intent": "sleep_cognition"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "일은 어떻게 되시는지",
+          "text": "일은 어떤 일 하세요?",
+          "intent": "work_situation"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "작년이 많이 힘드셨을 것이다",
+          "text": "작년에 많이 달라지셨겠어요. 그 이후로 잠이 줄었나요?",
+          "intent": "empathy_past_year"
+        }
+      ],
+      "responses": {
+        "sleep_cognition": {
+          "text": "생각이 많은 것 같지는 않아요. 그냥 깨 있는 거예요.",
+          "emotion": "guarded"
+        },
+        "work_situation": {
+          "text": "마트 파트타임이요. 오전에 세 시간.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "마트 파트타임이요. 오전에 세 시간. 애들 봐줄 사람이 없으니까 그것밖에 못 해요.",
+            "emotion": "warming",
+            "innerVoice": "일도, 아이도, 선택지가 없는 삶."
+          }
+        },
+        "empathy_past_year": {
+          "text": "...비슷해요. 원래도 잘 못 잤어요.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "...작년 가을부터 심해졌어요. 그때쯤이에요.",
+            "emotion": "warming",
+            "innerVoice": "남편이 나간 시점과 맞닿아 있다."
+          }
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "잠드는 환경을 확인해보자",
+          "text": "방에 불 다 끄고 누우시는 편인가요? 핸드폰은 어떻게 하세요?",
+          "intent": "sleep_hygiene"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "주말에도 이렇게 힘드신지",
+          "text": "주말에는 좀 다르세요?",
+          "intent": "weekend_life"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "밤이 유독 힘드신 것 같다",
+          "text": "낮에는 버티는데, 밤만 되면 달라지는 게 있으세요?",
+          "intent": "empathy_night"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "수면제 말고 다른 방법도 써보셨는지",
+          "text": "약 말고 따뜻한 물이라든지, 다른 거 해보신 건 없어요?",
+          "intent": "sleep_remedy"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "쉬는 시간이 있는지",
+          "text": "본인 혼자만의 시간이 있기는 한가요?",
+          "intent": "personal_time"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "그 시간을 어떻게 보내는지",
+          "text": "아이들 재우고 나면, 그 시간에 보통 어떻게 계세요?",
+          "intent": "empathy_late_night"
+        }
+      },
+      "responses": {
+        "sleep_hygiene": {
+          "text": "핸드폰은 켜둬요. 아이들 연락 올 수도 있으니까.",
+          "emotion": "guarded"
+        },
+        "weekend_life": {
+          "text": "주말도 똑같아요.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "주말이 더 힘들어요. 아이들이랑 집에 있으면... 조용하잖아요.",
+            "emotion": "warming",
+            "innerVoice": "남편이 있던 자리가 더 선명하게 느껴지는 날들."
+          }
+        },
+        "empathy_night": {
+          "text": "...낮에는 바쁘니까요.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "...낮에는 바쁘니까 생각할 틈이 없어요. 밤에는 아무것도 안 해도 되니까.",
+            "emotion": "opened",
+            "innerVoice": "멈추면 무너질 것 같아서, 계속 움직이고 있는 것일지도."
+          }
+        },
+        "sleep_remedy": {
+          "text": "다 해봤어요. 소용없었어요.",
+          "emotion": "guarded"
+        },
+        "personal_time": {
+          "text": "없어요.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "없어요. (잠깐 생각하다가) ...화장실 들어가 있는 게 그나마 혼자인 시간이에요.",
+            "emotion": "warming",
+            "innerVoice": "혼자 있고 싶다는 말조차 꺼내기 어려운 사람이다."
+          }
+        },
+        "empathy_late_night": {
+          "text": "그냥 누워 있어요.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "...그냥 천장 보고 있어요. 뭔가 해야 할 것 같기도 하고, 아무것도 하기 싫기도 하고.",
+            "emotion": "opened",
+            "innerVoice": "지쳐 있지만 쉬는 법을 잊어버린 것 같다."
+          }
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "기분이나 의욕도 확인해보자",
+          "text": "요즘 기분이 가라앉거나, 아무것도 하기 싫은 날이 있어요?",
+          "intent": "mood_check"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "앞으로 어떻게 되실지 걱정되는지",
+          "text": "앞으로 생각하면 어떤 마음이 드세요?",
+          "intent": "future_worry"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "지금 제일 힘든 게 뭔지 여쭤보고 싶다",
+          "text": "지금 제일 힘드신 게 뭐예요?",
+          "intent": "empathy_hardest"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "불안감이나 긴장이 있는지",
+          "text": "가슴이 두근거리거나 이유 없이 긴장되는 적도 있어요?",
+          "intent": "anxiety_check"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "경제적으로 많이 힘드신지",
+          "text": "생활적으로 많이 빠듯하세요?",
+          "intent": "financial_stress"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "지금 이 순간 어떠신지",
+          "text": "지금 이 자리에서, 어떠세요?",
+          "intent": "empathy_here_now"
+        }
+      },
+      "responses": {
+        "mood_check": {
+          "text": "다 그렇지 않나요. 살다 보면.",
+          "emotion": "guarded"
+        },
+        "future_worry": {
+          "text": "생각 안 해요. 지금 오늘 하루도 바쁜데.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "...생각하면 무서워서 안 해요.",
+            "emotion": "warming",
+            "innerVoice": "생각하지 않는 게 버티는 방식이다."
+          }
+        },
+        "empathy_hardest": {
+          "text": "...잠을 못 자는 거요.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "...모르겠어요. 다 힘든 것 같아요.",
+            "emotion": "opened",
+            "innerVoice": "하나만 콕 집을 수 없을 만큼 고루 지쳐 있다."
+          }
+        },
+        "anxiety_check": {
+          "text": "...가끔요. 밤에.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "...가끔요. 밤에 애들 자는 거 보다가 갑자기 심장이 빨리 뛸 때가 있어요.",
+            "emotion": "opened",
+            "innerVoice": "불안이 신체 증상으로 나타나고 있다."
+          }
+        },
+        "financial_stress": {
+          "text": "...그냥 어떻게든 되겠지요.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "빠듯해요. (짧게 말하고 시선을 떨군다) 그게 제일 무서워요, 사실은.",
+            "emotion": "opened",
+            "innerVoice": "경제적 불안이 불면의 바닥에 깔려 있을 수 있다."
+          }
+        },
+        "empathy_here_now": {
+          "text": "...괜찮아요.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "(잠시 침묵하다가) ...오랜만에 누가 물어봐줬네요.",
+            "emotion": "opened",
+            "innerVoice": "이 한 마디가 오늘 가장 긴 대화였을지도 모른다."
+          }
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "수면 패턴을 좀 더 파악해보자",
+          "text": "보통 몇 시에 주무시려고 누우세요? 아침엔 몇 시에 일어나야 하고요.",
+          "intent": "sleep_schedule"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "도움받을 수 있는 곳이 있는지",
+          "text": "주변에 기댈 수 있는 가족이나 이웃은 없으세요?",
+          "intent": "social_support"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "얼마나 오래 이렇게 지내셨는지",
+          "text": "이렇게 혼자 다 감당하신 게 얼마나 됐어요?",
+          "intent": "empathy_duration"
+        }
+      ],
+      "responses": {
+        "sleep_schedule": {
+          "text": "열두 시쯤요. 애들 다 재우고 나면. 여섯 시 반에 일어나야 해요.",
+          "emotion": "guarded"
+        },
+        "social_support": {
+          "text": "없어요. 이사 온 지 얼마 안 돼서.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "없어요. 이사 오고 나서 아는 사람이 없어요. 남편이랑 같이 왔던 동네라서... 여기저기 얼굴 보이기가.",
+            "emotion": "warming",
+            "innerVoice": "이 도시 자체가 상처가 배인 공간이다."
+          }
+        },
+        "empathy_duration": {
+          "text": "...작년부터요.",
+          "emotion": "guarded",
+          "gatedResponse": {
+            "text": "...작년 봄부터요. (가방 끈을 만진다) 벌써 일 년 넘었네요.",
+            "emotion": "warming",
+            "innerVoice": "스스로도 이렇게 오래됐다는 걸 새삼 느끼는 것 같다."
+          }
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
           "label": "수면제를 조정해보자",
           "text": "이전 약이 안 맞으셨으니, 다른 종류로 시작해볼게요.",
           "intent": "plan_medical"
