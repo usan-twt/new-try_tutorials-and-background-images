@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
-import allEpisodes, { interludes, dayBudgets } from '../data/allEpisodes'
+import allEpisodes, { interludes, dayBudgets, dayConfig } from '../data/allEpisodes'
+import { getApartmentTier, calculateEconomyDelta } from '../data/apartmentData'
 
 // ── 화면 전환 FSM ──
 const TRANSITIONS = {
@@ -71,6 +72,11 @@ export default function useGame() {
   const [innerVoice, setInnerVoice] = useState(null)
   const [currentEmotion, setCurrentEmotion] = useState('neutral')
 
+  // ── 경제 시스템 ──
+  const [economy, setEconomy] = useState(50)
+  const [pendingMove, setPendingMove] = useState(null)
+  const [postApartmentScreen, setPostApartmentScreen] = useState('phaseIntro')
+
   // Phase 3 상태
   const [exchangeCount, setExchangeCount] = useState(0)
   const [rapportCount, setRapportCount] = useState(0)
@@ -91,6 +97,8 @@ export default function useGame() {
   const turnsRemaining = effectiveMaxTurns !== null
     ? Math.max(0, effectiveMaxTurns - effectiveTurnsUsed)
     : null
+
+  const apartmentTier = getApartmentTier(economy)
 
   const currentTurn = useMemo(() => {
     if (phase !== 'playing' || turnIndex >= totalTurns) return null
@@ -146,6 +154,8 @@ export default function useGame() {
     setCurrentPhase(1)
     setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false })
     setDayTurnsUsed(0)
+    setEconomy(50)
+    setPendingMove(null)
     setScreen('corridor')
   }, [])
 
@@ -178,6 +188,20 @@ export default function useGame() {
     }
     setPostInterludeScreen('consultation')
   }, [epIndex, resetScript, postInterludeScreen])
+
+  const finishApartment = useCallback(() => {
+    setPendingMove(null)
+    if (postApartmentScreen === 'interlude') {
+      setScreen('interlude')
+    } else if (postApartmentScreen === 'morningNav') {
+      setScreen('morningNav')
+    } else {
+      const episode = allEpisodes[epIndex]
+      resetScript(episode)
+      setScreen('consultation')
+    }
+    setPostApartmentScreen('phaseIntro')
+  }, [epIndex, postApartmentScreen, resetScript])
 
   // ── 진료 종료 → dayEnd ──
   const endConsultation = useCallback(() => {
@@ -252,6 +276,18 @@ export default function useGame() {
   }, [ep, epIndex, resetScript])
 
   const nextEpisode = useCallback(() => {
+    // 경제 변동 계산 (완료된 날의 에피소드 수 기준)
+    const completedEp = allEpisodes[epIndex]
+    const completedDay = completedEp?.day ?? null
+    const patientsCompleted = dayEndStateRef.current.patients.length
+    const delta = calculateEconomyDelta(patientsCompleted)
+    const prevEconomy = economy
+    const newEconomy = Math.min(100, Math.max(0, prevEconomy + delta))
+    const prevTier = getApartmentTier(prevEconomy)
+    const newTier = getApartmentTier(newEconomy)
+    setEconomy(newEconomy)
+    setPendingMove(prevTier !== newTier ? { from: prevTier, to: newTier } : null)
+
     const next = epIndex + 1
     if (next >= allEpisodes.length) {
       setScreen('complete')
@@ -269,7 +305,23 @@ export default function useGame() {
       setDayTurnsUsed(0)
     }
 
-    // 인터루드 체크
+    // 자취방 등장 체크
+    if (completedDay && dayConfig[completedDay]?.showApartment) {
+      // apartment 이후 어디로 갈지 결정
+      if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
+        setCurrentInterlude(interludes[nextEp.interludeBefore])
+        setPostInterludeScreen(isNewPhase ? 'morningNav' : 'consultation')
+        setPostApartmentScreen('interlude')
+      } else if (isNewPhase) {
+        setPostApartmentScreen('morningNav')
+      } else {
+        setPostApartmentScreen('consultation')
+      }
+      setScreen('apartment')
+      return
+    }
+
+    // 기존 내비게이션 로직
     if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
       setCurrentInterlude(interludes[nextEp.interludeBefore])
       setPostInterludeScreen(isNewPhase ? 'morningNav' : 'consultation')
@@ -283,7 +335,7 @@ export default function useGame() {
       resetScript(nextEp)
       setScreen('consultation')
     }
-  }, [epIndex, currentPhase, resetScript])
+  }, [epIndex, currentPhase, economy, resetScript])
 
   // ══════════ 스크립트 엔진 액션 ══════════
 
@@ -411,7 +463,9 @@ export default function useGame() {
     screen, currentPhase, ep, dayEndState, currentInterlude,
     playerName, setPlayerName, startGame, finishCorridor,
     finishMorningNav, finishEveningNav,
-    startConsultation, nextEpisode, finishInterlude,
+    startConsultation, nextEpisode, finishInterlude, finishApartment,
+    // 경제 시스템
+    economy, apartmentTier, pendingMove,
     // 스크립트 엔진
     phase, messages, currentTurn, currentChoices, currentEmotion,
     waitingForChoice, showSeniorGuide, innerVoice,

@@ -7,6 +7,7 @@ import DayEndScreen from './components/DayEndScreen'
 import InterludeScene from './components/InterludeScene'
 import NotebookPanel from './components/NotebookPanel'
 import NavigationScreen from './components/NavigationScreen'
+import ApartmentScreen from './components/ApartmentScreen'
 
 function App() {
   const game = useGame()
@@ -37,6 +38,7 @@ function App() {
         </>
       )}
       {screen === 'dayEnd' && <DayEndScreen data={dayEndState} onNext={game.nextEpisode} />}
+      {screen === 'apartment' && <ApartmentScreen tier={game.apartmentTier} economy={game.economy} onNext={game.finishApartment} />}
       {screen === 'interlude' && currentInterlude && <InterludeScene interlude={currentInterlude} onComplete={game.finishInterlude} />}
       {screen === 'complete' && (
         <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1A1815' }}>

@@ -12,6 +12,14 @@ export const dayBudgets = {
   4: { totalTurns: 10, episodes: ['phase3_ep1', 'phase3_ep2'] },
 }
 
+export const dayConfig = {
+  1: { showApartment: false },
+  2: { showApartment: false },
+  3: { showApartment: true },
+  4: { showApartment: false },
+  5: { showApartment: true },
+}
+
 export const interludes = {
   after_phase1: {
     character: '선배',
