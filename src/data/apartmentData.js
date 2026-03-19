@@ -70,22 +70,30 @@ export function getBankEntries(tier, economy) {
   return { balance, salary, rent, items }
 }
 
-// ── 플레이스홀더 배경색 (이미지 제공 전) ──
+// ── 배경색 (이미지 없는 등급 플레이스홀더) ──
 export const BG_COLORS = {
   basement: '#1A1A1A',
-  studio:   '#2A2520',
+  studio:   '#1C1812',
   twoRoom:  '#2A2A30',
 }
 
-// ── 상호작용 포인트 위치 (이미지 맞춰 추후 조정) ──
+// ── 실제 배경 이미지 (제공된 등급만) ──
+export const BG_IMAGES = {
+  studio: '/room-studio.png',
+}
+
+// ── 상호작용 포인트 위치 ──
+// studio: 1024×1536 세로 이미지 기준
+//   창문 — 상단 중앙, 도시 야경 노출 구역
+//   핸드폰(책상) — 창문 오른쪽 아래, 책상 영역
 export const INTERACTION_POINTS = {
   basement: {
     phone:  { top: '60%', left: '20%', width: '15%', height: '12%' },
     window: { top: '15%', left: '50%', width: '30%', height: '20%' },
   },
   studio: {
-    phone:  { top: '55%', left: '25%', width: '12%', height: '10%' },
-    window: { top: '10%', left: '45%', width: '35%', height: '25%' },
+    window: { top: '6%',  left: '14%', width: '68%', height: '33%' },
+    phone:  { top: '38%', left: '54%', width: '22%', height: '16%' },
   },
   twoRoom: {
     phone:  { top: '50%', left: '30%', width: '10%', height: '8%' },

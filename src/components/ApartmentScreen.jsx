@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import {
-  entryTexts, windowTexts, BG_COLORS,
+  entryTexts, windowTexts, BG_COLORS, BG_IMAGES,
   INTERACTION_POINTS, getBankEntries, APARTMENT_TIERS,
 } from '../data/apartmentData'
 
@@ -37,12 +37,10 @@ function PhoneOverlay({ tier, economy, onClose }) {
           boxShadow: '0 8px 40px rgba(0,0,0,0.6)',
         }}
       >
-        {/* 은행명 */}
         <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.08em', marginBottom: 20 }}>
           신한은행
         </p>
 
-        {/* 잔액 */}
         <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: 20, marginBottom: 20 }}>
           <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginBottom: 8 }}>잔액</p>
           <p style={{
@@ -53,7 +51,6 @@ function PhoneOverlay({ tier, economy, onClose }) {
           </p>
         </div>
 
-        {/* 최근 내역 */}
         <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginBottom: 12, letterSpacing: '0.06em' }}>
           최근 내역
         </p>
@@ -74,7 +71,6 @@ function PhoneOverlay({ tier, economy, onClose }) {
           ))}
         </div>
 
-        {/* 닫기 */}
         <button
           onClick={onClose}
           style={{
@@ -100,11 +96,10 @@ export default function ApartmentScreen({ tier, economy, onNext }) {
   const [windowText, setWindowText] = useState(null)
   const windowTextTimer = useRef(null)
 
-  const tierLabel = APARTMENT_TIERS[tier]?.label ?? ''
-  const bg = BG_COLORS[tier] ?? '#2A2520'
+  const bgImage = BG_IMAGES[tier] ?? null
+  const bgColor = BG_COLORS[tier] ?? '#2A2520'
   const points = INTERACTION_POINTS[tier]
 
-  // 입장 텍스트: 랜덤 1개
   const entryText = useRef(
     entryTexts[tier][Math.floor(Math.random() * entryTexts[tier].length)]
   ).current
@@ -124,38 +119,30 @@ export default function ApartmentScreen({ tier, economy, onNext }) {
     windowTextTimer.current = setTimeout(() => setWindowText(null), 3000)
   }
 
-  const fade = (show) => ({
-    opacity: show ? 1 : 0,
-    transition: 'opacity 1s cubic-bezier(0.4,0,0.2,1)',
-  })
-
   return (
     <div style={{
       width: '100%', height: '100%', position: 'relative', overflow: 'hidden',
-      background: bg, ...fade(visible),
+      background: bgColor,
+      ...(bgImage ? { backgroundImage: `url('${bgImage}')`, backgroundSize: 'cover', backgroundPosition: 'center top' } : {}),
+      opacity: visible ? 1 : 0,
+      transition: 'opacity 1.2s cubic-bezier(0.4,0,0.2,1)',
     }}>
 
-      {/* 등급 라벨 (플레이스홀더용 — 이미지 교체 후 제거) */}
-      <div style={{
-        position: 'absolute', top: 20, right: 20,
-        fontFamily: sans, fontSize: 10, color: 'rgba(255,255,255,0.1)',
-        letterSpacing: '0.08em',
-      }}>
-        {tierLabel}
-      </div>
+      {/* 어두운 오버레이 — 이미지 위 텍스트 가독성 */}
+      {bgImage && (
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.22)', pointerEvents: 'none' }} />
+      )}
 
       {/* 창문 탭 영역 */}
       {showInteractions && (
         <button
           onClick={handleWindowTap}
+          aria-label="창밖을 본다"
           style={{
             position: 'absolute',
             top: points.window.top, left: points.window.left,
             width: points.window.width, height: points.window.height,
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.04)',
-            borderRadius: 4, cursor: 'pointer',
-            transition: 'background 0.3s',
+            background: 'transparent', border: 'none', cursor: 'pointer',
           }}
         />
       )}
@@ -164,19 +151,14 @@ export default function ApartmentScreen({ tier, economy, onNext }) {
       {showInteractions && (
         <button
           onClick={() => setShowPhone(true)}
+          aria-label="핸드폰을 확인한다"
           style={{
             position: 'absolute',
             top: points.phone.top, left: points.phone.left,
             width: points.phone.width, height: points.phone.height,
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.04)',
-            borderRadius: 4, cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'background 0.3s',
+            background: 'transparent', border: 'none', cursor: 'pointer',
           }}
-        >
-          <span style={{ fontSize: 18, opacity: 0.4 }}>📱</span>
-        </button>
+        />
       )}
 
       {/* 입장 텍스트 */}
@@ -184,17 +166,19 @@ export default function ApartmentScreen({ tier, economy, onNext }) {
         position: 'absolute', top: '50%', left: '50%',
         transform: 'translate(-50%, -50%)',
         textAlign: 'center', pointerEvents: 'none',
-        ...fade(showEntry && !showInteractions),
+        opacity: showEntry && !showInteractions ? 1 : 0,
+        transition: 'opacity 1s cubic-bezier(0.4,0,0.2,1)',
       }}>
         <p style={{
           fontFamily: serif, fontSize: 15, fontWeight: 300,
-          color: 'rgba(232,224,208,0.5)', letterSpacing: '0.08em',
+          color: 'rgba(232,224,208,0.7)', letterSpacing: '0.08em',
+          textShadow: '0 1px 8px rgba(0,0,0,0.6)',
         }}>
           {entryText}
         </p>
       </div>
 
-      {/* 창밖 텍스트 (하단 페이드인/아웃) */}
+      {/* 창밖 텍스트 */}
       <div style={{
         position: 'absolute', bottom: '18vh', left: 0, right: 0,
         textAlign: 'center', pointerEvents: 'none',
@@ -203,7 +187,8 @@ export default function ApartmentScreen({ tier, economy, onNext }) {
       }}>
         <p style={{
           fontFamily: serif, fontSize: 14, fontWeight: 300,
-          color: 'rgba(232,224,208,0.6)', letterSpacing: '0.05em',
+          color: 'rgba(232,224,208,0.75)', letterSpacing: '0.05em',
+          textShadow: '0 1px 6px rgba(0,0,0,0.7)',
         }}>
           {windowText}
         </p>
@@ -216,8 +201,9 @@ export default function ApartmentScreen({ tier, economy, onNext }) {
           position: 'absolute', bottom: '8vh', right: 28,
           background: 'none', border: 'none', cursor: 'pointer',
           fontFamily: sans, fontSize: 13,
-          color: 'rgba(232,224,208,0.25)', letterSpacing: '0.06em',
+          color: 'rgba(232,224,208,0.3)', letterSpacing: '0.06em',
           padding: '12px 24px',
+          textShadow: '0 1px 4px rgba(0,0,0,0.8)',
           opacity: showInteractions ? 1 : 0,
           transition: 'opacity 1.2s',
         }}
