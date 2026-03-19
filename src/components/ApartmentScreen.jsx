@@ -122,8 +122,8 @@ export default function ApartmentScreen({ tier, economy, onNext }) {
   return (
     <div style={{
       width: '100%', height: '100%', position: 'relative', overflow: 'hidden',
-      background: bgColor,
-      ...(bgImage ? { backgroundImage: `url('${bgImage}')`, backgroundSize: 'cover', backgroundPosition: 'center top' } : {}),
+      background: bgImage ? '#000' : bgColor,
+      ...(bgImage ? { backgroundImage: `url('${bgImage}')`, backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' } : {}),
       opacity: visible ? 1 : 0,
       transition: 'opacity 1.2s cubic-bezier(0.4,0,0.2,1)',
     }}>
