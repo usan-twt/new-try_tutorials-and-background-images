@@ -15,7 +15,7 @@ export default function ConsultationScreen({ game }) {
   const {
     ep, phase, messages, currentTurn, currentChoices, currentEmotion,
     waitingForChoice, showSeniorGuide, innerVoice,
-    turnsRemaining, maxTurns, isOvertime,
+    turnsRemaining, maxTurns, isOvertime, dayBudgetTotal,
     beginPlaying, send,
   } = game
 
@@ -76,7 +76,7 @@ export default function ConsultationScreen({ game }) {
     <div style={{ width: '100%', height: '100%', maxWidth: 640, margin: '0 auto', background: '#2A2520', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
 
       {/* 턴 인디케이터 */}
-      {maxTurns !== null && (
+      {(maxTurns !== null || dayBudgetTotal !== null) && (
         <div style={{ flex: '0 0 auto', padding: '16px 28px 0', display: 'flex', justifyContent: 'center' }}>
           {isOvertime ? (
             <span style={{ fontFamily: 'system-ui,sans-serif', fontSize: 11, fontStyle: 'italic', color: 'rgba(184,160,128,0.45)', letterSpacing: '0.03em' }}>
@@ -84,7 +84,7 @@ export default function ConsultationScreen({ game }) {
             </span>
           ) : (
             <div style={{ display: 'flex', gap: 6 }}>
-              {Array.from({ length: maxTurns }, (_, i) => (
+              {Array.from({ length: dayBudgetTotal ?? maxTurns }, (_, i) => (
                 <span key={i} style={{
                   width: 6, height: 6, borderRadius: '50%',
                   background: i >= turnsRemaining ? 'rgba(232,224,208,0.06)'
@@ -118,20 +118,23 @@ export default function ConsultationScreen({ game }) {
             const isDoc = msg.speaker === 'doctor'
             const isSys = msg.speaker === 'system'
             const isSenior = msg.speaker === 'senior'
+            const isNurse = msg.speaker === 'nurse'
             return (
               <div key={msg.id} style={{
                 textAlign: isDoc ? 'right' : isSys ? 'center' : 'left',
                 opacity: isFading ? 0.35 : 1,
                 ...(isSenior ? { paddingLeft: 12, borderLeft: '1px solid rgba(176,160,112,0.2)' } : {}),
+                ...(isNurse ? { paddingLeft: 12, borderLeft: '1px solid rgba(184,168,144,0.2)' } : {}),
                 animation: 'fadeUp 0.4s ease forwards',
               }}>
                 {isSenior && <span style={{ display: 'block', fontFamily: 'system-ui,sans-serif', fontSize: 10, color: '#B0A070', letterSpacing: '0.05em', marginBottom: 3 }}>선배</span>}
+                {isNurse && <span style={{ display: 'block', fontFamily: 'system-ui,sans-serif', fontSize: 10, color: '#B8A890', letterSpacing: '0.05em', marginBottom: 3 }}>간호사</span>}
                 <p style={{
-                  fontFamily: isSys || isDoc || isSenior ? 'system-ui,sans-serif' : "'Noto Serif KR',Georgia,serif",
-                  fontSize: isSys ? 11 : isSenior ? 12 : 13,
-                  fontStyle: isSys || isSenior ? 'italic' : 'normal',
+                  fontFamily: isSys || isDoc || isSenior || isNurse ? 'system-ui,sans-serif' : "'Noto Serif KR',Georgia,serif",
+                  fontSize: isSys ? 11 : isSenior || isNurse ? 12 : 13,
+                  fontStyle: isSys || isSenior || isNurse ? 'italic' : 'normal',
                   lineHeight: 1.8,
-                  color: isDoc ? 'rgba(255,255,255,0.55)' : isSys ? 'rgba(255,255,255,0.2)' : isSenior ? 'rgba(176,160,112,0.7)' : '#E8E0D0',
+                  color: isDoc ? 'rgba(255,255,255,0.55)' : isSys ? 'rgba(255,255,255,0.2)' : isSenior ? 'rgba(176,160,112,0.7)' : isNurse ? 'rgba(184,168,144,0.75)' : '#E8E0D0',
                 }}>{msg.text}</p>
               </div>
             )

@@ -39,21 +39,24 @@
           "family": "medical",
           "label": "열 외에 다른 증상이 있는지",
           "text": "열 말고 기침이나 콧물, 설사 같은 건 있어요?",
-          "intent": "associated"
+          "intent": "associated",
+          "priority": 1
         },
         {
           "tag": "생활",
           "family": "life",
           "label": "어린이집이나 주변 상황을 확인하자",
           "text": "어린이집 다니나요? 주변에 아픈 아이가 있었나요?",
-          "intent": "daycare"
+          "intent": "daycare",
+          "priority": 2
         },
         {
           "tag": "공감",
           "family": "emotional",
           "label": "밤새 힘드셨을 것이다",
           "text": "어젯밤에 많이 못 주무셨겠어요.",
-          "intent": "empathy_sleepless"
+          "intent": "empathy_sleepless",
+          "priority": 3
         }
       ],
       "responses": {
@@ -79,21 +82,24 @@
           "family": "medical",
           "label": "아이를 진찰하자",
           "text": "아이 목이랑 귀 좀 볼게요.",
-          "intent": "exam"
+          "intent": "exam",
+          "priority": 1
         },
         {
           "tag": "생활",
           "family": "life",
           "label": "도움을 줄 사람이 있는지",
           "text": "아이 봐주시는 분이 있으세요? 혼자 오셨나요?",
-          "intent": "support"
+          "intent": "support",
+          "priority": 2
         },
         {
           "tag": "공감",
           "family": "emotional",
           "label": "불안함을 좀 가라앉혀드리고 싶다",
           "text": "많이 걱정되셨을 텐데, 일단 같이 확인해봐요.",
-          "intent": "empathy_reassure"
+          "intent": "empathy_reassure",
+          "priority": 3
         }
       ],
       "continue": {
@@ -155,21 +161,24 @@
           "family": "medical",
           "label": "열이 언제부터 얼마나 높았는지",
           "text": "열이 가장 높았을 때가 언제였어요? 최고 몇 도 정도 됐나요?",
-          "intent": "fever_peak"
+          "intent": "fever_peak",
+          "priority": 1
         },
         {
           "tag": "생활",
           "family": "life",
           "label": "평소 건강 상태를 파악하자",
           "text": "수아가 평소에 자주 아픈 편이에요?",
-          "intent": "health_history"
+          "intent": "health_history",
+          "priority": 2
         },
         {
           "tag": "공감",
           "family": "emotional",
           "label": "혼자 감당하기 너무 힘들었겠다",
           "text": "남편도 없고, 혼자 밤새 아이 곁에 계셨던 거잖아요.",
-          "intent": "empathy_alone"
+          "intent": "empathy_alone",
+          "priority": 3
         }
       ],
       "responses": {
@@ -196,21 +205,24 @@
           "family": "medical",
           "label": "귀 소견을 다시 확인하자",
           "text": "아까 귀가 좀 신경 쓰인다고 했는데, 한 번 더 자세히 볼게요.",
-          "intent": "ear_exam"
+          "intent": "ear_exam",
+          "priority": 1
         },
         {
           "tag": "생활",
           "family": "life",
           "label": "아이의 수면 상태를 확인하자",
           "text": "수아가 어젯밤에 잠은 잤어요? 많이 깼나요?",
-          "intent": "sleep_child"
+          "intent": "sleep_child",
+          "priority": 2
         },
         {
           "tag": "공감",
           "family": "emotional",
           "label": "초보 엄마의 불안함을 인정해주자",
           "text": "첫째 아이니까 더 무섭죠. 당연한 거예요.",
-          "intent": "empathy_firsttime"
+          "intent": "empathy_firsttime",
+          "priority": 3
         }
       ],
       "continue": {
@@ -272,21 +284,24 @@
           "family": "medical",
           "label": "중이염 치료 방향을 설명하자",
           "text": "오른쪽 귀에 염증 소견이 조금 있어요. 항생제를 쓸지 지켜볼지 결정해야 할 것 같아요.",
-          "intent": "otitis_plan"
+          "intent": "otitis_plan",
+          "priority": 1
         },
         {
           "tag": "생활",
           "family": "life",
           "label": "오늘 이후 돌봄 계획을 파악하자",
           "text": "오늘 오후에 아이를 어디서 봐주실 건지 생각해두셨어요?",
-          "intent": "afternoon_care"
+          "intent": "afternoon_care",
+          "priority": 2
         },
         {
           "tag": "공감",
           "family": "emotional",
           "label": "지금 많이 지쳐 있을 것이다",
           "text": "밤을 꼬박 새셨는데, 지금 몸은 좀 괜찮으세요?",
-          "intent": "empathy_mom_health"
+          "intent": "empathy_mom_health",
+          "priority": 3
         }
       ],
       "continue": {
@@ -349,21 +364,24 @@
           "family": "medical",
           "label": "경과 관찰 기준을 명확히 하자",
           "text": "열이 39도 넘거나, 처지거나, 숨쉬기 힘들어 보이면 바로 응급실 가셔야 해요.",
-          "intent": "warning_signs"
+          "intent": "warning_signs",
+          "priority": 1
         },
         {
           "tag": "생활",
           "family": "life",
           "label": "시어머니께 연락을 권유하자",
           "text": "오늘만큼은 어머니께 연락해보시는 게 어떨까요? 아이가 아플 때는 도움 받으셔도 돼요.",
-          "intent": "ask_help"
+          "intent": "ask_help",
+          "priority": 2
         },
         {
           "tag": "공감",
           "family": "emotional",
           "label": "오늘 얼마나 힘들었는지 들어주고 싶다",
           "text": "오늘 정말 고생 많으셨어요. 이 상황에서 여기까지 오신 게 쉬운 일이 아니에요.",
-          "intent": "empathy_effort"
+          "intent": "empathy_effort",
+          "priority": 3
         }
       ],
       "responses": {
@@ -390,21 +408,24 @@
           "family": "medical",
           "label": "처방을 정리하자",
           "text": "감기인 것 같아요. 약 처방하고, 열이 안 떨어지면 다시 오세요.",
-          "intent": "plan_medical"
+          "intent": "plan_medical",
+          "priority": 1
         },
         {
           "tag": "생활",
           "family": "life",
           "label": "오후 아이 돌봄이 걱정된다",
           "text": "오후에 아이 봐줄 사람이 필요하면, 접수처에 보육 정보 안내가 있어요.",
-          "intent": "plan_info"
+          "intent": "plan_info",
+          "priority": 2
         },
         {
           "tag": "공감",
           "family": "emotional",
           "label": "엄마도 좀 쉬어야 한다",
           "text": "아이도 중요하지만, 어머니도 좀 쉬셔야 해요.",
-          "intent": "plan_mom"
+          "intent": "plan_mom",
+          "priority": 3
         }
       ],
       "responses": {

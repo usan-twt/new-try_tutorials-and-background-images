@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
-import allEpisodes, { interludes } from '../data/allEpisodes'
+import allEpisodes, { interludes, dayBudgets } from '../data/allEpisodes'
 
 // ── 화면 전환 FSM ──
 const TRANSITIONS = {
@@ -16,12 +16,12 @@ function nextScreen(current, action) {
 }
 
 // ── 선택지 계산 ──
-function computeChoices(turn, lastFamily) {
+function computeChoices(turn, lastFamily, turnsRemaining) {
   if (!turn) return null
   if (turn.choice) return null // Phase 1
   if (turn.firstChoices) return turn.firstChoices
 
-  const choices = turn.pivots ? [...turn.pivots] : []
+  let choices = turn.pivots ? [...turn.pivots] : []
   if (lastFamily && turn.continue) {
     const cont = turn.continue[`after_${lastFamily}`]
     if (cont) {
@@ -29,6 +29,15 @@ function computeChoices(turn, lastFamily) {
       if (idx !== -1) choices[idx] = cont
     }
   }
+
+  // turnsRemaining이 적을 때 priority가 높은(숫자 큰) 선택지 제거 — 시간 부족의 서사적 표현
+  if (turnsRemaining !== null && turnsRemaining <= 2 && choices.length > 2) {
+    choices = choices.filter(c => !c.priority || c.priority <= 2)
+  }
+  if (turnsRemaining !== null && turnsRemaining <= 1 && choices.length > 1) {
+    choices = choices.filter(c => !c.priority || c.priority <= 1)
+  }
+
   return choices.length > 0 ? choices : null
 }
 
@@ -67,6 +76,7 @@ export default function useGame() {
   const [rapportCount, setRapportCount] = useState(0)
   const [isOvertime, setIsOvertime] = useState(false)
   const [overtimeTurns, setOvertimeTurns] = useState(0)
+  const [dayTurnsUsed, setDayTurnsUsed] = useState(0)
 
   // ── 파생 값 ──
   const ep = allEpisodes[epIndex] || null
@@ -75,7 +85,12 @@ export default function useGame() {
   const maxTurns = ep?.maxTurns ?? null
   const rapportGating = ep?.rapportGating ?? null
   const rapportUnlocked = rapportGating ? rapportCount >= rapportGating.threshold : true
-  const turnsRemaining = maxTurns !== null ? Math.max(0, maxTurns - exchangeCount) : null
+  const dayBudget = ep?.day != null ? (dayBudgets[ep.day] ?? null) : null
+  const effectiveMaxTurns = dayBudget ? dayBudget.totalTurns : maxTurns
+  const effectiveTurnsUsed = dayBudget ? dayTurnsUsed : exchangeCount
+  const turnsRemaining = effectiveMaxTurns !== null
+    ? Math.max(0, effectiveMaxTurns - effectiveTurnsUsed)
+    : null
 
   const currentTurn = useMemo(() => {
     if (phase !== 'playing' || turnIndex >= totalTurns) return null
@@ -83,12 +98,12 @@ export default function useGame() {
   }, [phase, turnIndex, totalTurns, script])
 
   const currentChoices = useMemo(
-    () => computeChoices(currentTurn, lastFamily),
-    [currentTurn, lastFamily],
+    () => computeChoices(currentTurn, lastFamily, turnsRemaining),
+    [currentTurn, lastFamily, turnsRemaining],
   )
 
   // ── 스크립트 리셋 ──
-  const resetScript = useCallback((episode) => {
+  const resetScript = useCallback((episode, resetDay = false) => {
     setPhase('opening')
     setTurnIndex(0)
     setMessages([])
@@ -102,6 +117,7 @@ export default function useGame() {
     setRapportCount(0)
     setIsOvertime(false)
     setOvertimeTurns(0)
+    if (resetDay) setDayTurnsUsed(0)
   }, [])
 
   // ── 턴 진행 공통 ──
@@ -129,6 +145,7 @@ export default function useGame() {
     setEpIndex(0)
     setCurrentPhase(1)
     setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false })
+    setDayTurnsUsed(0)
     setScreen('corridor')
   }, [])
 
@@ -220,13 +237,15 @@ export default function useGame() {
       const next = epIndex + 1
       setEpIndex(next)
 
+      const isNewDay = nextEp.day !== ep.day
+
       // 인터루드 체크 (Phase 중간 → 항상 consultation으로)
       if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
         setCurrentInterlude(interludes[nextEp.interludeBefore])
         setPostInterludeScreen('consultation')
         setScreen('interlude')
       } else {
-        resetScript(nextEp)
+        resetScript(nextEp, isNewDay)
         setScreen('consultation')
       }
     }
@@ -247,6 +266,7 @@ export default function useGame() {
 
     if (isNewPhase) {
       setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false })
+      setDayTurnsUsed(0)
     }
 
     // 인터루드 체크
@@ -269,11 +289,26 @@ export default function useGame() {
 
   const beginPlaying = useCallback(() => {
     if (!script) return
-    setMessages([{ id: 'opening', speaker: script.opening.speaker, text: script.opening.text }])
-    setPhase('playing')
-    setTurnIndex(0)
-    setWaitingForChoice(true)
-    if (script.turns[0]?.seniorGuide?.timing === 'before') setShowSeniorGuide(true)
+    const nurseInfo = script.nurseInfo
+
+    if (nurseInfo?.available) {
+      // 1단계: 간호사 메시지 먼저
+      setMessages([{ id: 'nurseInfo', speaker: 'nurse', text: nurseInfo.text }])
+      setPhase('playing')
+      // 2단계: 딜레이 후 opening + 선택지 활성화
+      setTimeout(() => {
+        setMessages(prev => [...prev, { id: 'opening', speaker: script.opening.speaker, text: script.opening.text }])
+        setTurnIndex(0)
+        setWaitingForChoice(true)
+        if (script.turns[0]?.seniorGuide?.timing === 'before') setShowSeniorGuide(true)
+      }, 1200)
+    } else {
+      setMessages([{ id: 'opening', speaker: script.opening.speaker, text: script.opening.text }])
+      setPhase('playing')
+      setTurnIndex(0)
+      setWaitingForChoice(true)
+      if (script.turns[0]?.seniorGuide?.timing === 'before') setShowSeniorGuide(true)
+    }
   }, [script])
 
   // ── 통합 send: Phase 1 + Phase 2+ 모두 처리 ──
@@ -320,8 +355,18 @@ export default function useGame() {
 
     const newExchange = exchangeCount + 1
     setExchangeCount(newExchange)
-    if (maxTurns !== null && newExchange > maxTurns && !isOvertime) setIsOvertime(true)
-    if (maxTurns !== null && newExchange > maxTurns) setOvertimeTurns(prev => prev + 1)
+
+    let newDayTurnsUsed = dayTurnsUsed
+    if (dayBudget) {
+      newDayTurnsUsed = dayTurnsUsed + 1
+      setDayTurnsUsed(newDayTurnsUsed)
+    }
+
+    const isOvertimeNow = dayBudget
+      ? newDayTurnsUsed > dayBudget.totalTurns
+      : maxTurns !== null && newExchange > maxTurns
+    if (isOvertimeNow && !isOvertime) setIsOvertime(true)
+    if (isOvertimeNow) setOvertimeTurns(prev => prev + 1)
 
     // 라포 계산
     let newRapportCount = rapportCount
@@ -347,7 +392,9 @@ export default function useGame() {
       }])
 
       // 턴 소진 경고
-      if (maxTurns !== null && newExchange === maxTurns) {
+      const warningAt = dayBudget ? dayBudget.totalTurns : maxTurns
+      const currentUsed = dayBudget ? newDayTurnsUsed : newExchange
+      if (warningAt !== null && currentUsed === warningAt) {
         setTimeout(() => {
           setMessages(prev => [...prev, { id: `nurse-${idx}`, speaker: 'system', text: '대기 환자가 있습니다.' }])
         }, 600)
@@ -356,7 +403,8 @@ export default function useGame() {
       advanceOrClose(idx, script, isUnlocked)
     }, 800)
   }, [currentTurn, waitingForChoice, turnIndex, script, exchangeCount, maxTurns,
-      isOvertime, rapportGating, rapportCount, rapportUnlocked, advanceOrClose])
+      isOvertime, rapportGating, rapportCount, rapportUnlocked, advanceOrClose,
+      dayBudget, dayTurnsUsed])
 
   return {
     // 네비게이션
@@ -369,6 +417,7 @@ export default function useGame() {
     waitingForChoice, showSeniorGuide, innerVoice,
     usedFamilies, turnsRemaining, maxTurns, isOvertime, rapportUnlocked,
     beginPlaying, send, endConsultation, buildDayEnd,
-    exchangeCount, overtimeTurns,
+    exchangeCount, overtimeTurns, dayTurnsUsed,
+    dayBudgetTotal: dayBudget?.totalTurns ?? null,
   }
 }
