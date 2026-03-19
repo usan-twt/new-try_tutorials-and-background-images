@@ -27,31 +27,54 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 The app is a screen-based FSM managed entirely in `src/hooks/useGame.js`. Screen transitions:
 
 ```
-title → phaseIntro → consultation → dayEnd → interlude (optional) → back to consultation or phaseIntro
-                                                                    → complete (after final episode)
+title → corridor → morningNav → phaseIntro → consultation → dayEnd → eveningNav → (loop or complete)
+                                     ↑                          ↓
+                              interlude (optional, before some episodes)
 ```
+
+- `corridor` — CorridorScene: first encounter with senior, player name input
+- `morningNav` / `eveningNav` — NavigationScreen: pixel-art hospital exploration
+- `interlude` — peer/senior dialogue between episodes (triggered by `interludeBefore` in episode definition)
+- After final episode: `complete` screen
 
 ### Three-Phase Progression
 
-- **Phase 1** (episodes 1-2): Linear scripted dialogue. Single choice per turn, senior guide mentoring. No player agency in question direction.
-- **Phase 2** (episodes 3-5): Branching dialogue with `pivots`/`continue` system. Choices have `family` (medical/life/emotional) and `intent` fields. `firstChoices` for initial turn, then pivot-based choices with continuity tracking via `lastFamily`.
-- **Phase 3** (episodes 6-8): Adds turn limits (`maxTurns`), overtime tracking, and rapport gating (`rapportGating` with threshold/families). Gated responses and closing variants unlock based on rapport score.
+- **Phase 1** (3 episodes): Linear scripted dialogue. Single choice per turn, senior guide mentoring. No player agency in question direction.
+- **Phase 2** (3 episodes): Branching dialogue with `pivots`/`continue` system. Choices have `family` (medical/life/emotional) and `intent` fields. `firstChoices` for initial turn, then pivot-based choices with continuity tracking via `lastFamily`. NotebookPanel introduced.
+- **Phase 3** (3 episodes): Adds turn limits (`maxTurns`=8), overtime tracking, and rapport gating (`rapportGating` with threshold/families). Gated responses and closing variants unlock based on `rapportCount`.
 
 ### Key Data Flow
 
-- **Episode definitions**: `src/data/allEpisodes.js` — master list with patient metadata, phase config, and script imports
+- **Episode definitions**: `src/data/allEpisodes.js` — master list with patient metadata, phase config, script imports, and inline interlude definitions
 - **Scripts**: `src/data/phases/phase{1,2,3}/scripts/ep*.json` — dialogue trees with turns, choices, responses, senior guides, inner voice, and day-end extras
-- **Interludes**: Defined inline in `allEpisodes.js` — peer character dialogue between episodes, triggered by `interludeBefore` field on episodes
+- **Hospital map**: `src/data/hospitalMap.js` — 3-floor layout (외래/병동/의국) with rooms, NPCs, interaction ranges, and `CLINIC_IDS` that trigger episode start
 
-### Components
+### Components & Hooks
 
-- `App.jsx` — Screen router, delegates to screen components based on `game.screen`
-- `ConsultationScreen` — Main gameplay screen; handles opening→playing→closing→done lifecycle via `useEffect` chains. Shows last 4 messages with fade effect, emotion orb, turn indicator, and choice buttons
-- `useGame.js` — All game state and logic. Returns a flat object consumed by components. Contains the `send()` function which handles both Phase 1 (no choice arg) and Phase 2+ (choice object arg) patterns
+- `App.jsx` — Screen router based on `game.screen`; renders `NotebookPanel` alongside `ConsultationScreen` for Phase 2+
+- `useGame.js` — All game state and logic. Returns a flat object consumed by components. `send()` handles Phase 1 (no arg) and Phase 2+ (choice object). Key helpers: `computeChoices()`, `buildDayEnd()`, `resetScript()`
+- `ConsultationScreen` — Opening→playing→closing→done lifecycle via `useEffect` chains. Shows last 4 messages with fade, emotion orb, turn indicator dots (Phase 3), inner voice (Phase 2+)
+- `NavigationScreen` — Pixel-art side-scrolling hospital. Real-time movement via `useHospitalNavigation.js`. Morning nav: entering clinic starts episode; Evening nav: exiting left on floor 1 ends day
+- `NotebookPanel` — Toggle panel (📓 button) with patient chart + memo textarea. First appearance shows hint pulse
+- `InterludeScene` — Sequential character dialogue with player reaction choices and `afterReaction` lines
 
 ### Script JSON Structure
 
-Phase 1 turns use `{ choice, response, seniorGuide }`. Phase 2+ turns use `{ pivots, continue, firstChoices, responses: { [intent]: { text, emotion, innerVoice, gatedResponse } } }`. Scripts also contain `opening`, `closing`, `closingGated`, and `dayEndExtra` (with `unasked` and `lastScene` fields).
+**Phase 1 turns:** `{ choice, response, seniorGuide: { text, timing, tone } }`
+
+**Phase 2+ turns:**
+```json
+{
+  "firstChoices": [{ "tag", "family", "label", "text", "intent" }],
+  "pivots": [{ "tag", "family", "label", "text", "intent" }],
+  "continue": { "after_medical": { "family", ... }, "after_life": { ... }, "after_emotional": { ... } },
+  "responses": {
+    "[intent]": { "text", "emotion", "innerVoice", "gatedResponse": { "text", "emotion" } }
+  }
+}
+```
+
+Scripts also contain: `opening`, `closing`, `closingGated` (Phase 3), `dayEndExtra: { unasked: { [family]: hint }, lastScene, lastSceneGated }`.
 
 ## ESLint
 
@@ -62,5 +85,6 @@ Phase 1 turns use `{ choice, response, seniorGuide }`. Phase 2+ turns use `{ piv
 
 - All styling is inline (no CSS modules or styled-components) with a dark color palette centered on `#1A1815`/`#2A2520` backgrounds and `#E8E0D0` text
 - Korean language throughout the UI (HTML lang="ko")
-- Font: Noto Serif KR for patient/narrative text, system-ui for UI elements
+- Fonts: Noto Serif KR for patient/narrative text, system-ui for UI elements, D2Coding for NotebookPanel
 - Emotion system maps states (neutral, anxious, guarded, warming, opened, distressed) to colors and orb scales
+- NavigationScreen uses time-of-day palette: bright for morning nav, dim for evening nav
