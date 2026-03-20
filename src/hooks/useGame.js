@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import allEpisodes, { interludes, dayBudgets, dayConfig } from '../data/allEpisodes'
 import { getApartmentTier, calculateEconomyDelta } from '../data/apartmentData'
+import { getRelationLevel, episodeNurseDelta, phaseRelationDelta, applyRelationDelta } from '../data/relationThresholds'
 
 // ── 화면 전환 FSM ──
 const TRANSITIONS = {
@@ -77,6 +78,10 @@ export default function useGame() {
   const [pendingMove, setPendingMove] = useState(null)
   const [postApartmentScreen, setPostApartmentScreen] = useState('phaseIntro')
 
+  // ── 관계 시스템 ──
+  const [professorRelation, setProfessorRelation] = useState(50)
+  const [nurseRelation, setNurseRelation] = useState(50)
+
   // Phase 3 상태
   const [exchangeCount, setExchangeCount] = useState(0)
   const [rapportCount, setRapportCount] = useState(0)
@@ -99,6 +104,8 @@ export default function useGame() {
     : null
 
   const apartmentTier = getApartmentTier(economy)
+  const professorRelationLevel = getRelationLevel(professorRelation)
+  const nurseRelationLevel = getRelationLevel(nurseRelation)
 
   const currentTurn = useMemo(() => {
     if (phase !== 'playing' || turnIndex >= totalTurns) return null
@@ -156,6 +163,8 @@ export default function useGame() {
     setDayTurnsUsed(0)
     setEconomy(50)
     setPendingMove(null)
+    setProfessorRelation(50)
+    setNurseRelation(50)
     setScreen('corridor')
   }, [])
 
@@ -253,6 +262,10 @@ export default function useGame() {
     }
     setDayEndState(newState)
 
+    // 에피소드 완료: 라포 기반 간호사 관계 변동
+    const nurseDelta = episodeNurseDelta(rapportCount, rapportGating)
+    if (nurseDelta !== 0) setNurseRelation(prev => applyRelationDelta(prev, nurseDelta))
+
     if (isPhaseEnd) {
       // Phase 마지막 → 저녁 네비 → DayEnd 화면
       setScreen('eveningNav')
@@ -273,7 +286,7 @@ export default function useGame() {
         setScreen('consultation')
       }
     }
-  }, [ep, epIndex, resetScript])
+  }, [ep, epIndex, resetScript, rapportCount, rapportGating])
 
   const nextEpisode = useCallback(() => {
     // 경제 변동 계산 (완료된 날의 에피소드 수 기준)
@@ -281,6 +294,11 @@ export default function useGame() {
     const completedDay = completedEp?.day ?? null
     const patientsCompleted = dayEndStateRef.current.patients.length
     const delta = calculateEconomyDelta(patientsCompleted)
+
+    // Phase 완료: 오버타임 횟수 기반 교수 관계 변동
+    const overtimeCount = dayEndStateRef.current.overtime.length
+    const { professor: profDelta } = phaseRelationDelta(overtimeCount)
+    if (profDelta !== 0) setProfessorRelation(prev => applyRelationDelta(prev, profDelta))
     const prevEconomy = economy
     const newEconomy = Math.min(100, Math.max(0, prevEconomy + delta))
     const prevTier = getApartmentTier(prevEconomy)
@@ -466,6 +484,8 @@ export default function useGame() {
     startConsultation, nextEpisode, finishInterlude, finishApartment,
     // 경제 시스템
     economy, apartmentTier, pendingMove,
+    // 관계 시스템
+    professorRelation, nurseRelation, professorRelationLevel, nurseRelationLevel,
     // 스크립트 엔진
     phase, messages, currentTurn, currentChoices, currentEmotion,
     waitingForChoice, showSeniorGuide, innerVoice,
