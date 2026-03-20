@@ -101,10 +101,3 @@ export const INTERACTION_POINTS = {
   },
 }
 
-// ── 경제 변동 계산 ──
-export function calculateEconomyDelta(patientsCompleted) {
-  const basePay = 5
-  const expense = -8
-  const patientBonus = patientsCompleted * 2
-  return basePay + expense + patientBonus
-}

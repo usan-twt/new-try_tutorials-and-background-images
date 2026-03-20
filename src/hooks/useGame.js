@@ -1,7 +1,8 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import allEpisodes, { interludes, dayBudgets, dayConfig } from '../data/allEpisodes'
-import { getApartmentTier, calculateEconomyDelta } from '../data/apartmentData'
-import { getRelationLevel, episodeNurseDelta, phaseRelationDelta, applyRelationDelta } from '../data/relationThresholds'
+import { getApartmentTier } from '../data/apartmentData'
+import { getRelationLevel, episodeNurseDelta, applyRelationDelta } from '../data/relationThresholds'
+import { evaluatePhase } from '../data/evaluationData'
 import { getMealInterlude } from '../data/mealScenes'
 
 // ── 화면 전환 FSM ──
@@ -89,6 +90,9 @@ export default function useGame() {
   const [professorRelation, setProfessorRelation] = useState(50)
   const [nurseRelation, setNurseRelation] = useState(50)
 
+  // ── 전공의 평가 ──
+  const [lastEvalGrade, setLastEvalGrade] = useState(null)
+
   // Phase 3 상태
   const [exchangeCount, setExchangeCount] = useState(0)
   const [rapportCount, setRapportCount] = useState(0)
@@ -172,6 +176,7 @@ export default function useGame() {
     setPendingMove(null)
     setProfessorRelation(50)
     setNurseRelation(50)
+    setLastEvalGrade(null)
     setScreen('corridor')
   }, [])
 
@@ -296,18 +301,16 @@ export default function useGame() {
   }, [ep, epIndex, resetScript, rapportCount, rapportGating, economy])
 
   const nextEpisode = useCallback(() => {
-    // 경제 변동 계산 (완료된 날의 에피소드 수 기준)
     const completedEp = allEpisodes[epIndex]
     const completedDay = completedEp?.day ?? null
-    const patientsCompleted = dayEndStateRef.current.patients.length
-    const delta = calculateEconomyDelta(patientsCompleted)
 
-    // Phase 완료: 오버타임 횟수 기반 교수 관계 변동
+    // Phase 완료 평가: 오버타임 횟수 → 등급 → economy/교수 관계 변동
     const overtimeCount = dayEndStateRef.current.overtime.length
-    const { professor: profDelta } = phaseRelationDelta(overtimeCount)
-    if (profDelta !== 0) setProfessorRelation(prev => applyRelationDelta(prev, profDelta))
+    const { grade, economyDelta, profRelationDelta } = evaluatePhase(currentPhase, overtimeCount)
+    setLastEvalGrade(grade)
+    if (profRelationDelta !== 0) setProfessorRelation(prev => applyRelationDelta(prev, profRelationDelta))
     const prevEconomy = economy
-    const newEconomy = Math.min(100, Math.max(0, prevEconomy + delta))
+    const newEconomy = Math.min(100, Math.max(0, prevEconomy + economyDelta))
     const prevTier = getApartmentTier(prevEconomy)
     const newTier = getApartmentTier(newEconomy)
     setEconomy(newEconomy)
@@ -493,6 +496,8 @@ export default function useGame() {
     economy, apartmentTier, pendingMove,
     // 관계 시스템
     professorRelation, nurseRelation, professorRelationLevel, nurseRelationLevel,
+    // 전공의 평가
+    lastEvalGrade,
     // 스크립트 엔진
     phase, messages, currentTurn, currentChoices, currentEmotion,
     waitingForChoice, showSeniorGuide, innerVoice,
