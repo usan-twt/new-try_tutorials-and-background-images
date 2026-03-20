@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { FLOORS, ROOM_DESCRIPTIONS, PLAYER_SPEED, INTERACT_RANGE, CLINIC_IDS } from '../data/hospitalMap'
+import { FLOORS, ROOM_DESCRIPTIONS, ROOM_DESCRIPTIONS_EVENING, PLAYER_SPEED, INTERACT_RANGE, CLINIC_IDS } from '../data/hospitalMap'
 import { getNPCDialogues } from '../data/corridorEvents'
 
 // ─── 가이드 투어 웨이포인트 ───────────────────────────────────────
@@ -122,12 +122,13 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
       onEnterClinic()
       return
     }
-    setRoomDescription({ ...room, description: ROOM_DESCRIPTIONS[room.id] || '' })
+    const descs = timeOfDay === 'evening' ? ROOM_DESCRIPTIONS_EVENING : ROOM_DESCRIPTIONS
+    setRoomDescription({ ...room, description: descs[room.id] || '' })
     setDialogueVisible(true)
   }, [timeOfDay, onEnterClinic])
 
   const openNPC = useCallback((npc) => {
-    const dialogues = getNPCDialogues(npc.id, professorRelationLevel, nurseRelationLevel)
+    const dialogues = getNPCDialogues(npc.id, professorRelationLevel, nurseRelationLevel, timeOfDay)
     if (!dialogues.length) return
     const idx = dialogueIndexRef.current[npc.id] || 0
     setActiveDialogue({ name: npc.name, text: dialogues[idx % dialogues.length] })

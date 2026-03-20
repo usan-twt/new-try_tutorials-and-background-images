@@ -81,5 +81,14 @@ export const ROOM_DESCRIPTIONS = {
   rooftop: '잠겨 있다. 틈 사이로 바람이 느껴진다.',
 }
 
+// 저녁 전용 방 설명 (morning 기본값에서 재정의)
+export const ROOM_DESCRIPTIONS_EVENING = {
+  ...ROOM_DESCRIPTIONS,
+  reception: '접수 창구. 번호표 기계가 꺼져 있다.',
+  clinic1: '오전 외래 진료실. 오늘 진료가 끝났다.',
+  clinic2: '오후 외래 진료실. 불이 꺼져 있다.',
+  nurse_st: '스테이션. 퇴근 준비가 한창이다.',
+}
+
 // 진료실 ID 목록 (진입 시 에피소드 트리거)
 export const CLINIC_IDS = new Set(['clinic1', 'clinic2'])
