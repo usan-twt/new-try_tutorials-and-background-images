@@ -15,7 +15,7 @@ export default function ConsultationScreen({ game }) {
   const {
     ep, phase, messages, currentTurn, currentChoices, currentEmotion,
     waitingForChoice, showSeniorGuide, innerVoice,
-    turnsRemaining, maxTurns, isOvertime, dayBudgetTotal,
+    turnsRemaining, dayTurnsRemaining, maxTurns, isOvertime, dayBudgetTotal,
     beginPlaying, beginOpening, send,
   } = game
 
@@ -92,14 +92,17 @@ export default function ConsultationScreen({ game }) {
             </span>
           ) : (
             <div style={{ display: 'flex', gap: 6 }}>
-              {Array.from({ length: dayBudgetTotal ?? maxTurns }, (_, i) => (
-                <span key={i} style={{
-                  width: 6, height: 6, borderRadius: '50%',
-                  background: i >= turnsRemaining ? 'rgba(232,224,208,0.06)'
-                    : turnsRemaining <= 2 ? '#B8A080' : 'rgba(232,224,208,0.25)',
-                  transition: 'background 0.5s',
-                }} />
-              ))}
+              {Array.from({ length: dayBudgetTotal ?? maxTurns }, (_, i) => {
+                const rem = dayTurnsRemaining ?? turnsRemaining
+                return (
+                  <span key={i} style={{
+                    width: 6, height: 6, borderRadius: '50%',
+                    background: i >= rem ? 'rgba(232,224,208,0.06)'
+                      : rem <= 2 ? '#B8A080' : 'rgba(232,224,208,0.25)',
+                    transition: 'background 0.5s',
+                  }} />
+                )
+              })}
             </div>
           )}
         </div>

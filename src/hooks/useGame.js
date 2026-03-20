@@ -113,11 +113,10 @@ export default function useGame() {
   const rapportGating = ep?.rapportGating ?? null
   const rapportUnlocked = rapportGating ? rapportCount >= rapportGating.threshold : true
   const dayBudget = ep?.day != null ? (dayBudgets[ep.day] ?? null) : null
-  const effectiveMaxTurns = dayBudget ? dayBudget.totalTurns : maxTurns
-  const effectiveTurnsUsed = dayBudget ? dayTurnsUsed : exchangeCount
-  const turnsRemaining = effectiveMaxTurns !== null
-    ? Math.max(0, effectiveMaxTurns - effectiveTurnsUsed)
-    : null
+  // 선택지 필터링: 에피소드 자체 턴 기준 (ep 간 공유 안 함)
+  const turnsRemaining = maxTurns !== null ? Math.max(0, maxTurns - exchangeCount) : null
+  // 도트 인디케이터 & 오버타임: day budget 기준
+  const dayTurnsRemaining = dayBudget ? Math.max(0, dayBudget.totalTurns - dayTurnsUsed) : null
 
   const apartmentTier = getApartmentTier(economy)
   const professorRelationLevel = getRelationLevel(professorRelation)
@@ -527,7 +526,7 @@ export default function useGame() {
     waitingForChoice, showSeniorGuide, innerVoice,
     usedFamilies, turnsRemaining, maxTurns, isOvertime, rapportUnlocked,
     beginPlaying, beginOpening, send, endConsultation, buildDayEnd,
-    exchangeCount, overtimeTurns, dayTurnsUsed,
+    exchangeCount, overtimeTurns, dayTurnsUsed, dayTurnsRemaining,
     dayBudgetTotal: dayBudget?.totalTurns ?? null,
   }
 }
