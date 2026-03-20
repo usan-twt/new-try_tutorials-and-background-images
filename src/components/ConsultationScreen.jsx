@@ -44,7 +44,7 @@ export default function ConsultationScreen({ game }) {
   useEffect(() => {
     if (!waitingForChoice || !currentTurn?.choice) return
     const hasBefore = showSeniorGuide && currentTurn.seniorGuide?.timing === 'before'
-    const t = setTimeout(() => setChoiceDelayDone(true), hasBefore ? 900 : 0)
+    const t = setTimeout(() => setChoiceDelayDone(true), hasBefore ? 1350 : 0)
     return () => clearTimeout(t)
   }, [waitingForChoice, currentTurn, showSeniorGuide])
 
