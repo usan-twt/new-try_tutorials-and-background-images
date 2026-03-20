@@ -194,6 +194,23 @@ export default function ApartmentScreen({ tier, economy, onNext }) {
         </p>
       </div>
 
+      {/* 통장 확인 버튼 */}
+      <button
+        onClick={() => setShowPhone(true)}
+        style={{
+          position: 'absolute', bottom: '8vh', left: 28,
+          background: 'none', border: 'none', cursor: 'pointer',
+          fontFamily: sans, fontSize: 13,
+          color: 'rgba(232,224,208,0.3)', letterSpacing: '0.06em',
+          padding: '12px 24px',
+          textShadow: '0 1px 4px rgba(0,0,0,0.8)',
+          opacity: showInteractions ? 1 : 0,
+          transition: 'opacity 1.2s',
+        }}
+      >
+        통장 확인하기
+      </button>
+
       {/* 다음 버튼 */}
       <button
         onClick={onNext}
