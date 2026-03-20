@@ -184,6 +184,7 @@ export default function useGame() {
     setLastEvalGrade(null)
     setPendingRumor(null)
     setPendingDocument(null)
+    setGuidedTourDone(false)
     setScreen('corridor')
   }, [])
 
@@ -191,7 +192,9 @@ export default function useGame() {
     setScreen('morningNav')
   }, [])
 
+  const [guidedTourDone, setGuidedTourDone] = useState(false)
   const finishMorningNav = useCallback(() => {
+    setGuidedTourDone(true)
     setScreen('phaseIntro')
   }, [])
 
@@ -516,6 +519,8 @@ export default function useGame() {
     // 점진적 노출
     pendingRumor, clearRumor,
     pendingDocument, clearDocument,
+    // 가이드 투어
+    guidedTourDone,
     // 스크립트 엔진
     phase, messages, currentTurn, currentChoices, currentEmotion,
     waitingForChoice, showSeniorGuide, innerVoice,

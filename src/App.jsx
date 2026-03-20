@@ -28,6 +28,7 @@ function App() {
           onInitialDialogueSeen={game.clearRumor}
           pendingDocument={game.pendingDocument}
           onDocumentSeen={game.clearDocument}
+          guided={!game.guidedTourDone}
         />
       )}
       {screen === 'eveningNav' && (

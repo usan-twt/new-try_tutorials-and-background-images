@@ -11,7 +11,7 @@ const AFTER_NAME = (name) => [
   { speaker: '선배', text: `좋아, ${name}. 넌 오늘부터 외래 진료를 보게 될 거야.` },
   { speaker: '선배', text: '환자가 들어오면 이름 확인하고, 어디가 아픈지 듣고, 필요한 걸 물어보면 돼.' },
   { speaker: '선배', text: '어렵게 생각하지 마. 오늘은 내가 옆에서 하나씩 알려줄 테니까.' },
-  { speaker: '선배', text: '자, 첫 환자 들어온다. 가자.', last: true },
+  { speaker: '선배', text: '일단 병원 구경부터 시키자. 따라와.', last: true },
 ]
 
 export default function CorridorScene({ onComplete, onNameSet }) {

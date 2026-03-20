@@ -59,13 +59,14 @@ function StairsIcon({ direction, palette }) {
 }
 
 // ─── 메인 컴포넌트 ───────────────────────────────────────────────
-export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral', initialDialogue = null, onInitialDialogueSeen = null, pendingDocument = null, onDocumentSeen = null }) {
-  const nav = useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel, nurseRelationLevel, initialDialogue, onInitialDialogueSeen })
+export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral', initialDialogue = null, onInitialDialogueSeen = null, pendingDocument = null, onDocumentSeen = null, guided = false }) {
+  const nav = useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel, nurseRelationLevel, initialDialogue, onInitialDialogueSeen, guided })
   const {
     currentFloor, playerX, facing, walking, walkFrame,
     activeDialogue, roomDescription, dialogueVisible,
     floorTransition, roomPrompt,
     closeDialogue, handleNPCClick,
+    seniorGuidePos, tourComplete,
   } = nav
 
   const palette = getPalette(timeOfDay)
@@ -91,13 +92,18 @@ export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete,
         <span style={{ fontSize: 13, color: '#E8E0D0', fontWeight: 500, letterSpacing: 2 }}>
           {floor.label}
         </span>
-        <button onClick={onComplete} style={{
-          background: 'transparent', border: '1px solid rgba(200,180,140,0.2)',
-          color: '#8A8580', padding: '3px 10px', borderRadius: 4,
-          fontSize: 11, cursor: 'pointer',
-        }}>
-          {timeOfDay === 'morning' ? '건너뛰기' : '퇴근하기'}
-        </button>
+        {(!guided || tourComplete) && (
+          <button onClick={onComplete} style={{
+            background: 'transparent', border: '1px solid rgba(200,180,140,0.2)',
+            color: '#8A8580', padding: '3px 10px', borderRadius: 4,
+            fontSize: 11, cursor: 'pointer',
+          }}>
+            {timeOfDay === 'morning' ? '건너뛰기' : '퇴근하기'}
+          </button>
+        )}
+        {guided && !tourComplete && (
+          <span style={{ fontSize: 10, color: '#6a5a40', letterSpacing: 0.5 }}>선배를 따라가세요</span>
+        )}
       </div>
 
       {/* 층 인디케이터 */}
@@ -387,8 +393,31 @@ export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete,
             )
           })}
 
+          {/* 가이드 선배 (guided 모드, 현재 층에 있을 때) */}
+          {guided && seniorGuidePos && currentFloor === seniorGuidePos.floor && (
+            <div style={{
+              position: 'absolute', left: seniorGuidePos.x - CHAR_W / 2, top: CHAR_Y + 10, zIndex: 10,
+            }}>
+              <PixelChar
+                facing={seniorGuidePos.x > playerX ? 'left' : 'right'}
+                color="#e0d8c0"
+              />
+              <div style={{
+                textAlign: 'center', fontSize: 10, marginTop: 0,
+                color: '#c4a870', fontWeight: 600, whiteSpace: 'nowrap',
+              }}>박 선배</div>
+              {!activeDialogue && !roomDescription && Math.abs(playerX - seniorGuidePos.x) < INTERACT_RANGE + 20 && (
+                <div style={{
+                  position: 'absolute', top: -10, left: '50%', transform: 'translateX(-50%)',
+                  width: 7, height: 7, borderRadius: '50%', background: palette.wainscot,
+                  animation: 'navPulse 1.2s ease-in-out infinite',
+                }} />
+              )}
+            </div>
+          )}
+
           {/* NPC */}
-          {floor.npcs.map(npc => {
+          {floor.npcs.filter(npc => !(guided && npc.id === 'senior_park')).map(npc => {
             const isNear = Math.abs(playerX - npc.x) < INTERACT_RANGE + 20
             const npcFacing = Math.abs(playerX - npc.x) < INTERACT_RANGE + 40
               ? (npc.x > playerX ? 'left' : 'right')

@@ -2,6 +2,27 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { FLOORS, ROOM_DESCRIPTIONS, PLAYER_SPEED, INTERACT_RANGE, CLINIC_IDS } from '../data/hospitalMap'
 import { getNPCDialogues } from '../data/corridorEvents'
 
+// ─── 가이드 투어 웨이포인트 ───────────────────────────────────────
+const GUIDED_WAYPOINTS = [
+  {
+    floor: 1, x: 700,
+    dialogue: { name: '박 선배', text: '여기가 1층 외래야. 저기 진료실 두 개 보이지? 오늘 네가 볼 곳이야. 위층도 잠깐 보여줄게 — 저기 계단 올라가봐.' },
+  },
+  {
+    floor: 2, x: 400,
+    dialogue: { name: '박 선배', text: '2층 병동이야. 입원 환자들 있어. 위층 의국도 보자 — 왼쪽 계단 올라가봐.' },
+  },
+  {
+    floor: 3, x: 240,
+    dialogue: { name: '박 선배', text: '3층 의국이야. 우리 공간이지. 자, 이제 내려가서 진료 시작하자.' },
+  },
+  {
+    floor: 1, x: 360,
+    dialogue: { name: '박 선배', text: '준비됐어? 진료실 1이나 2 들어가봐. 첫 환자 기다리고 있어.' },
+    isLast: true,
+  },
+]
+
 // 아침/저녁 팔레트
 export function getPalette(timeOfDay) {
   return timeOfDay === 'morning' ? {
@@ -21,9 +42,11 @@ export function getPalette(timeOfDay) {
   }
 }
 
-export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral', initialDialogue = null, onInitialDialogueSeen = null }) {
+export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral', initialDialogue = null, onInitialDialogueSeen = null, guided = false }) {
   const [currentFloor, setCurrentFloor] = useState(1)
   const [playerX, setPlayerX] = useState(80)
+  const [guidedStep, setGuidedStep] = useState(0)
+  const [tourComplete, setTourComplete] = useState(false)
   const [facing, setFacing] = useState('right')
   const [walking, setWalking] = useState(false)
   const [walkFrame, setWalkFrame] = useState(0)
@@ -47,6 +70,15 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
   const activeIsInitialRef = useRef(false)
   const onInitialDialogueSeenRef = useRef(onInitialDialogueSeen)
   onInitialDialogueSeenRef.current = onInitialDialogueSeen
+  // 가이드 투어 refs
+  const guidedRef = useRef(guided)
+  guidedRef.current = guided
+  const guidedStepRef = useRef(0)
+  guidedStepRef.current = guidedStep
+  const tourCompleteRef = useRef(false)
+  tourCompleteRef.current = tourComplete
+  const guidedTriggeredRef = useRef(false)   // 현재 스텝이 이미 트리거됐는지
+  const guidedWaypointActiveRef = useRef(false) // 웨이포인트 대화 진행 중인지
 
   playerXRef.current = playerX
   floorRef.current = currentFloor
@@ -81,6 +113,12 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
   const openRoom = useCallback((room) => {
     // 아침 네비에서 진료실 입장 → 에피소드 시작
     if (timeOfDay === 'morning' && CLINIC_IDS.has(room.id) && onEnterClinic) {
+      // 가이드 투어 미완료 시 차단
+      if (guidedRef.current && !tourCompleteRef.current) {
+        setActiveDialogue({ name: '박 선배', text: '잠깐, 먼저 구경 끝내자.' })
+        setDialogueVisible(true)
+        return
+      }
       onEnterClinic()
       return
     }
@@ -101,10 +139,21 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
     setDialogueVisible(false)
     const wasInitial = activeIsInitialRef.current
     activeIsInitialRef.current = false
+    const wasWaypoint = guidedWaypointActiveRef.current
+    guidedWaypointActiveRef.current = false
     setTimeout(() => {
       setActiveDialogue(null)
       setRoomDescription(null)
       if (wasInitial) onInitialDialogueSeenRef.current?.()
+      if (wasWaypoint) {
+        const wp = GUIDED_WAYPOINTS[guidedStepRef.current]
+        if (wp?.isLast) {
+          setTourComplete(true)
+        } else {
+          setGuidedStep(s => s + 1)
+          guidedTriggeredRef.current = false
+        }
+      }
     }, 180)
   }, [])
 
@@ -203,6 +252,19 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
         }
       }
 
+      // 가이드 투어: 웨이포인트 자동 트리거
+      if (guidedRef.current && !tourCompleteRef.current && !hasDialogueRef.current && !floorTransitionRef.current) {
+        const wp = GUIDED_WAYPOINTS[guidedStepRef.current]
+        if (wp && floorRef.current === wp.floor && Math.abs(playerXRef.current - wp.x) < INTERACT_RANGE) {
+          if (!guidedTriggeredRef.current) {
+            guidedTriggeredRef.current = true
+            guidedWaypointActiveRef.current = true
+            setActiveDialogue(wp.dialogue)
+            setDialogueVisible(true)
+          }
+        }
+      }
+
       // 프롬프트 계산
       const fl = FLOORS[floorRef.current]
       const px = playerXRef.current
@@ -248,10 +310,15 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
     if (Math.abs(playerXRef.current - npc.x) < INTERACT_RANGE + 20) openNPC(npc)
   }, [openNPC])
 
+  // 가이드 선배의 현재 위치 (guided 모드일 때만)
+  const currentWP = guided && !tourComplete ? GUIDED_WAYPOINTS[guidedStep] : null
+  const seniorGuidePos = currentWP ? { floor: currentWP.floor, x: currentWP.x } : null
+
   return {
     currentFloor, playerX, facing, walking, walkFrame,
     activeDialogue, roomDescription, dialogueVisible,
     floorTransition, roomPrompt,
     closeDialogue, handleNPCClick,
+    seniorGuidePos, tourComplete,
   }
 }
