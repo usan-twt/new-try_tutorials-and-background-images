@@ -22,12 +22,16 @@ function App() {
           timeOfDay="morning"
           onEnterClinic={game.finishMorningNav}
           onComplete={game.finishMorningNav}
+          professorRelationLevel={game.professorRelationLevel}
+          nurseRelationLevel={game.nurseRelationLevel}
         />
       )}
       {screen === 'eveningNav' && (
         <NavigationScreen
           timeOfDay="evening"
           onComplete={game.finishEveningNav}
+          professorRelationLevel={game.professorRelationLevel}
+          nurseRelationLevel={game.nurseRelationLevel}
         />
       )}
       {screen === 'phaseIntro' && <PhaseIntro phase={currentPhase} onComplete={game.startConsultation} />}

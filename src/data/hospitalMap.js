@@ -14,18 +14,8 @@ export const FLOORS = {
       { id: 'vending1', name: '자판기', x: 620, width: 56, type: 'vending' },
     ],
     npcs: [
-      {
-        id: 'patient_wait', name: '대기 환자', x: 180, color: '#d8d0c0',
-        dialogues: ['(접수 번호표를 쥐고 불안한 눈으로 앉아 있다.)', '…아직 안 불렀나.'],
-      },
-      {
-        id: 'peer_lee', name: '이 동기', x: 530, color: '#e8dcc0',
-        dialogues: [
-          '야, 어제 그 환자 있잖아. 나는 생활 쪽으로 물어봤거든? 완전 다른 얘기가 나오더라.',
-          '오늘 점심 뭐 먹을지 생각해 놨어?',
-          '솔직히 어제 좀 힘들었어. 근데 뭐, 오늘도 해야지.',
-        ],
-      },
+      { id: 'patient_wait', name: '대기 환자', x: 180, color: '#d8d0c0' },
+      { id: 'peer_lee', name: '이 동기', x: 530, color: '#e8dcc0' },
     ],
     stairs: { x: 780, direction: 'up', targetFloor: 2 },
     decorations: [
@@ -44,21 +34,8 @@ export const FLOORS = {
       { id: 'ward3', name: '403호', x: 620, width: 72, type: 'door' },
     ],
     npcs: [
-      {
-        id: 'nurse_kim', name: '김 간호사', x: 160, color: '#d0e0d8',
-        dialogues: [
-          '아, 선생님. 오늘 외래 좀 밀릴 수 있어요.',
-          '커피 드시고 오세요, 아직 시간 있어요.',
-          '어제 3번 환자분 경과 좋아졌대요.',
-        ],
-      },
-      {
-        id: 'patient_family', name: '보호자', x: 540, color: '#d8d0c0',
-        dialogues: [
-          '…선생님, 저희 어머니 언제쯤 퇴원할 수 있을까요?',
-          '(고개를 숙이고 있다.)',
-        ],
-      },
+      { id: 'nurse_kim', name: '김 간호사', x: 160, color: '#d0e0d8' },
+      { id: 'patient_family', name: '보호자', x: 540, color: '#d8d0c0' },
     ],
     stairsDown: { x: 780, direction: 'down', targetFloor: 1 },
     stairsUp: { x: 50, direction: 'up', targetFloor: 3 },
@@ -78,14 +55,7 @@ export const FLOORS = {
       { id: 'rooftop', name: '옥상 출입구', x: 720, width: 72, type: 'door' },
     ],
     npcs: [
-      {
-        id: 'senior_park', name: '박 선배', x: 240, color: '#e0d8c0',
-        dialogues: [
-          '일찍 왔네. 좋아, 오늘 외래 차트 미리 봐둬.',
-          '처음엔 다 그래. 익숙해지면 괜찮아질 거야.',
-          '나도 1년차 때 매일 울었어. 농담 아니고.',
-        ],
-      },
+      { id: 'senior_park', name: '박 선배', x: 240, color: '#e0d8c0' },
     ],
     stairsDown: { x: 50, direction: 'down', targetFloor: 2 },
     decorations: [

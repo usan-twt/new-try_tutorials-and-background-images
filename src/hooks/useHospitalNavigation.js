@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { FLOORS, ROOM_DESCRIPTIONS, PLAYER_SPEED, INTERACT_RANGE, CLINIC_IDS } from '../data/hospitalMap'
+import { getNPCDialogues } from '../data/corridorEvents'
 
 // 아침/저녁 팔레트
 export function getPalette(timeOfDay) {
@@ -20,7 +21,7 @@ export function getPalette(timeOfDay) {
   }
 }
 
-export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete }) {
+export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral' }) {
   const [currentFloor, setCurrentFloor] = useState(1)
   const [playerX, setPlayerX] = useState(80)
   const [facing, setFacing] = useState('right')
@@ -76,11 +77,13 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
   }, [timeOfDay, onEnterClinic])
 
   const openNPC = useCallback((npc) => {
+    const dialogues = getNPCDialogues(npc.id, professorRelationLevel, nurseRelationLevel)
+    if (!dialogues.length) return
     const idx = dialogueIndexRef.current[npc.id] || 0
-    setActiveDialogue({ name: npc.name, text: npc.dialogues[idx % npc.dialogues.length] })
+    setActiveDialogue({ name: npc.name, text: dialogues[idx % dialogues.length] })
     setDialogueVisible(true)
-    setDialogueIndex(prev => ({ ...prev, [npc.id]: (idx + 1) % npc.dialogues.length }))
-  }, [])
+    setDialogueIndex(prev => ({ ...prev, [npc.id]: (idx + 1) % dialogues.length }))
+  }, [professorRelationLevel, nurseRelationLevel])
 
   const closeDialogue = useCallback(() => {
     setDialogueVisible(false)
