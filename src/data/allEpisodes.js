@@ -1,3 +1,4 @@
+import { SENIOR_ADVICE } from './corporateHospitalEvents'
 import ep1_1 from './phases/phase1/scripts/ep1_1.json'
 import ep1_2 from './phases/phase1/scripts/ep1_2.json'
 import ep1_3 from './phases/phase1/scripts/ep1_3.json'
@@ -23,6 +24,8 @@ export const dayConfig = {
 export const interludes = {
   // 식사 인터루드: type:'meal' placeholder — useGame.js에서 economy 기반으로 실제 텍스트 주입
   meal_day4: { type: 'meal' },
+  // 사회화 채널: Phase 3 시작 전 선배 조언 (corporateHospitalEvents.js)
+  senior_advice: SENIOR_ADVICE,
 
   after_phase1: {
     character: '선배',
@@ -151,6 +154,7 @@ const allEpisodes = [
     id: 'phase3_ep1', phase: 3, day: 4,
     patient: { name: '오철수', age: 55, chiefComplaint: '어깨 통증', initialEmotion: 'neutral' },
     directionTags: true, maxTurns: 8, script: ep3_1,
+    interludeBefore: 'senior_advice',
     dayEndData: { patients: [{ name: '오철수', age: 55, chiefComplaint: '어깨 통증' }] },
     notebook: { chart: '오철수 / 55세 / 남 / 주증상: 좌측 어깨 통증 및 운동 제한 1개월' },
   },

@@ -1,5 +1,6 @@
 import useHospitalNavigation, { getPalette } from '../hooks/useHospitalNavigation'
 import { FLOORS } from '../data/hospitalMap'
+import DocumentOverlay from './DocumentOverlay'
 
 const CHAR_SCALE = 1.6
 const CHAR_W = 24 * CHAR_SCALE
@@ -58,8 +59,8 @@ function StairsIcon({ direction, palette }) {
 }
 
 // ─── 메인 컴포넌트 ───────────────────────────────────────────────
-export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral' }) {
-  const nav = useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel, nurseRelationLevel })
+export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral', initialDialogue = null, onInitialDialogueSeen = null, pendingDocument = null, onDocumentSeen = null }) {
+  const nav = useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel, nurseRelationLevel, initialDialogue, onInitialDialogueSeen })
   const {
     currentFloor, playerX, facing, walking, walkFrame,
     activeDialogue, roomDescription, dialogueVisible,
@@ -459,6 +460,9 @@ export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete,
             <div style={{ textAlign: 'right', marginTop: 8, fontSize: 10, color: '#806840', animation: 'navBlink 1.5s ease-in-out infinite' }}>▸</div>
           </div>
         )}
+
+        {/* 제도 채널: 공문 오버레이 */}
+        <DocumentOverlay document={pendingDocument} onDismiss={onDocumentSeen} />
       </div>
 
       {/* 조작키 안내 */}

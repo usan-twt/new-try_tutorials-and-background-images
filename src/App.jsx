@@ -24,6 +24,10 @@ function App() {
           onComplete={game.finishMorningNav}
           professorRelationLevel={game.professorRelationLevel}
           nurseRelationLevel={game.nurseRelationLevel}
+          initialDialogue={game.pendingRumor}
+          onInitialDialogueSeen={game.clearRumor}
+          pendingDocument={game.pendingDocument}
+          onDocumentSeen={game.clearDocument}
         />
       )}
       {screen === 'eveningNav' && (

@@ -3,6 +3,7 @@ import allEpisodes, { interludes, dayBudgets, dayConfig } from '../data/allEpiso
 import { getApartmentTier } from '../data/apartmentData'
 import { getRelationLevel, episodeNurseDelta, applyRelationDelta } from '../data/relationThresholds'
 import { evaluatePhase } from '../data/evaluationData'
+import { NURSE_RUMOR, PERFORMANCE_NOTICE } from '../data/corporateHospitalEvents'
 import { getMealInterlude } from '../data/mealScenes'
 
 // ── 화면 전환 FSM ──
@@ -93,6 +94,10 @@ export default function useGame() {
   // ── 전공의 평가 ──
   const [lastEvalGrade, setLastEvalGrade] = useState(null)
 
+  // ── 점진적 노출 (기업 병원) ──
+  const [pendingRumor, setPendingRumor] = useState(null)     // 소문 채널
+  const [pendingDocument, setPendingDocument] = useState(null) // 제도 채널
+
   // Phase 3 상태
   const [exchangeCount, setExchangeCount] = useState(0)
   const [rapportCount, setRapportCount] = useState(0)
@@ -177,6 +182,8 @@ export default function useGame() {
     setProfessorRelation(50)
     setNurseRelation(50)
     setLastEvalGrade(null)
+    setPendingRumor(null)
+    setPendingDocument(null)
     setScreen('corridor')
   }, [])
 
@@ -331,6 +338,11 @@ export default function useGame() {
     if (isNewPhase) {
       setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false })
       setDayTurnsUsed(0)
+      // Phase 3 진입: 소문·제도 채널 활성화
+      if (nextEp.phase === 3) {
+        setPendingRumor(NURSE_RUMOR)
+        setPendingDocument(PERFORMANCE_NOTICE)
+      }
     }
 
     // 자취방 등장 체크
@@ -486,6 +498,9 @@ export default function useGame() {
       isOvertime, rapportGating, rapportCount, rapportUnlocked, advanceOrClose,
       dayBudget, dayTurnsUsed])
 
+  const clearRumor = useCallback(() => setPendingRumor(null), [])
+  const clearDocument = useCallback(() => setPendingDocument(null), [])
+
   return {
     // 네비게이션
     screen, currentPhase, ep, dayEndState, currentInterlude,
@@ -498,6 +513,9 @@ export default function useGame() {
     professorRelation, nurseRelation, professorRelationLevel, nurseRelationLevel,
     // 전공의 평가
     lastEvalGrade,
+    // 점진적 노출
+    pendingRumor, clearRumor,
+    pendingDocument, clearDocument,
     // 스크립트 엔진
     phase, messages, currentTurn, currentChoices, currentEmotion,
     waitingForChoice, showSeniorGuide, innerVoice,

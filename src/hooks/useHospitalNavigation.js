@@ -21,7 +21,7 @@ export function getPalette(timeOfDay) {
   }
 }
 
-export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral' }) {
+export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral', initialDialogue = null, onInitialDialogueSeen = null }) {
   const [currentFloor, setCurrentFloor] = useState(1)
   const [playerX, setPlayerX] = useState(80)
   const [facing, setFacing] = useState('right')
@@ -44,12 +44,24 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
   const dialogueIndexRef = useRef({})
   const walkingRef = useRef(false)
   const prevPromptRef = useRef(null)
+  const activeIsInitialRef = useRef(false)
+  const onInitialDialogueSeenRef = useRef(onInitialDialogueSeen)
+  onInitialDialogueSeenRef.current = onInitialDialogueSeen
 
   playerXRef.current = playerX
   floorRef.current = currentFloor
   hasDialogueRef.current = !!(activeDialogue || roomDescription)
   floorTransitionRef.current = floorTransition
   dialogueIndexRef.current = dialogueIndex
+
+  // ─── 소문 채널: 진입 시 자동 대화 ───────────────────────────────
+  useEffect(() => {
+    if (initialDialogue) {
+      activeIsInitialRef.current = true
+      setActiveDialogue(initialDialogue)
+      setDialogueVisible(true)
+    }
+  }, []) // 마운트 시 1회만 실행
 
   // ─── 층 이동 ──────────────────────────────────────────────────
   const moveFloor = useCallback((targetFloor) => {
@@ -87,7 +99,13 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
 
   const closeDialogue = useCallback(() => {
     setDialogueVisible(false)
-    setTimeout(() => { setActiveDialogue(null); setRoomDescription(null) }, 180)
+    const wasInitial = activeIsInitialRef.current
+    activeIsInitialRef.current = false
+    setTimeout(() => {
+      setActiveDialogue(null)
+      setRoomDescription(null)
+      if (wasInitial) onInitialDialogueSeenRef.current?.()
+    }, 180)
   }, [])
 
   // ─── 키 입력 ───────────────────────────────────────────────────
