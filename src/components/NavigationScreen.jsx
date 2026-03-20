@@ -59,8 +59,8 @@ function StairsIcon({ direction, palette }) {
 }
 
 // ─── 메인 컴포넌트 ───────────────────────────────────────────────
-export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral', initialDialogue = null, onInitialDialogueSeen = null, pendingDocument = null, onDocumentSeen = null, guided = false }) {
-  const nav = useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel, nurseRelationLevel, initialDialogue, onInitialDialogueSeen, guided })
+export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral', initialDialogue = null, onInitialDialogueSeen = null, pendingDocument = null, onDocumentSeen = null, guided = false, pendingRumor = null, onRumorSeen = null }) {
+  const nav = useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel, nurseRelationLevel, initialDialogue, onInitialDialogueSeen, guided, pendingRumor, onRumorSeen })
   const {
     currentFloor, playerX, facing, walking, walkFrame,
     activeDialogue, roomDescription, dialogueVisible,

@@ -24,11 +24,11 @@ function App() {
           onComplete={game.finishMorningNav}
           professorRelationLevel={game.professorRelationLevel}
           nurseRelationLevel={game.nurseRelationLevel}
-          initialDialogue={game.pendingRumor}
-          onInitialDialogueSeen={game.clearRumor}
           pendingDocument={game.pendingDocument}
           onDocumentSeen={game.clearDocument}
           guided={!game.guidedTourDone}
+          pendingRumor={game.pendingRumor}
+          onRumorSeen={game.clearRumor}
         />
       )}
       {screen === 'eveningNav' && (
@@ -37,6 +37,8 @@ function App() {
           onComplete={game.finishEveningNav}
           professorRelationLevel={game.professorRelationLevel}
           nurseRelationLevel={game.nurseRelationLevel}
+          pendingRumor={game.pendingRumor}
+          onRumorSeen={game.clearRumor}
         />
       )}
       {screen === 'phaseIntro' && <PhaseIntro phase={currentPhase} onComplete={game.startConsultation} />}

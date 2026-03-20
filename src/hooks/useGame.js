@@ -328,6 +328,8 @@ export default function useGame() {
 
     const next = epIndex + 1
     if (next >= allEpisodes.length) {
+      // Phase 3 완료 → Phase 4 진입 시 제도 채널 공지 예약
+      setPendingDocument(PERFORMANCE_NOTICE)
       setScreen('complete')
       return
     }
@@ -341,10 +343,9 @@ export default function useGame() {
     if (isNewPhase) {
       setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false })
       setDayTurnsUsed(0)
-      // Phase 3 진입: 소문·제도 채널 활성화
+      // Phase 3 진입: 소문 채널 활성화 (2층 김 간호사 클릭 시 1회 표시)
       if (nextEp.phase === 3) {
         setPendingRumor(NURSE_RUMOR)
-        setPendingDocument(PERFORMANCE_NOTICE)
       }
     }
 

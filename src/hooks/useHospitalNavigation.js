@@ -42,7 +42,7 @@ export function getPalette(timeOfDay) {
   }
 }
 
-export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral', initialDialogue = null, onInitialDialogueSeen = null, guided = false }) {
+export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComplete, professorRelationLevel = 'neutral', nurseRelationLevel = 'neutral', initialDialogue = null, onInitialDialogueSeen = null, guided = false, pendingRumor = null, onRumorSeen = null }) {
   const [currentFloor, setCurrentFloor] = useState(1)
   const [playerX, setPlayerX] = useState(80)
   const [guidedStep, setGuidedStep] = useState(0)
@@ -71,6 +71,10 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
   const onInitialDialogueSeenRef = useRef(onInitialDialogueSeen)
   onInitialDialogueSeenRef.current = onInitialDialogueSeen
   // 가이드 투어 refs
+  const pendingRumorRef = useRef(pendingRumor)
+  pendingRumorRef.current = pendingRumor
+  const onRumorSeenRef = useRef(onRumorSeen)
+  onRumorSeenRef.current = onRumorSeen
   const guidedRef = useRef(guided)
   guidedRef.current = guided
   const guidedStepRef = useRef(0)
@@ -128,6 +132,13 @@ export default function useHospitalNavigation({ timeOfDay, onEnterClinic, onComp
   }, [timeOfDay, onEnterClinic])
 
   const openNPC = useCallback((npc) => {
+    // 소문 채널: 김 간호사 클릭 시 pendingRumor 1회 표시
+    if (npc.id === 'nurse_kim' && pendingRumorRef.current) {
+      setActiveDialogue(pendingRumorRef.current)
+      setDialogueVisible(true)
+      onRumorSeenRef.current?.()
+      return
+    }
     const dialogues = getNPCDialogues(npc.id, professorRelationLevel, nurseRelationLevel, timeOfDay)
     if (!dialogues.length) return
     const idx = dialogueIndexRef.current[npc.id] || 0
