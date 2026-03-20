@@ -45,11 +45,17 @@ export const interludes = {
       { text: '좀 긴장되네요.', tone: 'nervous' },
       { text: '해볼게요.', tone: 'confident' },
     ],
-    afterReaction: [
-      { speaker: '선배', text: '처음엔 다 그래. 나도 그랬어.' },
-      { speaker: '선배', text: '어제 잘했잖아. 할 수 있어.' },
-      { speaker: '선배', text: '내일 보자.', pause: true },
-    ],
+    afterReaction: {
+      nervous: [
+        { speaker: '선배', text: '처음엔 다 그래. 나도 그랬어.' },
+        { speaker: '선배', text: '어제 잘했잖아. 할 수 있어.' },
+        { speaker: '선배', text: '내일 보자.', pause: true },
+      ],
+      confident: [
+        { speaker: '선배', text: '그래, 그 마음으로 하면 돼.' },
+        { speaker: '선배', text: '잘할 거야. 내일 보자.', pause: true },
+      ],
+    },
   },
   after_ep2_1: {
     character: '동기',

@@ -32,16 +32,21 @@ export default function InterludeScene({ interlude, onComplete }) {
     return clearTimers
   }, [interlude])
 
-  const react = useCallback(() => {
+  const react = useCallback((tone) => {
     setShowReactions(false)
 
-    if (afterReaction && afterReaction.length > 0) {
+    // afterReaction이 객체면 tone으로 분기, 배열이면 그대로 사용
+    const lines = Array.isArray(afterReaction)
+      ? afterReaction
+      : (afterReaction?.[tone] ?? [])
+
+    if (lines.length > 0) {
       // afterReaction 대사를 순차 표시 후 fadeOut
-      setAfterLines(afterReaction)
+      setAfterLines(lines)
       let delay = 600
-      afterReaction.forEach((_, i) => {
+      lines.forEach((_, i) => {
         addTimer(() => setAfterVisible(i + 1), delay)
-        delay += afterReaction[i]?.pause ? 1500 : 1000
+        delay += lines[i]?.pause ? 1500 : 1000
       })
       addTimer(() => { setFading(true); addTimer(onComplete, 1000) }, delay + 1000)
     } else {
@@ -83,7 +88,7 @@ export default function InterludeScene({ interlude, onComplete }) {
         {showReactions && reactions && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12, animation: 'fadeIn 0.5s ease' }}>
             {reactions.map((r, i) => (
-              <button key={i} onClick={react} style={{
+              <button key={i} onClick={() => react(r.tone)} style={{
                 textAlign: 'left', padding: '10px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)',
                 borderRadius: 5, cursor: 'pointer', fontFamily: 'system-ui,sans-serif', fontSize: 13, color: 'rgba(232,224,208,0.5)',
               }}>"{r.text}"</button>
