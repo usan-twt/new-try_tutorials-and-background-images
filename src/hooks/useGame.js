@@ -134,8 +134,8 @@ export default function useGame() {
   )
 
   // ── 스크립트 리셋 ──
-  const resetScript = useCallback((episode, resetDay = false) => {
-    setPhase('opening')
+  const resetScript = useCallback((episode, resetDay = false, withTransition = false) => {
+    setPhase(withTransition ? 'entering' : 'opening')
     setTurnIndex(0)
     setMessages([])
     setWaitingForChoice(false)
@@ -235,9 +235,9 @@ export default function useGame() {
   }, [epIndex, postApartmentScreen, resetScript])
 
   // ── 진료 종료 → dayEnd ──
-  const endConsultation = useCallback(() => {
-    setPhase('done')
-  }, [])
+  const endConsultation = useCallback(() => { setPhase('done') }, [])
+  // ── 환자 입장 전환 완료 → opening ──
+  const beginOpening = useCallback(() => { setPhase('opening') }, [])
 
   // phase === 'done'이 되면 App에서 호출
   // Phase 마지막 에피소드면 DayEnd 화면으로, 아니면 누적 후 다음 consultation
@@ -304,7 +304,7 @@ export default function useGame() {
         setPostInterludeScreen('consultation')
         setScreen('interlude')
       } else {
-        resetScript(nextEp, isNewDay)
+        resetScript(nextEp, isNewDay, true) // withTransition: 환자 교체 인식 오버레이
         setScreen('consultation')
       }
     }
@@ -525,7 +525,7 @@ export default function useGame() {
     phase, messages, currentTurn, currentChoices, currentEmotion,
     waitingForChoice, showSeniorGuide, innerVoice,
     usedFamilies, turnsRemaining, maxTurns, isOvertime, rapportUnlocked,
-    beginPlaying, send, endConsultation, buildDayEnd,
+    beginPlaying, beginOpening, send, endConsultation, buildDayEnd,
     exchangeCount, overtimeTurns, dayTurnsUsed,
     dayBudgetTotal: dayBudget?.totalTurns ?? null,
   }

@@ -16,13 +16,21 @@ export default function ConsultationScreen({ game }) {
     ep, phase, messages, currentTurn, currentChoices, currentEmotion,
     waitingForChoice, showSeniorGuide, innerVoice,
     turnsRemaining, maxTurns, isOvertime, dayBudgetTotal,
-    beginPlaying, send,
+    beginPlaying, beginOpening, send,
   } = game
 
   const [choiceDelayDone, setChoiceDelayDone] = useState(false)
   const endRef = useRef(null)
   const patient = ep.patient
   const emo = EMOTION_MAP[currentEmotion] || EMOTION_MAP.neutral
+
+  // 환자 입장 전환 → opening 자동 전환 (2200ms: 페이드인·유지·페이드아웃)
+  useEffect(() => {
+    if (phase === 'entering') {
+      const t = setTimeout(beginOpening, 2200)
+      return () => clearTimeout(t)
+    }
+  }, [phase, beginOpening])
 
   // 오프닝 → 플레이 자동 전환
   useEffect(() => {
@@ -207,7 +215,40 @@ export default function ConsultationScreen({ game }) {
         </div>
       )}
 
-      <style>{`@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}`}</style>
+      {/* 환자 입장 전환 오버레이 */}
+      {phase === 'entering' && (
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 60,
+          background: '#1A1815',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          gap: 14, pointerEvents: 'none',
+          animation: 'patientEnter 2.2s ease forwards',
+        }}>
+          <span style={{
+            fontFamily: 'system-ui,sans-serif', fontSize: 10,
+            color: 'rgba(232,224,208,0.25)', letterSpacing: '0.12em',
+          }}>다음 환자</span>
+          <p style={{
+            fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 22, fontWeight: 400,
+            color: '#E8E0D0', letterSpacing: '0.22em', margin: 0,
+          }}>{patient.name}</p>
+          <p style={{
+            fontFamily: 'system-ui,sans-serif', fontSize: 11,
+            color: 'rgba(255,255,255,0.28)', letterSpacing: '0.04em', margin: 0,
+          }}>{patient.age}세 · {patient.chiefComplaint}</p>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes patientEnter{
+          0%{opacity:0}
+          18%{opacity:1}
+          72%{opacity:1}
+          100%{opacity:0}
+        }
+      `}</style>
     </div>
   )
 }
