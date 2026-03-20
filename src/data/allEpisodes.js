@@ -21,6 +21,9 @@ export const dayConfig = {
 }
 
 export const interludes = {
+  // 식사 인터루드: type:'meal' placeholder — useGame.js에서 economy 기반으로 실제 텍스트 주입
+  meal_day4: { type: 'meal' },
+
   after_phase1: {
     character: '선배',
     lines: [
@@ -155,6 +158,7 @@ const allEpisodes = [
     id: 'phase3_ep2', phase: 3, day: 4,
     patient: { name: '정수아', age: 29, chiefComplaint: '아이 발열', initialEmotion: 'anxious' },
     directionTags: true, maxTurns: 8, script: ep3_2,
+    interludeBefore: 'meal_day4',
     dayEndData: {
       patients: [
         { name: '오철수', age: 55, chiefComplaint: '어깨 통증' },

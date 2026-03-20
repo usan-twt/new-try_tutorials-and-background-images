@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import allEpisodes, { interludes, dayBudgets, dayConfig } from '../data/allEpisodes'
 import { getApartmentTier, calculateEconomyDelta } from '../data/apartmentData'
 import { getRelationLevel, episodeNurseDelta, phaseRelationDelta, applyRelationDelta } from '../data/relationThresholds'
+import { getMealInterlude } from '../data/mealScenes'
 
 // ── 화면 전환 FSM ──
 const TRANSITIONS = {
@@ -41,6 +42,12 @@ function computeChoices(turn, lastFamily, turnsRemaining) {
   }
 
   return choices.length > 0 ? choices : null
+}
+
+// 식사 인터루드 placeholder를 economy 기반 실제 장면으로 교체
+function resolveInterlude(interlude, economy) {
+  if (interlude?.type === 'meal') return getMealInterlude(economy)
+  return interlude
 }
 
 export default function useGame() {
@@ -278,7 +285,7 @@ export default function useGame() {
 
       // 인터루드 체크 (Phase 중간 → 항상 consultation으로)
       if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
-        setCurrentInterlude(interludes[nextEp.interludeBefore])
+        setCurrentInterlude(resolveInterlude(interludes[nextEp.interludeBefore], economy))
         setPostInterludeScreen('consultation')
         setScreen('interlude')
       } else {
@@ -286,7 +293,7 @@ export default function useGame() {
         setScreen('consultation')
       }
     }
-  }, [ep, epIndex, resetScript, rapportCount, rapportGating])
+  }, [ep, epIndex, resetScript, rapportCount, rapportGating, economy])
 
   const nextEpisode = useCallback(() => {
     // 경제 변동 계산 (완료된 날의 에피소드 수 기준)
@@ -327,7 +334,7 @@ export default function useGame() {
     if (completedDay && dayConfig[completedDay]?.showApartment) {
       // apartment 이후 어디로 갈지 결정
       if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
-        setCurrentInterlude(interludes[nextEp.interludeBefore])
+        setCurrentInterlude(resolveInterlude(interludes[nextEp.interludeBefore], newEconomy))
         setPostInterludeScreen(isNewPhase ? 'morningNav' : 'consultation')
         setPostApartmentScreen('interlude')
       } else if (isNewPhase) {
@@ -341,7 +348,7 @@ export default function useGame() {
 
     // 기존 내비게이션 로직
     if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
-      setCurrentInterlude(interludes[nextEp.interludeBefore])
+      setCurrentInterlude(resolveInterlude(interludes[nextEp.interludeBefore], newEconomy))
       setPostInterludeScreen(isNewPhase ? 'morningNav' : 'consultation')
       setScreen('interlude')
       return
