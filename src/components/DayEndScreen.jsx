@@ -10,10 +10,10 @@ const fadeStyle = (show) => ({
 export default function DayEndScreen({ data, onNext }) {
   const { patients = [], unasked = [], lastScene = [], overtime = [], isFinalEpisode } = data
   const [count, setCount] = useState(0)
-  const [stages, setStages] = useState({ header: false, scene: false, unasked: false, overtime: false, final: false, next: false })
+  const [stages, setStages] = useState({ header: false, scene: false, overtime: false, final: false, next: false })
 
   useEffect(() => {
-    setCount(0); setStages({ header: false, scene: false, unasked: false, overtime: false, final: false, next: false })
+    setCount(0); setStages({ header: false, scene: false, overtime: false, final: false, next: false })
     const t = []
     let c = 600
     t.push(setTimeout(() => setStages(s => ({ ...s, header: true })), c))
@@ -21,7 +21,6 @@ export default function DayEndScreen({ data, onNext }) {
     patients.forEach((_, i) => t.push(setTimeout(() => setCount(i + 1), c + i * 500)))
     c += patients.length * 500
     if (lastScene.length) { c += 1000; t.push(setTimeout(() => setStages(s => ({ ...s, scene: true })), c)) }
-    if (unasked.length) { c += 1000; t.push(setTimeout(() => setStages(s => ({ ...s, unasked: true })), c)) }
     if (overtime.length) { c += 800; t.push(setTimeout(() => setStages(s => ({ ...s, overtime: true })), c)) }
     if (isFinalEpisode) { c += 1200; t.push(setTimeout(() => setStages(s => ({ ...s, final: true })), c)) }
     c += 1500; t.push(setTimeout(() => setStages(s => ({ ...s, next: true })), c))
@@ -33,24 +32,28 @@ export default function DayEndScreen({ data, onNext }) {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40, maxWidth: 400, padding: '0 28px' }}>
         <h2 style={{ fontFamily: serif, fontSize: 15, fontWeight: 300, color: 'rgba(232,224,208,0.4)', letterSpacing: '0.12em', ...fadeStyle(stages.header) }}>오늘 만난 사람들</h2>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 28 }}>
-          {patients.map((p, i) => (
-            <div key={p.name} style={{ textAlign: 'center', ...fadeStyle(i < count) }}>
-              <p style={{ fontFamily: serif, fontSize: 16, fontWeight: 400, color: '#E8E0D0', letterSpacing: '0.15em', marginBottom: 6 }}>{p.name}</p>
-              <p style={{ fontFamily: sans, fontSize: 12, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.03em' }}>{p.age}세 · {p.chiefComplaint}</p>
-            </div>
-          ))}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32 }}>
+          {patients.map((p, i) => {
+            const patientUnasked = unasked.filter(u => u.patientName === p.name)
+            return (
+              <div key={p.name} style={{ textAlign: 'center', ...fadeStyle(i < count) }}>
+                <p style={{ fontFamily: serif, fontSize: 16, fontWeight: 400, color: '#E8E0D0', letterSpacing: '0.15em', marginBottom: 6 }}>{p.name}</p>
+                <p style={{ fontFamily: sans, fontSize: 12, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.03em' }}>{p.age}세 · {p.chiefComplaint}</p>
+                {patientUnasked.length > 0 && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10 }}>
+                    {patientUnasked.map((u, j) => (
+                      <p key={j} style={{ fontFamily: serif, fontSize: 12, fontStyle: 'italic', fontWeight: 300, lineHeight: 1.7, color: 'rgba(232,224,208,0.25)' }}>{u.hint}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
 
         {lastScene.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, ...fadeStyle(stages.scene) }}>
             {lastScene.map((s, i) => <p key={i} style={{ fontFamily: serif, fontSize: 13, fontStyle: 'italic', fontWeight: 300, lineHeight: 1.7, color: 'rgba(232,224,208,0.4)', textAlign: 'center' }}>{s.description}</p>)}
-          </div>
-        )}
-
-        {unasked.length > 0 && (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, ...fadeStyle(stages.unasked) }}>
-            {unasked.map((u, i) => <p key={i} style={{ fontFamily: serif, fontSize: 12, fontStyle: 'italic', fontWeight: 300, lineHeight: 1.7, color: 'rgba(232,224,208,0.25)', textAlign: 'center' }}>{u.hint}</p>)}
           </div>
         )}
 
