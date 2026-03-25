@@ -24,17 +24,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Game Flow (Finite State Machine)
 
-The app is a screen-based FSM managed entirely in `src/hooks/useGame.js`. Screen transitions:
+The app is a screen-based FSM managed entirely in `src/hooks/useGame.js`. Core `TRANSITIONS` object handles the main path; `morningNav`/`eveningNav`/`apartment` are injected via direct `setScreen()` calls.
 
 ```
-title → corridor → morningNav → phaseIntro → consultation → dayEnd → eveningNav → (loop or complete)
-                                     ↑                          ↓
-                              interlude (optional, before some episodes)
+title → corridor → morningNav → phaseIntro → consultation
+                                     ↑              ↓ (phase end)
+                              interlude ←────── eveningNav → dayEnd
+                                                               ↓
+                                                   apartment (if dayConfig[day].showApartment)
+                                                               ↓
+                                          interlude / morningNav / consultation / complete
 ```
 
-- `corridor` — CorridorScene: first encounter with senior, player name input
-- `morningNav` / `eveningNav` — NavigationScreen: pixel-art hospital exploration
-- `interlude` — peer/senior dialogue between episodes (triggered by `interludeBefore` in episode definition)
+- `corridor` → `morningNav` (first hospital walk, guided tour; `guidedTourDone` flag set on exit)
+- `morningNav` → `phaseIntro` on clinic entry; `eveningNav` → `dayEnd` on floor-1 left exit
+- `apartment` — shown after phase-end days (day 3, 5); appearance and content driven by `economy` tier
+- `interlude` — NPC dialogue scene, triggered by `interludeBefore` in episode definition; `postInterludeScreen` determines where to go after
 - After final episode: `complete` screen
 
 ### Three-Phase Progression
@@ -48,6 +53,9 @@ title → corridor → morningNav → phaseIntro → consultation → dayEnd →
 - **Episode definitions**: `src/data/allEpisodes.js` — master list with patient metadata, phase config, script imports, and inline interlude definitions
 - **Scripts**: `src/data/phases/phase{1,2,3}/scripts/ep*.json` — dialogue trees with turns, choices, responses, senior guides, inner voice, and day-end extras
 - **Hospital map**: `src/data/hospitalMap.js` — 3-floor layout (외래/병동/의국) with rooms, NPCs, interaction ranges, and `CLINIC_IDS` that trigger episode start
+- **NPC dialogues**: `src/data/corridorEvents.js` — corridor NPC lines keyed by NPC id + time-of-day (morning/evening) + relation level (hostile/neutral/favorable)
+- **Meal scenes**: `src/data/mealScenes.js` — economy-tier-based meal interlude text pools; `getMealInterlude(economy)` randomly picks one scene per tier; used for `type:'meal'` interlude placeholders
+- **Corporate hospital events**: `src/data/corporateHospitalEvents.js` — 3-channel system: `SENIOR_ADVICE` (social channel, InterludeScene), `NURSE_RUMOR` (rumor channel, corridor popup on Phase 3 entry), `PERFORMANCE_NOTICE` (document channel, DocumentOverlay after game complete)
 
 ### Components & Hooks
 
@@ -55,8 +63,11 @@ title → corridor → morningNav → phaseIntro → consultation → dayEnd →
 - `useGame.js` — All game state and logic. Returns a flat object consumed by components. `send()` handles Phase 1 (no arg) and Phase 2+ (choice object). Key helpers: `computeChoices()`, `buildDayEnd()`, `resetScript()`
 - `ConsultationScreen` — Opening→playing→closing→done lifecycle via `useEffect` chains. Shows last 4 messages with fade, emotion orb, turn indicator dots (Phase 3), inner voice (Phase 2+)
 - `NavigationScreen` — Pixel-art side-scrolling hospital. Real-time movement via `useHospitalNavigation.js`. Morning nav: entering clinic starts episode; Evening nav: exiting left on floor 1 ends day
+- `ApartmentScreen` — Post-phase apartment scene. Shows entry text, window/phone interaction points. Content driven by `apartmentTier` (반지하/원룸/투룸). Phone shows bank overlay (`getBankEntries`). Pending move (tier change) shown on entry.
+- `DayEndScreen` — Phase-end summary: accumulated patients, unasked family hints, lastScene snippets, overtime notes, evaluation grade (Phase 2+)
 - `NotebookPanel` — Toggle panel (📓 button) with patient chart + memo textarea. First appearance shows hint pulse
 - `InterludeScene` — Sequential character dialogue with player reaction choices and `afterReaction` lines
+- `DocumentOverlay` — Full-screen document overlay for `pendingDocument` (PERFORMANCE_NOTICE); shown in morningNav
 
 ### Script JSON Structure
 
@@ -75,6 +86,23 @@ title → corridor → morningNav → phaseIntro → consultation → dayEnd →
 ```
 
 Scripts also contain: `opening`, `closing`, `closingGated` (Phase 3), `dayEndExtra: { unasked: { [family]: hint }, lastScene, lastSceneGated }`.
+
+### Economy & Relation Systems
+
+All numeric systems use 0–100 scale, starting at 50.
+
+**Economy** (`economy` state):
+- Determines `apartmentTier`: 반지하 (0–30), 원룸 (31–70), 투룸 (71–100)
+- Phase 1 completion: +3. Phase 2+ completion: grade-based ±8 via `evaluatePhase(phase, overtimeCount)`
+  - `high` (0 overtime): +8 economy, +8 professor relation
+  - `normal` (1 overtime): no change
+  - `low` (2+ overtime): −8 economy, −8 professor relation
+
+**Relations** (`professorRelation`, `nurseRelation`):
+- Levels: hostile (0–33), neutral (34–66), favorable (67–100)
+- Professor: changes on phase evaluation (above)
+- Nurse: +5 per episode when rapport threshold met (`episodeNurseDelta`), −5 via `phaseRelationDelta` if 2+ overtimes
+- Displayed in NavigationScreen NPC dialogues (via `corridorEvents.js`)
 
 ## ESLint
 
