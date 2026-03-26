@@ -1,0 +1,153 @@
+{
+  "opening": { "speaker": "patient", "text": "기침이 일주일째고요. 가래도 있어요. 저 원래 잘 안 아픈데, 헬스장 다니면서 이렇게 된 것 같아요." },
+  "nurseInfo": { "available": true, "text": "29세 남성분이에요. 기침·가래·미열 1주이에요. 헬스장 시작 직후 발병이라고 하세요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 양상 확인", "text": "기침이 어떤 편이에요? 마른 기침인가요, 가래가 같이 나오나요?", "intent": "symptom_type" },
+        { "tag": "생활", "family": "life", "label": "헬스장 환경 확인", "text": "헬스장 다니기 시작하신 게 얼마나 됐어요?", "intent": "gym_start" },
+        { "tag": "공감", "family": "emotional", "label": "건강에 자신 있는 분이 아프면 당황스럽다", "text": "평소에 잘 안 아프시는 편이시면 더 당황스러우셨겠어요.", "intent": "empathy_surprise" }
+      ],
+      "responses": {
+        "symptom_type": { "text": "가래 있는 기침이요. 초록빛은 아닌데 노랗긴 해요.", "emotion": "neutral" },
+        "gym_start": { "text": "2주 전에 시작했는데, 시작하고 나서 딱 컨디션이 나빠졌어요.", "emotion": "neutral" },
+        "empathy_surprise": { "text": "당황스럽죠. 몸 관리한다고 시작했더니 오히려 이렇게 됐어요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "열 정도 확인", "text": "열은 얼마나 돼요? 재어보셨어요?", "intent": "fever_level" },
+        { "tag": "생활", "family": "life", "label": "헬스장 운동 강도", "text": "헬스장에서 어떤 운동을 하세요? 강도가 센 편인가요?", "intent": "exercise_intensity" },
+        { "tag": "공감", "family": "emotional", "label": "헬스장이 원인이라고 생각하신다", "text": "헬스장 때문에 생긴 것 같다고 생각하세요?", "intent": "gym_hypothesis" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "다른 증상 동반 여부", "text": "콧물이나 목 아픈 것, 몸살 기운은 없었나요?", "intent": "associated_symptoms" },
+        "after_life": { "family": "life", "tag": "생활", "label": "운동 전 컨디션 상태", "text": "헬스장 시작하기 전에 컨디션은 괜찮으셨어요?", "intent": "pre_gym_condition" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "시작할 때 기대가 컸을 것이다", "text": "몸 관리 한번 제대로 해보려고 시작하셨던 거잖아요.", "intent": "empathy_motivation" }
+      },
+      "responses": {
+        "fever_level": { "text": "37.5 정도 나왔어요. 막 높은 편은 아닌데 찜찜하더라고요.", "emotion": "neutral" },
+        "exercise_intensity": { "text": "웨이트 위주로 했어요. 처음이라 좀 무리하게 한 것 같기도 해요.", "emotion": "neutral" },
+        "gym_hypothesis": { "text": "아무래도 그게 원인 아닌가요? 타이밍이 딱이거든요.", "emotion": "neutral" },
+        "associated_symptoms": { "text": "목이 약간 아팠는데 지금은 좀 나아요. 코는 좀 막혀요.", "emotion": "neutral" },
+        "pre_gym_condition": { "text": "완전 괜찮았어요. 평소에 피곤한 것도 없었고요.", "emotion": "neutral" },
+        "empathy_motivation": { "text": "이번에 진짜 꾸준히 해보려고 했는데... 이렇게 됐네요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "증상 경과 확인", "text": "일주일 동안 증상이 점점 나빠지고 있나요, 아니면 비슷한 수준인가요?", "intent": "progression" },
+        { "tag": "생활", "family": "life", "label": "헬스장 위생 환경", "text": "헬스장이 사람이 많은 편이에요? 환기는 잘 되는 것 같던가요?", "intent": "gym_hygiene" },
+        { "tag": "공감", "family": "emotional", "label": "그동안 참아온 이유", "text": "일주일이나 됐는데 지금 오셨네요. 참고 버티신 거예요?", "intent": "empathy_waited" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "호흡 곤란 여부", "text": "숨쉬기 힘들거나 가슴에 통증이 있는 건 아니죠?", "intent": "breathing_check" },
+        "after_life": { "family": "life", "tag": "생활", "label": "헬스장 이외 생활 환경", "text": "직장이나 학교에서 최근에 감기 걸린 분이 있었나요?", "intent": "exposure_other" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "잘 안 아프면 병원도 잘 안 가게 된다", "text": "평소에 잘 안 아프시면 병원 올 타이밍을 잡기 어려운 거 있죠.", "intent": "empathy_hospital_habit" }
+      },
+      "responses": {
+        "progression": { "text": "처음 2~3일은 좀 나아지나 싶었는데 그 다음부터 비슷한 것 같아요.", "emotion": "neutral" },
+        "gym_hygiene": { "text": "꽤 많더라고요. 환기는... 잘 모르겠어요. 그냥 있는 것 같은데.", "emotion": "neutral", "innerVoice": "밀폐된 공간, 사람 많음. 상기도 감염 경로로 유력하다." },
+        "empathy_waited": { "text": "뭐, 원래 이 정도면 저는 알아서 낫거든요. 이번엔 좀 안 낫길래 왔죠.", "emotion": "neutral" },
+        "breathing_check": { "text": "그런 건 없어요. 그냥 기침이랑 가래가 계속 있는 거예요.", "emotion": "neutral" },
+        "exposure_other": { "text": "직장 동료 중에 기침하는 분이 있긴 했어요. 근데 그 전에 헬스장 시작했거든요.", "emotion": "neutral", "innerVoice": "직장 전파 가능성도 있다. 헬스장이 유일한 원인은 아닐 수 있다." },
+        "empathy_hospital_habit": { "text": "맞아요. 병원은 진짜 안 오는 편이에요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "가래 색 및 성상 확인", "text": "가래가 노란색이라고 하셨는데, 냄새가 나거나 피가 섞인 적은 없어요?", "intent": "sputum_detail" },
+        { "tag": "생활", "family": "life", "label": "수면·피로 상태", "text": "요즘 잠은 잘 자고 있어요? 피로감이 심한가요?", "intent": "sleep_fatigue" },
+        { "tag": "공감", "family": "emotional", "label": "헬스장 원인 가설에 집착하는 이유", "text": "헬스장 때문이라는 게 좀 억울하게 느껴지시나요?", "intent": "empathy_gym_frustration" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "흡연 여부 확인", "text": "담배는 피우세요?", "intent": "smoking" },
+        "after_life": { "family": "life", "tag": "생활", "label": "음주 여부 확인", "text": "술은 자주 드시는 편이에요?", "intent": "alcohol" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "몸 관리하려다 아프면 더 속상하다", "text": "건강 관리하려다 이렇게 되면 더 속상하죠.", "intent": "empathy_irony" }
+      },
+      "responses": {
+        "sputum_detail": { "text": "냄새는 없고, 피는 없어요. 그냥 좀 진한 것 같아요.", "emotion": "neutral" },
+        "sleep_fatigue": { "text": "잠은 잘 자요. 피로감은 운동 때문인지 증상 때문인지 모르겠어요.", "emotion": "neutral" },
+        "empathy_gym_frustration": { "text": "억울하다기보다는... 원인을 알아야 다음에 조심하죠.", "emotion": "neutral" },
+        "smoking": { "text": "안 피워요.", "emotion": "neutral" },
+        "alcohol": { "text": "주말에 가끔 마시는 편이에요. 많이 마시진 않아요.", "emotion": "neutral" },
+        "empathy_irony": { "text": "그렇죠. 잘 살겠다고 했다가 이렇게 됐으니까요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "상기도 감염 가능성 설명", "text": "지금 증상은 상기도 감염, 쉽게 말하면 바이러스성 감기에 가까워요.", "intent": "diagnosis_explain" },
+        { "tag": "생활", "family": "life", "label": "헬스장이 직접 원인은 아니다", "text": "헬스장 자체가 원인이라기보다는, 면역이 낮아진 상태에서 바이러스에 노출된 것 같아요.", "intent": "gym_not_cause" },
+        { "tag": "공감", "family": "emotional", "label": "원인이 헬스장이 아닐 수 있다는 것", "text": "헬스장이 원인이 아닐 수도 있어요. 직장 동료분한테서 옮았을 가능성도 있거든요.", "intent": "empathy_alternative" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "항생제 필요 여부 설명", "text": "바이러스 감염이면 항생제가 필요 없을 수 있어요. 증상 완화 치료를 먼저 해볼게요.", "intent": "treatment_approach" },
+        "after_life": { "family": "life", "tag": "생활", "label": "운동 강도 조절 권유", "text": "지금 몸이 회복 중이니까 당분간 운동 강도를 줄이시는 게 좋겠어요.", "intent": "exercise_pause" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "헬스장은 계속 다녀도 된다", "text": "헬스장 자체가 나쁜 건 아니에요. 몸 회복되면 다시 시작하시면 돼요.", "intent": "empathy_gym_ok" }
+      },
+      "responses": {
+        "diagnosis_explain": { "text": "감기요? 그럼 헬스장 때문은 아닌 건가요?", "emotion": "neutral", "innerVoice": "가설이 흔들리고 있다. 약간 당황한 것 같다." },
+        "gym_not_cause": { "text": "그럼 제가 잘못 생각한 거네요.", "emotion": "neutral" },
+        "empathy_alternative": { "text": "아... 동료한테서요? 생각 못 했어요.", "emotion": "neutral", "innerVoice": "헬스장 가설이 무너지자 잠깐 멈췄다." },
+        "treatment_approach": { "text": "항생제 안 먹어도 되는 건가요? 그게 더 빨리 낫는 거 아닌가요?", "emotion": "neutral" },
+        "exercise_pause": { "text": "얼마 동안이요? 아예 쉬어야 하나요?", "emotion": "neutral" },
+        "empathy_gym_ok": { "text": "그렇군요. 그냥 멈추면 안 되는 건데.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방 설명", "text": "기침약이랑 점막 보호제 처방해 드릴게요. 열 나면 해열진통제도 드세요.", "intent": "prescription" },
+        { "tag": "생활", "family": "life", "label": "회복 중 생활 습관", "text": "물 많이 마시고, 충분히 자는 게 제일 중요해요. 면역이 회복되어야 낫거든요.", "intent": "recovery_habits" },
+        { "tag": "공감", "family": "emotional", "label": "건강 자부심이 진단 받아들이는 데 방해가 된다", "text": "평소에 잘 안 아프셔서 이게 '별거 아니다' 싶으신 것도 있죠. 근데 일주일이면 한번 봐야 해요.", "intent": "empathy_accept_diagnosis" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "악화 시 주의사항", "text": "열이 38.5도 이상 올라가거나, 가슴 통증, 호흡 곤란이 생기면 다시 오세요.", "intent": "warning" },
+        "after_life": { "family": "life", "tag": "생활", "label": "운동 재개 시점", "text": "기침이 없어지고 열도 없어진 후 이틀 정도 더 쉬고 운동 재개하시는 게 좋아요.", "intent": "gym_resume" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "조기에 온 게 잘한 것이다", "text": "일주일에 왔어도 충분히 빠른 거예요. 더 늦기 전에 오셨네요.", "intent": "empathy_good_timing" }
+      },
+      "responses": {
+        "prescription": { "text": "이거 먹으면 빨리 나을 수 있어요?", "emotion": "neutral" },
+        "recovery_habits": { "text": "물이요. 운동하면서 물은 많이 마시는데... 요즘은 좀 적게 마셨을 수도 있겠네요.", "emotion": "neutral" },
+        "empathy_accept_diagnosis": { "text": "...뭐, 일주일이나 됐는데 안 나으니까 왔죠.", "emotion": "neutral" },
+        "warning": { "text": "가슴 통증은 없어요. 그 정도는 아닌 것 같아서요.", "emotion": "neutral" },
+        "gym_resume": { "text": "그렇게 하면 되겠군요. 얼마 정도 걸릴 것 같아요?", "emotion": "neutral" },
+        "empathy_good_timing": { "text": "뭐, 원래 이거보다 심해도 안 오는 편인데.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "회복 기간 안내", "text": "상기도 감염은 보통 1~2주면 좋아져요. 약 먹으면 더 빨리요.", "intent": "prognosis" },
+        { "tag": "생활", "family": "life", "label": "헬스장 재개 방법 안내", "text": "다시 시작할 때는 처음에 가볍게 유산소 위주로 시작하시는 게 좋아요.", "intent": "gradual_return" },
+        { "tag": "공감", "family": "emotional", "label": "몸을 믿되 신호도 들어야 한다", "text": "건강하신 거 좋은 거예요. 근데 몸이 보내는 신호를 너무 무시하지 않는 것도 중요해요.", "intent": "empathy_body_signal" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "재진 필요 여부", "text": "3일 지나도 안 나아지면 다시 오세요. 그땐 검사가 필요할 수 있어요.", "intent": "followup" },
+        "after_life": { "family": "life", "tag": "생활", "label": "헬스장 환기 체크 조언", "text": "환기가 잘 되는지도 확인해 보시고, 특히 사람 많을 때 마스크 착용하시면 도움이 돼요.", "intent": "gym_prevention" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "오늘 잘 오셨다", "text": "이번에 오기 잘 하셨어요. 그냥 두면 더 길어질 수 있었거든요.", "intent": "empathy_final" }
+      },
+      "responses": {
+        "prognosis": { "text": "1~2주면 되는 거네요. 생각보다 긴 것 같기도 하고.", "emotion": "neutral" },
+        "gradual_return": { "text": "유산소 위주요. 알겠어요. 웨이트는 좀 기다려야겠군요.", "emotion": "neutral" },
+        "empathy_body_signal": { "text": "...그 말은 맞네요. 일주일을 버텼으니까요.", "emotion": "warming" },
+        "followup": { "text": "네, 알겠어요. 3일 봐볼게요.", "emotion": "neutral" },
+        "gym_prevention": { "text": "마스크요. 운동할 때 마스크는 좀 불편한데... 감염 예방이니까 해봐야겠네요.", "emotion": "neutral" },
+        "empathy_final": { "text": "그렇군요. 뭐, 왔으니 다행이네요.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "처방전 받고 가면 되죠? 빨리 나아서 다시 운동하고 싶네요." },
+  "closingGated": null,
+  "forceClose": {
+    "nurse": "다음 환자분 준비됐어요.",
+    "patient": "아, 알겠어요. 나갈게요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "가래 양상과 청진 소견을 더 구체적으로 확인하지 못했다.",
+      "life": "직장 동료와의 접촉 환경이나 최근 생활 스트레스 상황을 더 파악하지 못했다.",
+      "emotional": "건강에 대한 자부심이 언제부터 시작됐는지, 그 배경에 어떤 경험이 있는지 들어보지 못했다."
+    },
+    "lastScene": "박준영 씨가 처방전을 받아 보며 나간다. '감기가 이렇게 오래 가는 거구나' 중얼거리며 복도를 지난다.",
+    "lastSceneGated": null
+  }
+}

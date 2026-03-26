@@ -1,0 +1,153 @@
+{
+  "opening": { "speaker": "patient", "text": "전에 불안 때문에 여기 왔었는데요. 약을 스스로 끊었다가 또 나빠져서요." },
+  "nurseInfo": { "available": true, "text": "47세 남성분이에요. 불안장애 재진이에요. 자의로 단약 후 재발해서 오셨어요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "현재 증상 확인", "text": "지금 어떤 증상이 다시 나타났어요?", "intent": "current_symptoms" },
+        { "tag": "생활", "family": "life", "label": "단약 시점 확인", "text": "약을 언제부터 끊으셨어요?", "intent": "stop_timing" },
+        { "tag": "공감", "family": "emotional", "label": "다시 오기 어려웠을 것이다", "text": "다시 오기까지 많이 망설이셨겠어요.", "intent": "empathy_return" }
+      ],
+      "responses": {
+        "current_symptoms": { "text": "가슴이 두근거리고, 일에 집중이 안 되고요. 이유 없이 불안한 느낌이 다시 왔어요.", "emotion": "guarded" },
+        "stop_timing": { "text": "두 달 전에 끊었어요. 좀 나아진 것 같아서요.", "emotion": "guarded" },
+        "empathy_return": { "text": "...뭐, 어쩔 수 없어서 왔죠.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "단약 전 상태 확인", "text": "약을 끊을 때 증상이 충분히 나아져 있었나요?", "intent": "state_before_stop" },
+        { "tag": "생활", "family": "life", "label": "단약 결정 이유", "text": "약을 스스로 끊으신 이유가 있으셨어요?", "intent": "reason_stop" },
+        { "tag": "공감", "family": "emotional", "label": "재발이 실망스러우실 것이다", "text": "나아지고 있다고 생각하셨을 텐데, 다시 나빠지셨을 때 많이 실망스러우셨겠어요.", "intent": "empathy_relapse" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "수면 상태 확인", "text": "잠은 잘 자고 계세요?", "intent": "sleep_quality" },
+        "after_life": { "family": "life", "tag": "생활", "label": "주변에 알린 사람이 있는지", "text": "가족이나 직장 분들은 아세요?", "intent": "disclosure" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "자책이 크실 것 같다", "text": "스스로를 많이 탓하고 계신 건 아닌가요?", "intent": "empathy_selfblame" }
+      },
+      "responses": {
+        "state_before_stop": { "text": "좀 나은 것 같았어요. 약 없이도 될 것 같기도 했고요.", "emotion": "guarded" },
+        "reason_stop": { "text": "의지로 이겨야 하는 게 아닌가 싶었어요. 약에 의존하는 게... 좀 그랬어요.", "emotion": "guarded", "innerVoice": "핵심 신념이 나왔다. '의지로 이겨야 한다'는 것." },
+        "empathy_relapse": { "text": "실망이죠. 의지가 부족한 건지 싶고.", "emotion": "guarded" },
+        "sleep_quality": { "text": "잘 못 자요. 새벽에 깨고, 다시 잠들기가 힘들어요.", "emotion": "guarded" },
+        "disclosure": { "text": "아무도 몰라요. 직장에서 알면 곤란하고, 가족들도 말 안 했어요.", "emotion": "guarded" },
+        "empathy_selfblame": { "text": "...조금요. 이게 제 탓 아닌가 싶기도 하고.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "이전 처방 확인", "text": "전에 어떤 약 드셨는지 기억하세요?", "intent": "previous_med" },
+        { "tag": "생활", "family": "life", "label": "직장 스트레스 상황", "text": "요즘 직장에서 스트레스 많이 받는 상황이에요?", "intent": "work_stress" },
+        { "tag": "공감", "family": "emotional", "label": "의지 문제가 아니라는 것", "text": "의지가 부족해서 재발한 게 아니에요. 이건 그런 병이 아니에요.", "intent": "empathy_will" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "공황 증상 동반 여부", "text": "갑자기 심하게 두근거리거나, 식은땀이 나거나, 숨이 막히는 느낌이 있었나요?", "intent": "panic_check" },
+        "after_life": { "family": "life", "tag": "생활", "label": "단약 이후 생활 변화", "text": "약 끊은 후 두 달 동안 일상이 어떠셨어요?", "intent": "life_after_stop" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "의지와 질환은 다르다", "text": "당뇨 있는 분한테 의지가 부족해서 혈당이 오른다고 하지 않잖아요.", "intent": "empathy_reframe" }
+      },
+      "responses": {
+        "previous_med": { "text": "에스시탈로프람이었나... 정확히 이름은 기억 안 나요.", "emotion": "guarded" },
+        "work_stress": { "text": "뭐, 늘 있는 것 같아요. 특별히 더 심한 건 아닌데.", "emotion": "guarded" },
+        "empathy_will": { "text": "...그게 의지 문제가 아니라고요?", "emotion": "guarded", "innerVoice": "처음으로 의문을 가진다. 신념이 흔들리는 지점이다." },
+        "panic_check": { "text": "두근거리는 건 있는데, 그 정도까진 아니에요.", "emotion": "guarded" },
+        "life_after_stop": { "text": "한 달은 괜찮았어요. 그 다음부터 슬슬 다시 나빠지는 것 같았고, 한 달을 더 버텼는데 결국 왔네요.", "emotion": "guarded" },
+        "empathy_reframe": { "text": "...그렇게 생각하면 좀 다르긴 하네요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "불안의 신체 증상 파악", "text": "불안할 때 몸에 어떤 증상이 나타나요? 손발이 떨리거나, 숨이 가빠지거나 하는 것들이요.", "intent": "somatic_symptoms" },
+        { "tag": "생활", "family": "life", "label": "단약 결정을 혼자 하셨다", "text": "약을 끊으실 때 담당 선생님께 말씀드리셨어요?", "intent": "consult_before_stop" },
+        { "tag": "공감", "family": "emotional", "label": "의지로 이기려 한 것 자체는 이해한다", "text": "약 없이 이겨보고 싶었던 마음, 충분히 이해해요. 그 마음이 나쁜 게 아니에요.", "intent": "empathy_understand_will" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "불안 발생 패턴 확인", "text": "불안이 주로 어떤 상황에서 심해지나요?", "intent": "trigger" },
+        "after_life": { "family": "life", "tag": "생활", "label": "혼자 결정한 이유 탐색", "text": "상의하기 어려운 이유가 있었나요?", "intent": "why_alone" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "다시 오기까지 걸린 용기", "text": "그래도 다시 이렇게 오셨잖아요. 그게 쉽지 않았을 거예요.", "intent": "empathy_courage" }
+      },
+      "responses": {
+        "somatic_symptoms": { "text": "손이 약간 떨리고, 목이 꽉 막히는 느낌이요. 집중이 안 되고 자꾸 최악의 상황을 생각하게 돼요.", "emotion": "guarded" },
+        "consult_before_stop": { "text": "...아니요. 그냥 제가 판단했어요.", "emotion": "guarded" },
+        "empathy_understand_will": { "text": "그러면 왜 안 되는 건가요?", "emotion": "guarded", "innerVoice": "신념에 근거를 요구하고 있다. 설명이 필요하다." },
+        "trigger": { "text": "혼자 있을 때, 특히 밤에 심해요. 아무것도 안 하고 있으면 생각이 많아지고.", "emotion": "guarded" },
+        "why_alone": { "text": "왜냐면... 그냥 쪽팔린 것도 있고, 내가 결정해야 한다는 생각이 있어서요.", "emotion": "guarded", "innerVoice": "수치심과 자율성에 대한 집착이 함께 있다." },
+        "empathy_courage": { "text": "...한 달을 버티다 왔어요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "불안장애 기전 설명", "text": "불안장애는 뇌에서 신호 조절이 잘 안 되는 상태예요. 약은 그걸 도와주는 거고요.", "intent": "explain_mechanism" },
+        { "tag": "생활", "family": "life", "label": "재발 후 생활 영향", "text": "다시 불안이 생기고 나서 일이나 일상에 영향이 있었어요?", "intent": "relapse_impact" },
+        { "tag": "공감", "family": "emotional", "label": "한 달을 버틴 것이 대단하다", "text": "한 달을 혼자 버티신 거잖아요. 쉽지 않으셨을 텐데.", "intent": "empathy_endured" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "단약 방법 안내", "text": "다음에 약을 줄이실 때는 꼭 저랑 상의하고 천천히 줄이셔야 해요.", "intent": "taper_guide" },
+        "after_life": { "family": "life", "tag": "생활", "label": "대인관계 영향 확인", "text": "불안할 때 사람 만나는 게 힘들어지기도 하나요?", "intent": "social_impact" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "이번에 오신 게 맞는 결정이다", "text": "이번에 다시 오신 거, 맞는 결정이에요.", "intent": "empathy_right_decision" }
+      },
+      "responses": {
+        "explain_mechanism": { "text": "...의지가 아니라 뇌 문제라고요.", "emotion": "guarded", "innerVoice": "받아들이려는 듯 조용해진다." },
+        "relapse_impact": { "text": "집중이 안 되니까 실수가 늘었어요. 중요한 회의에서 긴장을 너무 많이 하고.", "emotion": "guarded" },
+        "empathy_endured": { "text": "그냥 버텼죠. 근데 한계가 온 것 같아요.", "emotion": "warming" },
+        "taper_guide": { "text": "그렇게 해야 하는 거군요. 몰랐어요.", "emotion": "neutral" },
+        "social_impact": { "text": "네. 사람 많은 자리가 요즘 더 힘들어요. 피하게 되더라고요.", "emotion": "guarded" },
+        "empathy_right_decision": { "text": "...그렇게 말씀해 주시니까 좀 낫네요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방 재개 설명", "text": "이전이랑 같은 계열 약으로 다시 시작해 볼게요. 효과가 나오려면 2~3주 걸려요.", "intent": "restart_med" },
+        { "tag": "생활", "family": "life", "label": "비약물 치료 병행 안내", "text": "약 외에 인지행동 치료나 스트레스 관리도 도움이 돼요. 관심 있으세요?", "intent": "cbt_option" },
+        { "tag": "공감", "family": "emotional", "label": "이 병을 대하는 방식에 대해", "text": "이걸 부끄러운 거로 혼자 끌어안지 않아도 된다는 거, 이번에 좀 알아가시면 좋겠어요.", "intent": "empathy_stigma" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "부작용 및 복약 주의사항", "text": "처음 1~2주는 약간 졸릴 수 있어요. 운전 조심하시고, 술은 피하세요.", "intent": "side_effects" },
+        "after_life": { "family": "life", "tag": "생활", "label": "규칙적인 생활의 중요성", "text": "수면 리듬이 불안을 많이 좌우해요. 같은 시간에 자고 일어나는 게 도움이 돼요.", "intent": "sleep_routine" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "치료받는 것이 용기다", "text": "치료받으러 오는 게 사실은 굉장히 용기 있는 일이에요.", "intent": "empathy_bravery" }
+      },
+      "responses": {
+        "restart_med": { "text": "2~3주요. 그동안은 어떻게 버텨야 하죠.", "emotion": "guarded" },
+        "cbt_option": { "text": "그런 게 있군요. 한번 알아볼게요.", "emotion": "neutral" },
+        "empathy_stigma": { "text": "...그게 쉽지 않긴 한데. 그렇게 하도록 해볼게요.", "emotion": "warming" },
+        "side_effects": { "text": "술은 안 마시니까요. 졸린 건 감당하면 되겠죠.", "emotion": "neutral" },
+        "sleep_routine": { "text": "자는 시간이 들쑥날쑥한 편이에요. 신경 써볼게요.", "emotion": "neutral" },
+        "empathy_bravery": { "text": "...용기라는 말은 생각 못 해봤네요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "다음 진료 예약", "text": "3주 후에 오세요. 그때 약 효과랑 부작용 확인해 볼게요.", "intent": "next_appointment" },
+        { "tag": "생활", "family": "life", "label": "불안 심해질 때 대처법", "text": "불안이 갑자기 심해지면 복식 호흡이 도움돼요. 배가 올라오도록 천천히 숨을 내쉬는 거예요.", "intent": "coping_tip" },
+        { "tag": "공감", "family": "emotional", "label": "오늘 상담 마무리", "text": "오늘 많이 털어놓으셨어요. 혼자 가지고 계셨던 거잖아요.", "intent": "empathy_final" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "약 중단 금지 당부", "text": "이번엔 임의로 끊지 마세요. 줄이고 싶을 때 꼭 저한테 말씀해 주세요.", "intent": "no_self_stop" },
+        "after_life": { "family": "life", "tag": "생활", "label": "믿을 수 있는 사람 한 명", "text": "가까운 분 중에 한 명한테라도 말할 수 있으면 좋겠어요. 혼자 버티는 게 제일 힘들어요.", "intent": "one_person" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "다음엔 더 일찍 오셔도 된다", "text": "다음에 나빠지면 한 달 버티지 말고, 일찍 와도 괜찮아요.", "intent": "empathy_come_sooner" }
+      },
+      "responses": {
+        "next_appointment": { "text": "네, 알겠어요.", "emotion": "neutral" },
+        "coping_tip": { "text": "복식 호흡이요. 해볼게요.", "emotion": "neutral" },
+        "empathy_final": { "text": "...그러게요. 말하고 나니까 좀 낫긴 해요.", "emotion": "warming" },
+        "no_self_stop": { "text": "이번엔 그렇게 하겠습니다.", "emotion": "neutral" },
+        "one_person": { "text": "...생각해볼게요.", "emotion": "neutral" },
+        "empathy_come_sooner": { "text": "네. 이번에 너무 오래 버텼네요.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 처방전 받고 갈게요." },
+  "closingGated": null,
+  "forceClose": {
+    "nurse": "다음 환자분 준비되셨어요.",
+    "patient": "아, 네. 일어날게요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "공황 발작에 가까운 증상이 실제로 있었는지 더 자세히 확인하지 못했다.",
+      "life": "가족관계나 직장 내 인간관계가 불안에 어떤 영향을 주는지 탐색하지 못했다.",
+      "emotional": "혼자 버텨온 시간이 얼마나 외로웠는지, 그 감정을 더 들어주지 못했다."
+    },
+    "lastScene": "최석훈 씨가 처방전을 접어 주머니에 넣는다. 진료실 문을 나서기 전 잠깐 멈췄다가 나간다.",
+    "lastSceneGated": null
+  }
+}

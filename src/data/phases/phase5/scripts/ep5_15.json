@@ -1,0 +1,153 @@
+{
+  "opening": { "speaker": "patient", "text": "배가 자주 아프고 설사를 해요. 스트레스인지 모르겠는데... 원인을 모르겠어요." },
+  "nurseInfo": { "available": true, "text": "54세 여성분이에요. 과민성 대장 증후군 증상으로 오셨어요. 원인을 모르겠다고 하시는데, 생활 환경 탐색이 필요해 보여요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "복통 양상 확인", "text": "배가 어디가 아프세요? 어떤 통증인지 좀 더 말씀해 주실 수 있어요?", "intent": "pain_detail" },
+        { "tag": "생활", "family": "life", "label": "음식과의 연관성", "text": "특정 음식 드신 후에 더 심해진다거나 그런 건 없었어요?", "intent": "food_relation" },
+        { "tag": "공감", "family": "emotional", "label": "원인을 모르면 더 답답하다", "text": "원인을 모르면 더 답답하고 불안하시죠.", "intent": "empathy_uncertainty" }
+      ],
+      "responses": {
+        "pain_detail": { "text": "아랫배가 주로 아프고요. 쥐어짜는 것 같은 통증이에요. 화장실 다녀오면 좀 나아요.", "emotion": "neutral" },
+        "food_relation": { "text": "딱히 어떤 음식인지는 모르겠어요. 그냥 자주 그러니까요.", "emotion": "neutral" },
+        "empathy_uncertainty": { "text": "네, 그냥 갑자기 아프거든요. 왜 그런지를 모르니까 더 불안하기도 하고요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "설사 빈도 확인", "text": "설사가 하루에 몇 번 정도 있어요?", "intent": "diarrhea_freq" },
+        { "tag": "생활", "family": "life", "label": "증상이 언제부터인지", "text": "이 증상이 언제부터 있었어요? 최근 들어 더 심해졌나요?", "intent": "onset_duration" },
+        { "tag": "공감", "family": "emotional", "label": "일상이 불편하실 것이다", "text": "이러면 밖에 나가거나 할 때도 신경 쓰이시겠어요.", "intent": "empathy_daily_impact" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "혈변·점액 여부", "text": "대변에 피가 섞이거나 점액 같은 게 보인 적 있어요?", "intent": "blood_mucus" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면·피로감 확인", "text": "요즘 잠은 잘 자고 계세요?", "intent": "sleep_check" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "증상이 생기면 더 긴장되는지", "text": "배가 아플 것 같으면 미리 불안해지기도 하나요?", "intent": "anticipatory_anxiety" }
+      },
+      "responses": {
+        "diarrhea_freq": { "text": "하루에 두세 번은 화장실 가는 것 같아요. 급하게 가야 할 때가 많고요.", "emotion": "neutral" },
+        "onset_duration": { "text": "한 일 년은 된 것 같아요. 요즘 좀 더 심해진 것 같기도 하고요.", "emotion": "neutral" },
+        "empathy_daily_impact": { "text": "그렇죠. 나들이 같은 거 하기가 좀 꺼려지더라고요.", "emotion": "neutral" },
+        "blood_mucus": { "text": "피는 없어요. 뭔가 미끌거리는 게 있을 때는 있는데.", "emotion": "neutral" },
+        "sleep_check": { "text": "잘은 자는데... 숙면이 되는 것 같진 않아요.", "emotion": "neutral" },
+        "anticipatory_anxiety": { "text": "맞아요, 외출 전에 미리 화장실 들르고 그러죠.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "체중 변화 확인", "text": "최근에 체중이 갑자기 빠지거나 하진 않았나요?", "intent": "weight_change" },
+        { "tag": "생활", "family": "life", "label": "규칙적인 식사 여부", "text": "세 끼 규칙적으로 드시는 편이세요?", "intent": "meal_pattern" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 참아오셨을 것 같다", "text": "일 년 동안 이러셨으면 많이 힘드셨겠어요.", "intent": "empathy_year" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "가족력 확인", "text": "대장 쪽 가족력은 있으세요? 부모님이나 형제분 중에 대장 관련 질환이 있으셨어요?", "intent": "family_history" },
+        "after_life": { "family": "life", "tag": "생활", "label": "평소 생활 환경 탐색", "text": "평소 집에서 어떻게 지내세요? 주로 어떤 시간을 보내시나요?", "intent": "home_environment" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "스트레스 원인이 있는지", "text": "스트레스인 것 같다고 하셨는데, 어떤 부분에서 스트레스를 받고 계세요?", "intent": "stress_source" }
+      },
+      "responses": {
+        "weight_change": { "text": "특별히 빠진 건 없어요. 그냥 비슷한 것 같아요.", "emotion": "neutral" },
+        "meal_pattern": { "text": "그냥 집에서 먹는 편이에요. 규칙적인 건지 모르겠어요.", "emotion": "neutral" },
+        "empathy_year": { "text": "...그냥 이런가 보다 했죠.", "emotion": "neutral", "innerVoice": "체념에 가까운 반응이다. 더 아래에 뭔가 있을 것 같다." },
+        "family_history": { "text": "어머니가 위장이 안 좋으셨어요.", "emotion": "neutral" },
+        "home_environment": { "text": "집에 있죠. 그냥 집안일 하고요.", "emotion": "neutral", "innerVoice": "대답이 짧고 평범하다. 그 안이 궁금하다." },
+        "stress_source": { "text": "딱히... 잘 모르겠어요.", "emotion": "neutral", "innerVoice": "모른다고 하지만, 질문에 잠깐 멈췄다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "복부 팽만감 여부", "text": "배가 가스 차서 빵빵한 느낌은 없어요?", "intent": "bloating" },
+        { "tag": "생활", "family": "life", "label": "집에 누가 계신지", "text": "집에 가족분들이랑 함께 사세요?", "intent": "household" },
+        { "tag": "공감", "family": "emotional", "label": "집에 있는 시간이 편안한지", "text": "집에 계실 때 마음이 편안한 편이세요?", "intent": "home_comfort" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "이전 검사 여부", "text": "장 관련해서 이전에 검사 받아보신 적 있어요?", "intent": "prev_exam" },
+        "after_life": { "family": "life", "tag": "생활", "label": "집 분위기 탐색", "text": "가족들이랑 사이가 어때요?", "intent": "family_relation" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "편하지 않은 것 같다", "text": "집에 있을 때 불편한 게 있나요?", "intent": "home_tension" }
+      },
+      "responses": {
+        "bloating": { "text": "그것도 가끔 있어요. 배가 묵직한 느낌이요.", "emotion": "neutral" },
+        "household": { "text": "남편이랑 둘이 살아요.", "emotion": "neutral" },
+        "home_comfort": { "text": "...그냥 그런 편이에요.", "emotion": "neutral", "innerVoice": "'그냥 그렇다'는 말에 뭔가 담겨 있는 것 같다.", "gatedResponse": { "text": "남편이랑 사이가 좀... 오래된 문제가 있어서요.", "emotion": "guarded" } },
+        "prev_exam": { "text": "5년 전에 대장내시경 했는데 이상 없다고 했어요.", "emotion": "neutral" },
+        "family_relation": { "text": "...뭐, 그냥요.", "emotion": "neutral", "gatedResponse": { "text": "남편이랑은... 그냥 살고 있는 거예요. 사이가 좋진 않아요.", "emotion": "guarded" } },
+        "home_tension": { "text": "딱히 그런 건 없어요.", "emotion": "neutral", "gatedResponse": { "text": "집에 있으면 불편해서요. 남편이 있으면 저도 모르게 긴장이 돼요.", "emotion": "guarded" } }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "과민성 대장 증후군 설명", "text": "지금 증상들이 과민성 대장 증후군에 해당하는 것 같아요. 스트레스에 굉장히 민감한 질환이에요.", "intent": "ibs_explain" },
+        { "tag": "생활", "family": "life", "label": "긴장 상황에서의 증상 악화", "text": "스트레스를 받거나 긴장하면 증상이 더 심해진다는 느낌이 있어요?", "intent": "stress_symptom_link" },
+        { "tag": "공감", "family": "emotional", "label": "오랫동안 참아온 것에 대해", "text": "말씀 들으면서... 집에서 많이 참고 계신 건 아닌가 싶어요.", "intent": "empathy_enduring" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "식이 조절 방법 안내", "text": "고지방 음식, 자극적인 음식, 카페인을 줄이면 증상이 나아지는 경우가 많아요.", "intent": "diet_advice" },
+        "after_life": { "family": "life", "tag": "생활", "label": "증상 패턴과 생활 연결", "text": "언제 증상이 제일 심한지 메모해 보시면 원인 찾는 데 도움이 돼요.", "intent": "symptom_diary" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "장기간의 긴장이 몸에 영향을 준다", "text": "오랫동안 긴장된 환경에 있으면 신체 증상으로 나타나는 경우가 많아요.", "intent": "empathy_body_signal" }
+      },
+      "responses": {
+        "ibs_explain": { "text": "스트레스가 원인이라고요. 근데 딱히 스트레스받는 게 없는 것 같아서요.", "emotion": "neutral" },
+        "stress_symptom_link": { "text": "...그런 것 같기도 해요. 집에서 불편할 때 배가 더 아픈 것 같기도 하고.", "emotion": "neutral", "gatedResponse": { "text": "남편이 있는 날에 더 심한 것 같아요. 말하기 좀 그런데.", "emotion": "guarded" } },
+        "empathy_enduring": { "text": "...꼭 그런 건 아닌데요.", "emotion": "neutral", "gatedResponse": { "text": "...말씀드리기 좀 그렇지만, 남편이랑 오래된 갈등이 있어요. 집에 있으면 항상 조심하게 되는 것 같아요.", "emotion": "guarded" } },
+        "diet_advice": { "text": "커피를 좋아하는데, 줄여봐야겠네요.", "emotion": "neutral" },
+        "symptom_diary": { "text": "그게 도움이 되겠네요. 한번 해볼게요.", "emotion": "neutral" },
+        "empathy_body_signal": { "text": "...그렇군요. 그게 몸으로 나온다는 게 신기하기도 하고 무섭기도 하네요.", "emotion": "neutral", "gatedResponse": { "text": "집에서 긴장하는 게 몸에 영향을 준다는 거... 좀 씁쓸하긴 해요.", "emotion": "guarded" } }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "약 처방 안내", "text": "장 경련을 줄여주는 약이랑 프로바이오틱스 처방해 드릴게요.", "intent": "prescription" },
+        { "tag": "생활", "family": "life", "label": "운동과 규칙적 생활 효과", "text": "가벼운 운동, 예를 들어 걷기가 과민성 대장에 굉장히 도움이 돼요.", "intent": "exercise_advice" },
+        { "tag": "공감", "family": "emotional", "label": "말씀해주셔서 감사하다", "text": "오늘 말씀해 주신 거, 처음 하시는 이야기들인 것 같아서요. 쉽지 않으셨을 텐데.", "intent": "empathy_disclosure" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "경과 관찰 안내", "text": "한 달 후에 다시 오셔서 증상 어떤지 봐요.", "intent": "followup" },
+        "after_life": { "family": "life", "tag": "생활", "label": "혼자만의 시간 만들기", "text": "집에서 잠깐이라도 혼자 쉴 수 있는 시간이 있으면 도움이 돼요.", "intent": "self_time" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "심리 상담도 방법이 될 수 있다", "text": "신체 증상이 생활 환경과 연결될 때는 심리 상담이 함께 도움이 되기도 해요.", "intent": "counseling_option" }
+      },
+      "responses": {
+        "prescription": { "text": "네, 약이 도움이 되면 좋겠어요.", "emotion": "neutral" },
+        "exercise_advice": { "text": "걷기요. 예전엔 산책을 좀 했는데 요즘은 못 하고 있어요.", "emotion": "neutral" },
+        "empathy_disclosure": { "text": "...네. 말하기 좀 그런 얘긴데 들어주셔서 감사해요.", "emotion": "warming" },
+        "followup": { "text": "네, 그렇게 할게요.", "emotion": "neutral" },
+        "self_time": { "text": "그게 쉽지 않긴 한데... 생각해 볼게요.", "emotion": "neutral" },
+        "counseling_option": { "text": "상담이요... 생각해본 적은 없었는데. 고려해볼게요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "악화 시 주의사항", "text": "혈변이나 심한 복통, 체중이 갑자기 빠지는 증상이 생기면 바로 오셔야 해요.", "intent": "warning_signs" },
+        { "tag": "생활", "family": "life", "label": "생활 변화를 천천히", "text": "다 한꺼번에 바꾸려 하지 말고, 커피 줄이는 것부터 천천히 해보세요.", "intent": "gradual_change" },
+        { "tag": "공감", "family": "emotional", "label": "몸이 힘들다고 신호를 보낸 것이다", "text": "몸이 지금 뭔가 힘들다고 신호를 보내고 있는 것 같아요. 그 신호를 들어주세요.", "intent": "empathy_body_listen" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "장 건강 유지법 한 가지", "text": "물을 하루에 1.5리터 이상 마시는 것만으로도 장 컨디션이 많이 달라져요.", "intent": "hydration_tip" },
+        "after_life": { "family": "life", "tag": "생활", "label": "산책 다시 시작해보기", "text": "하루 20분 산책만 다시 시작해 보시는 건 어떨까요?", "intent": "walk_restart" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "자신을 돌보는 것도 중요하다", "text": "본인 건강을 챙기는 것, 당연히 하셔도 돼요.", "intent": "self_care_ok" }
+      },
+      "responses": {
+        "warning_signs": { "text": "네, 알겠어요. 그런 거 생기면 바로 올게요.", "emotion": "neutral" },
+        "gradual_change": { "text": "그렇게 할게요. 한꺼번에 하려면 힘드니까요.", "emotion": "neutral" },
+        "empathy_body_listen": { "text": "...네. 그렇게 생각하니까 좀 다르게 느껴지네요.", "emotion": "warming" },
+        "hydration_tip": { "text": "물을 그렇게 많이 마셔야 하는군요. 신경 써볼게요.", "emotion": "neutral" },
+        "walk_restart": { "text": "20분이라면 해볼 수 있을 것 같아요.", "emotion": "warming" },
+        "self_care_ok": { "text": "...그게 쉽지 않을 때가 있어요. 근데 그렇게 하도록 해볼게요.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사해요. 약이 좀 도움이 됐으면 좋겠어요." },
+  "closingGated": { "speaker": "patient", "text": "오늘 말씀드리길 잘 한 것 같아요. 몸이 이유가 있어서 아팠던 거 같기도 하고." },
+  "forceClose": {
+    "nurse": "다음 환자분 계세요.",
+    "patient": "아, 네. 금방 나갈게요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "5년 전 대장내시경 이후 추가 검사를 한 번 더 권유하지 못했다.",
+      "life": "남편과의 갈등이 구체적으로 어떤 상황인지, 일상에서 어떻게 영향을 주는지 더 들어보지 못했다.",
+      "emotional": "오랫동안 이 상황에서 버텨온 이유가 무엇인지, 그 안에서 어떤 감정이 있었는지 더 이야기하지 못했다."
+    },
+    "lastScene": "윤미선 씨가 처방전을 받아 접어 넣으며 진료실을 나선다. 복도 끝에서 잠깐 창문 쪽을 바라보다가 출구로 향한다.",
+    "lastSceneGated": "윤미선 씨가 나서면서 말한다. '이런 얘기를 여기서 하게 될 줄 몰랐어요.' 문이 닫힌다."
+  }
+}
