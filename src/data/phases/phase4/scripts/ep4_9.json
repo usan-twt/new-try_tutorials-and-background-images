@@ -1,0 +1,159 @@
+{
+  "opening": { "speaker": "patient", "text": "잠을 좀 못 자서요. 별거 아닌 것 같은데, 좀 오래됐나 싶어서요." },
+  "nurseInfo": { "available": true, "text": "29세 여성분이에요. 불면과 집중력 저하가 두 달째 지속된다고 하시네요. 취업 준비 중이신 것 같아요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "수면 양상 확인", "text": "잠들기가 어려운 건지, 자다 깨는 건지, 어떤 식인가요?", "intent": "sleep_pattern" },
+        { "tag": "생활", "family": "life", "label": "언제부터 시작됐는지", "text": "언제부터 이런 증상이 생겼나요?", "intent": "onset" },
+        { "tag": "공감", "family": "emotional", "label": "두 달이나 됐겠다", "text": "두 달이나 됐으면 많이 힘드셨겠어요.", "intent": "empathy_hard" }
+      ],
+      "responses": {
+        "sleep_pattern": { "text": "잠들기가 어려워요. 누우면 머릿속이 복잡해서요.", "emotion": "neutral", "innerVoice": "머릿속이 복잡하다. 뭔가 있는 것 같다." },
+        "onset": { "text": "한 두 달 전쯤부터요. 정확히는 모르겠어요.", "emotion": "neutral" },
+        "empathy_hard": { "text": "그렇게까지 힘든 건 아닌데요. 그냥 좀 피곤한 거죠.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "집중력 저하 정도", "text": "집중이 잘 안 된다고 하셨는데, 어느 정도인가요?", "intent": "concentration" },
+        { "tag": "생활", "family": "life", "label": "요즘 생활 패턴", "text": "요즘 낮에는 어떻게 지내세요?", "intent": "daily_life" },
+        { "tag": "공감", "family": "emotional", "label": "걱정거리 있는지", "text": "요즘 특별히 신경 쓰이는 게 있나요?", "intent": "worry" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "두통 또는 무기력감", "text": "머리가 자주 아프거나 몸이 무거운 느낌은요?", "intent": "physical" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면 전 습관", "text": "자기 전에 핸드폰 보다가 자는 편이에요?", "intent": "sleep_env" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "누우면 어떤 생각", "text": "누우면 어떤 생각이 드세요?", "intent": "thoughts" }
+      },
+      "responses": {
+        "concentration": { "text": "뭘 읽어도 잘 안 들어오고, 같은 문장 몇 번씩 읽게 되더라고요.", "emotion": "neutral" },
+        "daily_life": { "text": "집에서 공부하고 있어요. 취업 준비 중이라서요.", "emotion": "neutral", "innerVoice": "취업 준비. 그 스트레스가 원인일 수 있다." },
+        "worry": { "text": "딱히... 다들 그러잖아요.", "emotion": "guarded" },
+        "physical": { "text": "머리도 좀 무거운 것 같긴 해요.", "emotion": "neutral" },
+        "sleep_env": { "text": "핸드폰은 좀 보는 편이긴 한데, 그게 원인인지는 모르겠어요.", "emotion": "neutral" },
+        "thoughts": { "text": "그냥 이것저것 생각이 나요. 내일 할 것들이나, 그런 거요.", "emotion": "guarded",
+          "gatedResponse": { "text": "부모님이 자꾸 비교하세요. 친구들은 다 취직했다고... 근데 저도 다 아는데. 그래서 더 힘든 것 같아요.", "emotion": "warming" }
+        }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "수면 시간 파악", "text": "보통 몇 시에 자고 총 몇 시간 정도 자세요?", "intent": "hours" },
+        { "tag": "생활", "family": "life", "label": "취업 준비 상황", "text": "취업 준비 얼마나 됐어요?", "intent": "jobsearch" },
+        { "tag": "공감", "family": "emotional", "label": "병원까지 온 이유", "text": "병원까지 온 게 쉽지 않으셨을 텐데.", "intent": "came_here" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "중간에 깨는지 여부", "text": "잠들면 쭉 자는 편인가요, 아니면 자다 깨나요?", "intent": "sleep_quality" },
+        "after_life": { "family": "life", "tag": "생활", "label": "공부 환경", "text": "공부는 집에서만 하세요?", "intent": "study_env" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "가족에게 말한 적 있는지", "text": "이 얘기를 가족한테 하셨어요?", "intent": "told_family" }
+      },
+      "responses": {
+        "hours": { "text": "새벽 두세 시에 자고, 여덟 시 이전에 깨요. 다섯 시간, 여섯 시간?", "emotion": "neutral" },
+        "jobsearch": { "text": "한 일 년 됐어요. 시험도 보고 서류도 내고 있는데, 잘 안 되고 있어요.", "emotion": "neutral" },
+        "came_here": { "text": "집중이 너무 안 되니까요. 공부를 못 하겠어서요.", "emotion": "neutral" },
+        "sleep_quality": { "text": "중간에 한두 번 깨는 것 같아요. 다시 잠들긴 하는데 개운하지 않아요.", "emotion": "neutral" },
+        "study_env": { "text": "집에서 주로 하는데, 집에 있으면 더 집중이 안 되는 것 같아요.", "emotion": "neutral" },
+        "told_family": { "text": "별로 말 안 해요. 괜히 걱정할까봐서요.", "emotion": "guarded",
+          "gatedResponse": { "text": "어머니한테 말했더니 '그럼 더 노력해야지'라고 하셔서... 그 뒤로는 잘 안 하게 되더라고요.", "emotion": "warming" }
+        }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "기분 상태 확인", "text": "요즘 기분은 어떤 편이에요? 가라앉는 느낌이 있나요?", "intent": "mood" },
+        { "tag": "생활", "family": "life", "label": "바깥 활동 여부", "text": "요즘 운동이나 바깥 활동은 하고 계세요?", "intent": "activity" },
+        { "tag": "공감", "family": "emotional", "label": "스스로 이유를 아는지", "text": "본인도 왜 이런지 짐작 가는 게 있어요?", "intent": "self_insight" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "식욕 및 체중 변화", "text": "밥은 잘 드세요? 체중 변화가 있었나요?", "intent": "appetite" },
+        "after_life": { "family": "life", "tag": "생활", "label": "사람 만나는 빈도", "text": "친구들 자주 만나세요?", "intent": "social" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "그 압박에 대한 반응", "text": "그 압박이 많이 힘드시겠어요.", "intent": "acknowledge_pressure" }
+      },
+      "responses": {
+        "mood": { "text": "딱히 우울하거나 하진 않아요. 그냥 무기력한 것 같기도 하고.", "emotion": "neutral" },
+        "activity": { "text": "거의 못 하고 있어요. 집에서 공부만 하니까요.", "emotion": "neutral" },
+        "self_insight": { "text": "스트레스 때문이겠죠. 취업 준비 중이니까요. 다 맞겠죠.", "emotion": "guarded" },
+        "appetite": { "text": "식욕은 그냥 비슷한 것 같아요. 체중은 조금 빠진 것 같기도 하고.", "emotion": "neutral" },
+        "social": { "text": "잘 안 만나게 되더라고요. 취직한 친구들 만나면 좀 그러니까요.", "emotion": "neutral", "innerVoice": "고립감이 있다." },
+        "acknowledge_pressure": { "text": "그냥 당연히 해야 하는 거니까요.", "emotion": "guarded",
+          "gatedResponse": { "text": "솔직히 저도 언제까지 버틸 수 있을지 모르겠어요. 근데 멈출 수도 없고...", "emotion": "opened" }
+        }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "수면제 복용 경험", "text": "이전에 수면 관련 약을 드셔본 적 있어요?", "intent": "meds" },
+        { "tag": "생활", "family": "life", "label": "카페인 섭취 습관", "text": "커피나 에너지 드링크 많이 드세요?", "intent": "caffeine" },
+        { "tag": "공감", "family": "emotional", "label": "스스로 잘못하고 있다는 생각", "text": "스스로 뭔가 부족한 것 같다는 생각이 드나요?", "intent": "self_blame" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "상담 치료 경험", "text": "상담이나 심리 치료 받아보신 적 있어요?", "intent": "therapy" },
+        "after_life": { "family": "life", "tag": "생활", "label": "하루 루틴 여부", "text": "하루에 정해진 루틴 같은 게 있어요?", "intent": "routine" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "그나마 괜찮은 순간", "text": "그나마 좀 괜찮다 싶은 순간이 있어요?", "intent": "good_moment" }
+      },
+      "responses": {
+        "meds": { "text": "아니요. 약은 먹기 싫어서요. 습관이 될 것 같아서요.", "emotion": "neutral" },
+        "caffeine": { "text": "공부하면서 많이 마시는 것 같아요. 하루 두세 잔?", "emotion": "neutral" },
+        "self_blame": { "text": "남들은 다 하는 걸 저만 못 하는 것 같고, 효율이 떨어지는 것 같아서요.", "emotion": "neutral" },
+        "therapy": { "text": "아직요. 그렇게까지 힘든 건 아닌 것 같아서요.", "emotion": "neutral" },
+        "routine": { "text": "딱히요. 그냥 일어나면 공부하고 자고 그러는 것 같아요.", "emotion": "neutral" },
+        "good_moment": { "text": "모의고사 잘 풀렸을 때요. 그때는 좀 나은 것 같아요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "가장 힘든 증상 파악", "text": "수면이 더 힘드세요, 집중력이 더 문제예요?", "intent": "main_complaint" },
+        { "tag": "생활", "family": "life", "label": "취업 목표 분야", "text": "어떤 쪽으로 준비 중이에요?", "intent": "job_goal" },
+        { "tag": "공감", "family": "emotional", "label": "지금 제일 필요한 것", "text": "지금 가장 필요한 게 뭐라고 생각해요?", "intent": "need" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "소화 증상 동반 여부", "text": "소화가 잘 안 되거나 배가 자주 아프기도 해요?", "intent": "somatic" },
+        "after_life": { "family": "life", "tag": "생활", "label": "부모님 기대 방향", "text": "부모님도 같은 방향을 원하세요?", "intent": "parents_exp" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "잠깐 쉬어도 된다", "text": "잠깐 멈추는 것도 방법일 수 있어요.", "intent": "rest_ok" }
+      },
+      "responses": {
+        "main_complaint": { "text": "집중력이요. 잠은 어떻게든 자는데, 공부를 못 하는 게 더 불안해요.", "emotion": "neutral" },
+        "job_goal": { "text": "공무원이요. 9급 행정직이요.", "emotion": "neutral" },
+        "need": { "text": "잠을 잘 자면 좀 나아질 것 같은데, 잘 모르겠어요.", "emotion": "neutral" },
+        "somatic": { "text": "배가 살짝 자주 아픈 것 같기도 해요.", "emotion": "neutral" },
+        "parents_exp": { "text": "부모님은 어디든 취직만 하면 된다고 하는데... 그게 더 막막한 것 같아요.", "emotion": "neutral" },
+        "rest_ok": { "text": "쉬면 더 불안할 것 같아요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "치료 방향 설명", "text": "지금 상태는 스트레스성 불면에 가까워요. 약보다 생활 조절이 우선이에요.", "intent": "treatment" },
+        { "tag": "생활", "family": "life", "label": "수면 위생 조언", "text": "자기 전 핸드폰 줄이고, 일정한 시간에 자는 것부터 시작해봐요.", "intent": "sleep_hygiene" },
+        { "tag": "공감", "family": "emotional", "label": "열심히 버티고 있다", "text": "지금 정말 열심히 버티고 있는 거예요.", "intent": "acknowledge_effort" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "재진 안내", "text": "한 달 뒤에 다시 와보시고, 안 나아지면 약을 고려해봐요.", "intent": "followup" },
+        "after_life": { "family": "life", "tag": "생활", "label": "짧은 산책 권유", "text": "하루 30분이라도 바깥 산책을 추가해보세요.", "intent": "exercise" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "마무리", "text": "나아질 거예요. 너무 오래 혼자 두지 말고요.", "intent": "closure" }
+      },
+      "responses": {
+        "treatment": { "text": "약 없이도 되나요?", "emotion": "neutral" },
+        "sleep_hygiene": { "text": "핸드폰이 문제인 걸 알면서도 잘 안 되더라고요. 해볼게요.", "emotion": "neutral" },
+        "acknowledge_effort": { "text": "...감사해요. 그 말이 좀 위로가 돼요.", "emotion": "warming" },
+        "followup": { "text": "알겠어요. 그렇게 할게요.", "emotion": "neutral" },
+        "exercise": { "text": "산책... 해봐야겠네요.", "emotion": "neutral" },
+        "closure": { "text": "네. 감사합니다.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 좀 나아지면 좋겠어요." },
+  "closingGated": { "speaker": "patient", "text": "감사해요. 선생님이랑 얘기하고 나니까 좀... 가벼운 것 같아요." },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간입니다.",
+    "patient": "아, 네. 감사합니다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "수면 단계와 소화 증상 등 신체 동반 증상을 더 확인했다면 불면증의 심각도를 더 정확히 평가할 수 있었다.",
+      "life": "취업 준비 기간과 부모님의 기대 방향을 구체적으로 파악했다면 스트레스 원인을 더 명확히 할 수 있었다.",
+      "emotional": "자책감과 부모님 압박에 대해 충분히 이야기 나누지 못했다."
+    },
+    "lastScene": "환자가 처방전을 받아 들고 나간다. 문 앞에서 잠깐 멈추더니 핸드폰을 꺼내 무언가를 확인한다.",
+    "lastSceneGated": "환자가 문을 나서다 잠깐 돌아본다. '그냥... 좀 버텨볼게요.' 처음으로 눈이 마주친다."
+  }
+}

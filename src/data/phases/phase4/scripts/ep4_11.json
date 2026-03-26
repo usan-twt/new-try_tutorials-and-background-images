@@ -1,0 +1,152 @@
+{
+  "opening": { "speaker": "patient", "text": "(고개를 숙이고 있다가 천천히 든다) 배가 좀 아파요." },
+  "nurseInfo": { "available": true, "text": "16세 남학생이에요. 이틀 전 급식 이후로 복통과 미열이 있다고 해요. 보호자 없이 혼자 왔고, 말이 많지 않아요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 확인", "text": "배 어떻게 아파요? 언제부터요?", "intent": "symptom" },
+        { "tag": "생활", "family": "life", "label": "학교 급식 관련", "text": "이틀 전 학교 급식 먹었어요?", "intent": "meal" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 왔네요", "text": "혼자 왔어요? 부모님한테 얘기는 했어요?", "intent": "alone" }
+      ],
+      "responses": {
+        "symptom": { "text": "이틀 전부터요. 배가 살살 아프고, 열도 좀 있는 것 같아요.", "emotion": "neutral", "innerVoice": "늦게 발현된 식중독일 수 있다. 이틀이라는 게 포인트다." },
+        "meal": { "text": "네, 먹었어요. 학교에서 식중독 났다고 하던데요.", "emotion": "neutral", "innerVoice": "학교 급식 식중독 사건과 연관이 있다." },
+        "alone": { "text": "부모님 직장이에요. 그냥 혼자 왔어요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "열 정도 확인", "text": "열은 몇 도였어요?", "intent": "fever" },
+        { "tag": "생활", "family": "life", "label": "학교 상황", "text": "학교에 다른 아이들도 아팠어요?", "intent": "school" },
+        { "tag": "공감", "family": "emotional", "label": "많이 힘들었겠다", "text": "이틀이나 아팠으면 많이 힘들었겠어요.", "intent": "empathy" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "구토나 설사 여부", "text": "구토하거나 설사 했어요?", "intent": "gi" },
+        "after_life": { "family": "life", "tag": "생활", "label": "급식 메뉴", "text": "그날 급식 뭐 먹었는지 기억해요?", "intent": "menu" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "학교는 갔었어요?", "text": "그동안 학교는 갔어요?", "intent": "school_attend" }
+      },
+      "responses": {
+        "fever": { "text": "집에서 재니까 37.8도였어요.", "emotion": "neutral" },
+        "school": { "text": "반에서 몇 명 아팠다고 하더라고요.", "emotion": "neutral" },
+        "empathy": { "text": "그냥 좀 아픈 거라 생각해서요.", "emotion": "neutral" },
+        "gi": { "text": "토하진 않았고, 설사는 조금요.", "emotion": "neutral" },
+        "menu": { "text": "닭볶음탕이요. 맛있어서 많이 먹었어요.", "emotion": "neutral", "innerVoice": "같은 급식이다. 이틀 후 발현은 드물지 않다." },
+        "school_attend": { "text": "어제는 갔어요. 오늘은 수업 끝나고 왔고요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "복통 부위", "text": "배 어디가 아파요? 배꼽 주변이에요?", "intent": "location" },
+        { "tag": "생활", "family": "life", "label": "집에서 뭐 먹었는지", "text": "이틀 동안 집에서 뭘 먹었어요?", "intent": "home_food" },
+        { "tag": "공감", "family": "emotional", "label": "수업 중에도 아팠겠다", "text": "수업 중에도 아팠으면 집중하기 힘들었겠는데.", "intent": "class" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "지금도 아파요?", "text": "지금 이 순간도 배가 아파요?", "intent": "now" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수분 보충", "text": "물은 잘 마셨어요?", "intent": "hydration" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "부모님이 오실 수 있어요?", "text": "부모님한테 지금 연락할 수 있어요?", "intent": "parents" }
+      },
+      "responses": {
+        "location": { "text": "배꼽 아래 쪽이요.", "emotion": "neutral" },
+        "home_food": { "text": "죽이요. 엄마가 만들어 놓고 갔어요.", "emotion": "neutral" },
+        "class": { "text": "그냥 참았어요.", "emotion": "neutral" },
+        "now": { "text": "지금은 좀 덜한 것 같아요.", "emotion": "neutral" },
+        "hydration": { "text": "물은 마셨어요.", "emotion": "neutral" },
+        "parents": { "text": "문자 보내면 오실 수 있을 것 같아요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "혈변 여부", "text": "대변에 피 같은 거 보인 건 없었어요?", "intent": "blood" },
+        { "tag": "생활", "family": "life", "label": "소변 상태", "text": "오줌은 잘 나와요? 색이 이상하진 않고요?", "intent": "urine" },
+        { "tag": "공감", "family": "emotional", "label": "집에 연락했어요?", "text": "집에 아프다고 얘기는 했어요?", "intent": "told_home" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "다른 증상", "text": "두통이나 어지러운 느낌은요?", "intent": "other" },
+        "after_life": { "family": "life", "tag": "생활", "label": "운동 참여 여부", "text": "이틀 동안 체육 수업 같은 건 빠졌어요?", "intent": "sports" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "혼자 병원 오기 무서웠겠다", "text": "혼자 병원 오는 게 쉽지 않았을 텐데.", "intent": "brave" }
+      },
+      "responses": {
+        "blood": { "text": "아니요.", "emotion": "neutral" },
+        "urine": { "text": "그냥 보통인 것 같아요.", "emotion": "neutral" },
+        "told_home": { "text": "네, 말은 했어요. 엄마가 오늘 병원 가보라고 했어요.", "emotion": "neutral" },
+        "other": { "text": "어제 좀 어지러웠는데, 오늘은 괜찮아요.", "emotion": "neutral" },
+        "sports": { "text": "어제 체육은 그냥 앉아 있었어요.", "emotion": "neutral" },
+        "brave": { "text": "...그냥 왔어요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "기저 질환", "text": "평소에 아픈 데 있어요? 약 먹는 거 있고요?", "intent": "history" },
+        { "tag": "생활", "family": "life", "label": "식이 상태", "text": "이틀 동안 제대로 밥 먹었어요?", "intent": "appetite" },
+        { "tag": "공감", "family": "emotional", "label": "많이 걱정됐겠다", "text": "이게 식중독인지 모르니까 걱정됐겠어요.", "intent": "worry" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "회복 추세 확인", "text": "이틀 동안 아픈 게 더 심해지는 것 같아요, 줄어드는 것 같아요?", "intent": "trend" },
+        "after_life": { "family": "life", "tag": "생활", "label": "친구들도 병원 갔는지", "text": "반에서 아픈 친구들도 병원 갔어요?", "intent": "friends" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "집에서 참았겠다", "text": "이틀을 그냥 참고 있었던 거예요?", "intent": "endured" }
+      },
+      "responses": {
+        "history": { "text": "없어요.", "emotion": "neutral" },
+        "appetite": { "text": "죽 조금씩 먹었어요. 많이는 못 먹겠어요.", "emotion": "neutral" },
+        "worry": { "text": "뉴스에서 식중독 났다고 해서 그런가 싶었어요.", "emotion": "neutral" },
+        "trend": { "text": "오늘이 좀 나은 것 같아요. 어제보다는요.", "emotion": "neutral", "innerVoice": "자연 회복 중인 것 같다. 심각한 증상은 아니다." },
+        "friends": { "text": "병원 간 애도 있다고 했어요.", "emotion": "neutral" },
+        "endured": { "text": "부모님 바쁘니까요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "탈수 증상 확인", "text": "입이 마르거나 너무 피곤한 느낌은 없었어요?", "intent": "dehydration" },
+        { "tag": "생활", "family": "life", "label": "집에서 약 먹었는지", "text": "집에서 약 먹었어요?", "intent": "meds" },
+        { "tag": "공감", "family": "emotional", "label": "부모님 걱정 됐겠다", "text": "부모님이 오실 수 없으니까 더 걱정됐겠어요.", "intent": "parents_worry" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "재방 기준 설명", "text": "이런 증상 생기면 바로 응급실 가야 해요.", "intent": "emergency" },
+        "after_life": { "family": "life", "tag": "생활", "label": "학교 복귀 시기", "text": "언제쯤 학교 정상으로 다닐 것 같아요?", "intent": "return" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "잘 왔어요", "text": "혼자서도 병원 오는 판단 잘 했어요.", "intent": "good_call" }
+      },
+      "responses": {
+        "dehydration": { "text": "입이 좀 마른 것 같았어요.", "emotion": "neutral" },
+        "meds": { "text": "아니요. 약이 없어서요.", "emotion": "neutral" },
+        "parents_worry": { "text": "...뭐, 그냥요.", "emotion": "neutral" },
+        "emergency": { "text": "고열이나 혈변이요?", "emotion": "neutral" },
+        "return": { "text": "모르겠어요. 내일은 갈 수 있을 것 같아요.", "emotion": "neutral" },
+        "good_call": { "text": "네.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방 설명", "text": "지금 상태는 식중독 후반 회복기예요. 약 처방해줄게요.", "intent": "prescription" },
+        { "tag": "생활", "family": "life", "label": "식이 조절 설명", "text": "당분간 자극적인 음식은 피하고, 죽이나 미음 먹어요.", "intent": "diet" },
+        { "tag": "공감", "family": "emotional", "label": "마무리", "text": "부모님한테 오늘 결과 꼭 알려드려요.", "intent": "closure" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "재진 일정", "text": "나흘 뒤에도 안 나으면 다시 와요.", "intent": "followup" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수분 섭취 강조", "text": "물 꼭 충분히 마셔요. 이온음료도 괜찮고요.", "intent": "hydration_advice" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "걱정 해소", "text": "심각한 건 아니니까 걱정 안 해도 돼요.", "intent": "reassure" }
+      },
+      "responses": {
+        "prescription": { "text": "네.", "emotion": "neutral" },
+        "diet": { "text": "네, 알겠어요.", "emotion": "neutral" },
+        "closure": { "text": "네. 문자 보낼게요.", "emotion": "neutral" },
+        "followup": { "text": "알겠어요.", "emotion": "neutral" },
+        "hydration_advice": { "text": "네.", "emotion": "neutral" },
+        "reassure": { "text": "그렇구나. 감사해요.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. (처방전을 받아들고 나간다)" },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간이에요.",
+    "patient": "아, 네. 감사합니다. (처방전 받아 들고 일어선다)"
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "탈수 증상과 대변 상태를 더 구체적으로 확인했다면 회복 속도를 더 정확히 평가할 수 있었다.",
+      "life": "이틀 동안 집에서 혼자 버텼던 상황과 식이 상태를 더 파악하지 못했다.",
+      "emotional": "혼자 병원에 온 이유와 부모님에 대한 감정을 더 이야기 나누지 못했다."
+    },
+    "lastScene": "학생이 처방전을 쥐고 나간다. 문 앞에서 핸드폰을 꺼내 문자를 보낸다. 아마 어머니에게.",
+    "lastSceneGated": "학생이 문을 나서다 잠깐 돌아본다. '...빨리 나으면 좋겠어요.' 짧은 말이었지만 처음으로 눈을 마주쳤다."
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "opening": { "speaker": "patient", "text": "(핸드폰을 보다 고개를 든다) 아 죄송해요. 저 딸 증상 때문에 왔는데요, 메모해왔어요. (메모지를 내민다)" },
+  "nurseInfo": { "available": true, "text": "39세 여성분이에요. 중3 딸 복통·두드러기 증상으로 대리 내원하셨어요. 식중독 관련 가능성 있고요. 바쁘신 듯 연신 시간을 확인하세요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "주 증상 확인", "text": "따님이 어떤 증상이 있나요?", "intent": "symptoms" },
+        { "tag": "생활", "family": "life", "label": "언제부터 시작됐는지", "text": "증상이 언제부터 생겼어요?", "intent": "onset" },
+        { "tag": "공감", "family": "emotional", "label": "직접 못 오셨겠다", "text": "따님이 직접 못 오셨나요?", "intent": "why_proxy" }
+      ],
+      "responses": {
+        "symptoms": { "text": "배가 아프고 팔이랑 배에 두드러기가 났어요. 어제저녁부터요. 여기 적어왔는데요. (메모지를 가리킨다)", "emotion": "anxious", "innerVoice": "복통과 두드러기 동반. 알레르기 반응인지, 식중독인지 감별이 필요하다." },
+        "onset": { "text": "어제 학교 급식 먹고 저녁에 생긴 것 같아요. 정확히는 모르겠어요. 제가 늦게 퇴근하다 보니까요.", "emotion": "anxious" },
+        "why_proxy": { "text": "학교 가야 해서요. 시험 기간이에요. 잠깐 시간 내서 제가 왔어요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "두드러기 부위와 정도", "text": "두드러기가 어느 부위에 얼마나 났나요?", "intent": "rash_detail" },
+        { "tag": "생활", "family": "life", "label": "급식 메뉴 확인", "text": "어제 급식 메뉴가 뭔지 아세요?", "intent": "menu" },
+        { "tag": "공감", "family": "emotional", "label": "바쁘신 중에 오셨다", "text": "바쁘신 중에 시간 내셨군요.", "intent": "acknowledge_busy" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "가려움증 동반 여부", "text": "가렵다고 하던가요?", "intent": "itch" },
+        "after_life": { "family": "life", "tag": "생활", "label": "이전 식품 알레르기 여부", "text": "이전에 특정 음식 알레르기가 있었던 적 있나요?", "intent": "allergy" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "딸이 지금 어떤지", "text": "지금 따님은 어디 계세요?", "intent": "daughter_now" }
+      },
+      "responses": {
+        "rash_detail": { "text": "배랑 팔에 납작하게 났어요. 많이 번진 건 아닌 것 같은데, 제가 아침에 출근 전에 봤을 때는 그랬어요.", "emotion": "anxious" },
+        "menu": { "text": "잠깐만요... (핸드폰 확인) 카레라이스랑 콩나물무침이었대요. 딸한테 물어봤거든요.", "emotion": "neutral", "innerVoice": "카레. 향신료 알레르기 가능성도 있다." },
+        "acknowledge_busy": { "text": "아 네, 저 좀 빨리 가봐야 해서요. 10시 반 회의가 있어서요.", "emotion": "anxious" },
+        "itch": { "text": "가렵다고 하긴 했는데, 심하지는 않다고 했어요. 지금은 좀 나아졌다고 하고요.", "emotion": "neutral" },
+        "allergy": { "text": "음... 없는 것 같은데. 잠깐만요. (핸드폰으로 확인하다가) 아 딸한테 물어봐야 할 것 같아요.", "emotion": "anxious", "innerVoice": "대리 내원의 한계. 중요한 정보가 빠져있다." },
+        "daughter_now": { "text": "학교에요. 시험이라 빠질 수가 없어서요. 배는 좀 나아졌다고 했는데, 두드러기가 남아있다고요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "발열 여부 확인", "text": "열은 있었나요?", "intent": "fever" },
+        { "tag": "생활", "family": "life", "label": "같이 급식 먹은 친구들 상황", "text": "같은 반 친구들 중에도 아픈 아이들이 있나요?", "intent": "friends" },
+        { "tag": "공감", "family": "emotional", "label": "어머니도 걱정이 많겠다", "text": "어머니도 많이 걱정되시겠어요.", "intent": "empathy_mom" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "구토나 설사 여부", "text": "구토나 설사 증상은 있었나요?", "intent": "gi_symptoms" },
+        "after_life": { "family": "life", "tag": "생활", "label": "학교 공지 받았는지", "text": "학교에서 급식 관련 공지가 왔나요?", "intent": "school_notice" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "따님과 연락이 되는지", "text": "지금 따님이랑 연락은 되세요?", "intent": "contact" }
+      },
+      "responses": {
+        "fever": { "text": "어제 밤에는 37.8도였어요. 오늘 아침엔 재보지 못했어요. 제가 먼저 나왔으니까요.", "emotion": "anxious" },
+        "friends": { "text": "딸한테 물어봤더니 몇 명 있다고 하더라고요. 몇 명인지는 모르겠어요.", "emotion": "neutral" },
+        "empathy_mom": { "text": "그렇죠, 직접 보지 못하니까요. (핸드폰을 힐끗 본다)", "emotion": "anxious" },
+        "gi_symptoms": { "text": "설사는 한 번 했다고 했어요. 구토는 없었고요.", "emotion": "neutral" },
+        "school_notice": { "text": "아, 맞다. 어제 저녁에 문자가 왔어요. 급식 조사 중이라고요.", "emotion": "neutral" },
+        "contact": { "text": "지금 수업 중이라 전화는 못 하고요. 문자 보내면 쉬는 시간에 답장 해요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "현재 상태 재확인", "text": "지금 따님 상태가 아침보다 좋아졌나요, 비슷한가요?", "intent": "current_state" },
+        { "tag": "생활", "family": "life", "label": "따님 평소 건강 상태", "text": "따님이 평소 다른 질환이 있거나 먹는 약이 있나요?", "intent": "health_history" },
+        { "tag": "공감", "family": "emotional", "label": "시간이 빠듯하시겠다", "text": "시간이 빠듯하신 것 같은데, 중요한 것만 말씀드릴게요.", "intent": "time_sensitivity" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "두드러기 퍼지는지 여부", "text": "두드러기가 아침보다 더 번졌나요?", "intent": "rash_spread" },
+        "after_life": { "family": "life", "tag": "생활", "label": "오늘 뭘 먹었는지", "text": "오늘 아침 따님이 뭘 드셨어요?", "intent": "breakfast" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "오늘 상태 문자로 확인 요청", "text": "쉬는 시간에 따님한테 지금 상태 확인해달라고 할 수 있으세요?", "intent": "ask_daughter" }
+      },
+      "responses": {
+        "current_state": { "text": "아침에 배는 좀 낫다고 했는데, 두드러기는 그대로래요.", "emotion": "anxious" },
+        "health_history": { "text": "특별한 건 없어요. 건강한 편이에요. 약도 안 먹어요.", "emotion": "neutral" },
+        "time_sensitivity": { "text": "아 감사해요. 네, 어떻게 해야 하는지만 알면 돼요.", "emotion": "neutral" },
+        "rash_spread": { "text": "더 번지진 않은 것 같다고 했어요. 아직 있긴 있다고요.", "emotion": "neutral" },
+        "breakfast": { "text": "죽이랑 물이요. 제가 싸줬어요.", "emotion": "neutral" },
+        "ask_daughter": { "text": "네, 그렇게 할게요. (핸드폰에 문자를 입력한다)", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "식중독 가능성 설명", "text": "급식 후 복통·두드러기는 식중독이나 음식 알레르기 반응일 수 있어요.", "intent": "diagnosis_explain" },
+        { "tag": "생활", "family": "life", "label": "오늘 학교 계속 다녀도 되는지", "text": "오늘 학교 계속 보내도 되는지 걱정되시죠?", "intent": "school_ok" },
+        { "tag": "공감", "family": "emotional", "label": "어머니 역할이 힘드실 것", "text": "일하면서 아이 건강도 챙기는 게 쉽지 않으시겠어요.", "intent": "working_mom" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "응급 증상 안내", "text": "두드러기가 번지거나 호흡이 힘들다고 하면 바로 응급실 가야 해요.", "intent": "emergency_signs" },
+        "after_life": { "family": "life", "tag": "생활", "label": "이후 식이 조절", "text": "당분간 자극적인 음식을 피하고 죽, 미음 위주로 드시게 해요.", "intent": "diet_advice" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "마무리", "text": "오늘 퇴근 후에 따님 상태 직접 봐보세요.", "intent": "check_daughter" }
+      },
+      "responses": {
+        "diagnosis_explain": { "text": "어느 쪽인지 알 수 있어요?", "emotion": "anxious" },
+        "school_ok": { "text": "배는 좀 나아졌다고 했으니까요. 그냥 보냈는데 괜찮은 건지 모르겠어요.", "emotion": "anxious" },
+        "working_mom": { "text": "그냥 엄마 노릇을 제대로 못 하는 것 같아서요.", "emotion": "anxious" },
+        "emergency_signs": { "text": "알겠어요. 두드러기 번지면 응급실. 혹시 안티히스타민제 같은 건 사줘도 되나요?", "emotion": "neutral" },
+        "diet_advice": { "text": "알겠어요. 오늘 저녁은 죽 사다줄게요.", "emotion": "neutral" },
+        "check_daughter": { "text": "네, 그렇게 할게요. (일어서며) 저 시간이 좀 돼서요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방 설명", "text": "경한 두드러기에 쓸 수 있는 항히스타민제 처방해드릴게요.", "intent": "prescription" },
+        { "tag": "생활", "family": "life", "label": "재진 시기 안내", "text": "증상이 이틀 이상 지속되면 따님 데리고 다시 오세요.", "intent": "revisit" },
+        { "tag": "공감", "family": "emotional", "label": "오늘 수고하셨다", "text": "바쁘신데 오셔서 수고하셨어요.", "intent": "closure" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "약 복용 방법", "text": "하루 한 번, 식사 후에 드시게 하면 돼요. 졸릴 수 있어요.", "intent": "dosage" },
+        "after_life": { "family": "life", "tag": "생활", "label": "증상 악화 기준", "text": "두드러기가 얼굴이나 목으로 번지면 바로 응급실이에요.", "intent": "worsen_criteria" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "마무리", "text": "따님 빨리 나을 거예요.", "intent": "final" }
+      },
+      "responses": {
+        "prescription": { "text": "네, 알겠어요. 감사합니다. (이미 가방을 들고 있다)", "emotion": "neutral" },
+        "revisit": { "text": "알겠어요. 나빠지면 다시 올게요.", "emotion": "neutral" },
+        "closure": { "text": "감사합니다. 저 먼저 가볼게요.", "emotion": "neutral" },
+        "dosage": { "text": "졸릴 수 있으면 저녁에 먹이면 되겠네요. 알겠어요.", "emotion": "neutral" },
+        "worsen_criteria": { "text": "네, 알겠어요. 잘 보고 있을게요.", "emotion": "neutral" },
+        "final": { "text": "감사합니다. (서둘러 나간다)", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "추가 확인 사항", "text": "혹시 따님 얼굴이나 입술 부위 부기는 없었나요?", "intent": "angioedema" },
+        { "tag": "생활", "family": "life", "label": "알레르기 검사 권유", "text": "두드러기가 반복되면 알레르기 검사도 고려해볼 수 있어요.", "intent": "allergy_test" },
+        { "tag": "공감", "family": "emotional", "label": "따님에게 걱정 전해달라고", "text": "따님한테 선생님이 빨리 나으라고 했다고 전해주세요.", "intent": "message_daughter" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "호흡 증상 여부", "text": "숨 쉬기 힘들다는 말은 없었죠?", "intent": "breathing" },
+        "after_life": { "family": "life", "tag": "생활", "label": "학교 보건실 연계", "text": "학교 보건 선생님한테도 말씀해두시면 좋아요.", "intent": "school_nurse" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "어머니도 쉬시라고", "text": "어머니도 오늘 피곤하실 테니 좀 쉬세요.", "intent": "mom_rest" }
+      },
+      "responses": {
+        "angioedema": { "text": "그건 없었어요. 얼굴은 괜찮다고 했어요.", "emotion": "neutral" },
+        "allergy_test": { "text": "아, 그런 게 있군요. 나중에 생각해볼게요.", "emotion": "neutral" },
+        "message_daughter": { "text": "네, 전할게요. 고마워요. (미소 지으며 나간다)", "emotion": "warming" },
+        "breathing": { "text": "그런 말은 없었어요.", "emotion": "neutral" },
+        "school_nurse": { "text": "아, 그 생각을 못 했네요. 문자 넣어볼게요.", "emotion": "neutral" },
+        "mom_rest": { "text": "네, 감사합니다. (핸드폰을 다시 확인하며 나간다)", "emotion": "neutral" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 딸 빨리 나았으면 좋겠어요." },
+  "forceClose": {
+    "nurse": "보호자분, 다음 환자 들어오실 시간입니다.",
+    "patient": "아, 네. 감사합니다. (서둘러 나간다)"
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "발열 수치 변화와 두드러기 범위를 직접 확인하지 못해 식중독과 알레르기를 명확히 감별하기 어려웠다.",
+      "life": "딸의 기저 질환 및 알레르기 병력을 충분히 파악하지 못했다.",
+      "emotional": "대리 내원의 한계와 어머니의 자책감에 대해 이야기 나누지 못했다."
+    },
+    "lastScene": "어머니가 처방전을 받아 들고 빠르게 병원 문을 나선다. 엘리베이터 앞에서 이미 핸드폰을 귀에 대고 있다.",
+    "lastSceneGated": "어머니가 문 앞에서 잠깐 멈추더니 돌아선다. '선생님... 제가 너무 몰랐던 것 같아요. 딸한테.' 그리고 빠르게 나간다."
+  }
+}

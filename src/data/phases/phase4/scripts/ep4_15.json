@@ -1,0 +1,157 @@
+{
+  "opening": { "speaker": "patient", "text": "위가 좀 불편해서요. 소화가 잘 안 되는 것 같고... 별거 아닌 것 같긴 한데, 좀 오래됐어요." },
+  "nurseInfo": { "available": true, "text": "58세 남성분이에요. 수주째 상복부 불쾌감과 소화불량을 호소하세요. 아버지가 위암으로 돌아가신 이력이 있어요. 말씀이 많지 않은 편이에요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 시작 시점 확인", "text": "언제부터 이런 불편함이 있으셨나요?", "intent": "onset" },
+        { "tag": "생활", "family": "life", "label": "식사 패턴 확인", "text": "식사는 잘 하고 계세요?", "intent": "appetite" },
+        { "tag": "공감", "family": "emotional", "label": "오래됐으면 신경 쓰이셨겠다", "text": "오래됐으면 속으로 신경 쓰이셨겠어요.", "intent": "empathy" }
+      ],
+      "responses": {
+        "onset": { "text": "한 달 좀 넘었어요. 별거 아닌 것 같아서 그냥 뒀는데.", "emotion": "guarded", "innerVoice": "한 달 이상. 단순 소화불량 범위를 넘는다." },
+        "appetite": { "text": "뭘 먹으면 더부룩하고, 요즘은 좀 덜 먹게 되더라고요.", "emotion": "guarded" },
+        "empathy": { "text": "그냥... 좀 그랬죠.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "통증 특성 파악", "text": "불편한 게 어떤 느낌이에요? 쓰리거나, 무거운 느낌인가요?", "intent": "pain_type" },
+        { "tag": "생활", "family": "life", "label": "체중 변화 확인", "text": "최근에 체중이 줄었나요?", "intent": "weight" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 걱정하셨겠다", "text": "오래 혼자 두고 계셨겠어요.", "intent": "alone_worry" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "증상 부위 확인", "text": "불편한 게 명치 쪽인가요, 배꼽 위쪽인가요?", "intent": "location" },
+        "after_life": { "family": "life", "tag": "생활", "label": "음주 및 흡연", "text": "술이나 담배 하세요?", "intent": "alcohol" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "가족한테 말은 하셨나요?", "text": "가족한테 이 얘기를 하셨어요?", "intent": "told_family" }
+      },
+      "responses": {
+        "pain_type": { "text": "무거운 것 같기도 하고, 뭔가 걸려있는 것 같기도 하고요. 아프다기보다는 불쾌한 거죠.", "emotion": "guarded" },
+        "weight": { "text": "한 2킬로 정도 빠진 것 같아요. 잘 모르겠어요.", "emotion": "guarded", "innerVoice": "의미있는 체중 감소. 기질적 원인 배제가 필요하다." },
+        "alone_worry": { "text": "그냥... 그런 거 있잖아요.", "emotion": "guarded" },
+        "location": { "text": "명치 아래쪽이요.", "emotion": "guarded" },
+        "alcohol": { "text": "술은 주 두세 번 마시고, 담배는 이십 년 피웠는데 오 년 전에 끊었어요.", "emotion": "neutral" },
+        "told_family": { "text": "아내한테는 얘기 안 했어요. 걱정할까봐서요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "역류나 구역감 여부", "text": "속이 올라오거나 메스꺼운 느낌은 있나요?", "intent": "reflux" },
+        { "tag": "생활", "family": "life", "label": "가족력 확인", "text": "가족 중에 위장 관련 질환이 있는 분 계세요?", "intent": "family_history" },
+        { "tag": "공감", "family": "emotional", "label": "무언가 걱정되는 게 있으신 것 같아요", "text": "오래 병원을 안 오신 것 같아요. 걱정되는 게 있으신 건 아닌가요?", "intent": "hidden_worry" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "검은 변 여부", "text": "대변이 검거나 끈적한 적 있었나요?", "intent": "melena" },
+        "after_life": { "family": "life", "tag": "생활", "label": "마지막 건강검진", "text": "건강검진은 언제 마지막으로 하셨어요?", "intent": "checkup" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "어떤 가능성이 걱정되신 건지", "text": "혹시 어떤 게 걱정되셔서 병원 오기가 꺼려지셨나요?", "intent": "fear" }
+      },
+      "responses": {
+        "reflux": { "text": "가끔 신물이 좀 올라오는 것 같기도 해요.", "emotion": "neutral" },
+        "family_history": { "text": "...아버지가 위암이셨어요. 돌아가셨고요.", "emotion": "guarded", "innerVoice": "직접 위암 가족력이다. 이게 핵심이다." },
+        "hidden_worry": { "text": "...뭐, 그냥 바빠서요.", "emotion": "guarded" },
+        "melena": { "text": "그런 건 없었어요.", "emotion": "neutral" },
+        "checkup": { "text": "한 사 년 됐나... 안 갔어요.", "emotion": "guarded" },
+        "fear": { "text": "(잠시 침묵) 아버지가 위암이었어요. 비슷한 증상이라 생각하기 싫었던 것 같아요.", "emotion": "guarded",
+          "gatedResponse": { "text": "솔직히 검사하면 나쁜 게 나올까봐... 그게 더 무서웠어요.", "emotion": "warming" }
+        }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "위내시경 필요성 설명", "text": "가족력과 증상을 고려하면 위내시경 검사가 필요해요.", "intent": "endoscopy" },
+        { "tag": "생활", "family": "life", "label": "기저 질환 여부", "text": "혈압이나 당뇨 같은 만성질환이 있으세요?", "intent": "chronic" },
+        { "tag": "공감", "family": "emotional", "label": "아버지 일로 힘드셨겠다", "text": "아버지가 위암이셨으면 그 걱정이 오래됐겠어요.", "intent": "father_grief" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "위내시경 절차 안내", "text": "내시경은 불편하지만 10-15분이면 끝나요. 오늘 의뢰해드릴게요.", "intent": "procedure" },
+        "after_life": { "family": "life", "tag": "생활", "label": "소화제 복용 여부", "text": "집에서 소화제 드셔보셨나요?", "intent": "meds" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "검사 결과가 무서우시겠다", "text": "검사를 안 하면 더 무섭지 않으세요?", "intent": "check_fear" }
+      },
+      "responses": {
+        "endoscopy": { "text": "...해야겠죠.", "emotion": "guarded" },
+        "chronic": { "text": "혈압 약 먹고 있어요.", "emotion": "neutral" },
+        "father_grief": { "text": "아버지 돌아가신 게 십 년 됐어요. 그래도 자꾸 생각나죠.", "emotion": "guarded" },
+        "procedure": { "text": "오늘 할 수 있는 건가요?", "emotion": "neutral" },
+        "meds": { "text": "약국에서 사 먹었는데, 먹을 때만 좀 낫고 또 그러더라고요.", "emotion": "neutral" },
+        "check_fear": { "text": "...아는 게 낫긴 하죠. 그게 머리로는 알아요.", "emotion": "guarded",
+          "gatedResponse": { "text": "근데 막상 나쁜 게 나오면 어떻게 하나 싶고... 아버지처럼 될까봐.", "emotion": "warming" }
+        }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "위내시경 예약 진행", "text": "오늘 의뢰서 드릴게요. 내시경 전날부터 금식이 필요해요.", "intent": "referral" },
+        { "tag": "생활", "family": "life", "label": "식이 개선 조언", "text": "지금은 자극적인 음식과 과도한 음주는 피해주세요.", "intent": "diet" },
+        { "tag": "공감", "family": "emotional", "label": "조기에 발견하면 치료가 달라요", "text": "조기에 발견하면 위암도 치료가 충분히 가능해요.", "intent": "early_detection" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "헬리코박터 검사 안내", "text": "내시경과 함께 헬리코박터균 검사도 해보는 게 좋아요.", "intent": "hpylori" },
+        "after_life": { "family": "life", "tag": "생활", "label": "규칙적인 식사 권고", "text": "식사 시간을 규칙적으로 유지하는 게 위 점막 보호에 좋아요.", "intent": "meal_pattern" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "아버지처럼 안 되려면 검사가 먼저예요", "text": "아버지처럼 되지 않으려면 지금 확인하는 게 맞아요.", "intent": "prevent" }
+      },
+      "responses": {
+        "referral": { "text": "알겠어요. 어디로 가면 되죠?", "emotion": "neutral" },
+        "diet": { "text": "술을 줄여야겠네요.", "emotion": "neutral" },
+        "early_detection": { "text": "...그렇겠죠.", "emotion": "neutral" },
+        "hpylori": { "text": "그 균이 위암이랑 관련이 있는 건가요?", "emotion": "neutral" },
+        "meal_pattern": { "text": "끼니를 좀 거르는 편이긴 해요.", "emotion": "neutral" },
+        "prevent": { "text": "...(천천히 고개를 끄덕인다) 그게 맞는 말이네요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "증상 변화 모니터링 안내", "text": "내시경 전에 통증이 심해지거나 검은 변 나오면 바로 응급실 오세요.", "intent": "emergency" },
+        { "tag": "생활", "family": "life", "label": "가족에게 알리는 것 권고", "text": "이 상황을 가족한테 알려두시는 게 좋을 것 같아요.", "intent": "tell_family" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 버티지 않으셔도 돼요", "text": "혼자 이 걱정을 지고 계셨군요.", "intent": "not_alone" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "혈압약 복용과의 관계 확인", "text": "혈압약이 위 점막에 영향을 줄 수 있어요. 내시경 결과 보고 조율할게요.", "intent": "bp_meds" },
+        "after_life": { "family": "life", "tag": "생활", "label": "직장 생활 여부 확인", "text": "지금 직장은 다니고 계신가요?", "intent": "job" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "아내분도 알아야 함께 대처할 수 있어요", "text": "아내분도 아셔야 나쁜 결과가 나와도 같이 대처할 수 있어요.", "intent": "wife_support" }
+      },
+      "responses": {
+        "emergency": { "text": "알겠어요.", "emotion": "neutral" },
+        "tell_family": { "text": "아내한테 얘기를 해야겠네요.", "emotion": "neutral" },
+        "not_alone": { "text": "...뭐, 그게 다 제 몫이라 생각했죠.", "emotion": "guarded" },
+        "bp_meds": { "text": "약이 위에 영향을 준다는 얘기는 못 들었는데, 확인해봐야겠네요.", "emotion": "neutral" },
+        "job": { "text": "건설업 현장 감독이에요. 바깥에서 많이 뛰는 일이에요.", "emotion": "neutral" },
+        "wife_support": { "text": "...맞는 말씀이에요. 얘기해야겠어요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "오늘 처방 및 다음 단계", "text": "오늘은 위점막 보호제 처방하고 내시경 의뢰서 드릴게요.", "intent": "prescription" },
+        { "tag": "생활", "family": "life", "label": "다음 내원 안내", "text": "내시경 결과 나오면 다시 오세요. 그때 맞춰서 치료 계획 세울게요.", "intent": "followup" },
+        { "tag": "공감", "family": "emotional", "label": "마무리", "text": "걱정됐지만 오늘 오신 게 잘 하신 거예요.", "intent": "closure" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "위점막 보호제 복용법", "text": "식전 30분에 복용하시면 돼요.", "intent": "meds_guide" },
+        "after_life": { "family": "life", "tag": "생활", "label": "내시경 준비 사항", "text": "내시경 전날 저녁 9시부터 금식이에요. 혈압약은 새벽에 소량 물로 드셔도 돼요.", "intent": "prep" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "아버지보다 일찍 오셨어요", "text": "아버지보다 훨씬 일찍 확인하러 오셨잖아요.", "intent": "earlier_than_father" }
+      },
+      "responses": {
+        "prescription": { "text": "알겠어요. 처방받고 내시경 예약하겠습니다.", "emotion": "neutral" },
+        "followup": { "text": "내시경 결과 나오면 다시 오겠습니다.", "emotion": "neutral" },
+        "closure": { "text": "...감사합니다.", "emotion": "warming" },
+        "meds_guide": { "text": "식전 삼십 분이요. 알겠어요.", "emotion": "neutral" },
+        "prep": { "text": "혈압약은 먹어도 된다고요? 알겠어요.", "emotion": "neutral" },
+        "earlier_than_father": { "text": "(잠시 말을 잇지 못하다가) ...그러네요. 감사합니다.", "emotion": "opened" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 내시경 예약하고 가겠습니다." },
+  "closingGated": { "speaker": "patient", "text": "감사합니다. 오늘... 많이 도움이 됐어요. 용기가 좀 생겼습니다." },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간입니다.",
+    "patient": "네, 감사합니다. (천천히 자리에서 일어난다)"
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "위암 조기 증상 감별과 혈압약의 위 점막 영향을 더 구체적으로 평가하지 못했다.",
+      "life": "건강검진 공백과 직업 특성으로 인한 불규칙한 식사 패턴을 더 파악하지 못했다.",
+      "emotional": "아버지 상실과 암 공포에 대해 충분히 이야기 나누지 못했다."
+    },
+    "lastScene": "환자가 천천히 자리에서 일어나 처방전과 의뢰서를 받아 든다. 문 앞에서 잠깐 멈추더니 한숨을 내쉰다.",
+    "lastSceneGated": "환자가 문을 나서려다 돌아본다. '선생님, 아버지보다 일찍 왔다는 말... 고맙습니다.' 눈빛이 달라져 있었다."
+  }
+}

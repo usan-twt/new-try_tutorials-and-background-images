@@ -1,0 +1,152 @@
+{
+  "opening": { "speaker": "patient", "text": "기침이 열흘째 안 낫고 있어요. 가래도 끼고요. 처음엔 그냥 감기인 줄 알았는데..." },
+  "nurseInfo": { "available": true, "text": "33세 여성분이에요. 10일 이상 지속된 기침·가래가 주 증상이에요. 어린이집 교사로 아이들 접촉이 많아요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "기침 양상 확인", "text": "기침이 마른 기침인가요, 가래가 올라오는 기침인가요?", "intent": "cough_type" },
+        { "tag": "생활", "family": "life", "label": "어린이집 상황", "text": "어린이집에서 요즘 아이들도 많이 아픈가요?", "intent": "childcare" },
+        { "tag": "공감", "family": "emotional", "label": "열흘이나 됐으면 많이 힘드셨겠다", "text": "열흘 동안 기침이 계속됐으면 많이 힘드셨겠어요.", "intent": "empathy" }
+      ],
+      "responses": {
+        "cough_type": { "text": "처음엔 마른 기침이었는데, 요즘은 가래가 좀 나와요. 노란 가래요.", "emotion": "anxious", "innerVoice": "노란 가래. 세균 감염 가능성이 있다. 열흘이면 이미 급성기를 넘겼다." },
+        "childcare": { "text": "아이들 중에 기침하는 애들 많아요. 원래 그렇긴 한데, 요즘 좀 더 심한 것 같아요.", "emotion": "anxious", "innerVoice": "어린이집 환경. 반복 노출 가능성이 높다." },
+        "empathy": { "text": "처음엔 좀 있으면 낫겠지 싶었는데, 안 낫더라고요. 아이들한테 옮기는 건 아닌지 걱정도 되고요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "열 여부 확인", "text": "열은 있었나요?", "intent": "fever" },
+        { "tag": "생활", "family": "life", "label": "마스크 착용 여부", "text": "어린이집에서 마스크 쓰고 계세요?", "intent": "mask" },
+        { "tag": "공감", "family": "emotional", "label": "아이들한테 옮길까봐 걱정됐겠다", "text": "아이들 걱정을 하셨군요. 그게 제일 신경 쓰이셨겠어요.", "intent": "kids_worry" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "가래 색 변화 추이", "text": "가래 색이 처음과 달라졌나요?", "intent": "sputum_change" },
+        "after_life": { "family": "life", "tag": "생활", "label": "다른 교사들도 비슷한지", "text": "같은 반 선생님이나 다른 교사분들도 비슷한 증상 있어요?", "intent": "coworkers" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "병가 쓰기 어려우셨겠다", "text": "기침 때문에 병가 내기도 어려우셨을 것 같아요.", "intent": "sick_leave" }
+      },
+      "responses": {
+        "fever": { "text": "처음 사흘은 37.5도 정도 있었어요. 지금은 없는 것 같아요.", "emotion": "neutral" },
+        "mask": { "text": "쓰고는 있는데, 아이들이랑 놀다 보면 마스크가 자꾸 내려가서요.", "emotion": "anxious" },
+        "kids_worry": { "text": "그게 좀 많이 걱정됐어요. 제가 옮긴 거면 어떡하나 싶어서요.", "emotion": "anxious" },
+        "sputum_change": { "text": "처음엔 투명했는데 요즘은 노란 게 좀 섞여 나와요.", "emotion": "anxious" },
+        "coworkers": { "text": "담임 선생님이 저랑 비슷하게 기침해요. 저보다 빨리 시작됐고요.", "emotion": "neutral" },
+        "sick_leave": { "text": "그게 또 쉽지 않더라고요. 대체 교사 구하기가 어려워서요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "기침 악화 시간대", "text": "기침이 특히 심한 시간대가 있나요?", "intent": "timing" },
+        { "tag": "생활", "family": "life", "label": "수면 방해 여부", "text": "밤에 기침 때문에 잠을 못 자는 편인가요?", "intent": "sleep" },
+        { "tag": "공감", "family": "emotional", "label": "오래 참고 오셨네요", "text": "열흘을 참고 오셨으니까, 사실 일찍 오셨으면 더 좋았을 것 같아요.", "intent": "late" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "흉통이나 호흡 불편 여부", "text": "숨 쉴 때 불편하거나 가슴이 아프지는 않나요?", "intent": "chest" },
+        "after_life": { "family": "life", "tag": "생활", "label": "집에서 가족 증상 여부", "text": "같이 사는 가족 중에 기침하는 사람 있어요?", "intent": "family" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "혼자 다 감수하고 계셨군요", "text": "아이들 걱정, 병가 고민... 혼자 다 감수하고 계셨네요.", "intent": "burden" }
+      },
+      "responses": {
+        "timing": { "text": "아침에 일어났을 때랑, 오후 늦게 더 심한 것 같아요.", "emotion": "neutral" },
+        "sleep": { "text": "누우면 더 기침이 나와서 잠들기가 좀 어려워요.", "emotion": "anxious" },
+        "late": { "text": "그게... 일이 바빠서요. 아이들 학기 초라 더 바빴거든요.", "emotion": "anxious" },
+        "chest": { "text": "숨은 그냥 쉬어지는데, 가래 뱉을 때 좀 뻐근한 것 같아요.", "emotion": "anxious" },
+        "family": { "text": "남편이 좀 기침하긴 하는데, 저보다는 덜해요.", "emotion": "neutral" },
+        "burden": { "text": "...그냥 그게 당연한 거라고 생각했어요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "혈담 여부", "text": "가래에 피가 섞인 적 있었나요?", "intent": "blood" },
+        { "tag": "생활", "family": "life", "label": "이전 감기 치료 경과", "text": "처음 감기 때 병원에 가셨나요?", "intent": "past_treatment" },
+        { "tag": "공감", "family": "emotional", "label": "아이들한테는 전파력이 낮아요", "text": "지금 상태에서 아이들 전파 가능성은 걱정하지 않아도 괜찮아요.", "intent": "reassure_kids" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "기저 질환 확인", "text": "평소에 천식이나 알레르기 있으신가요?", "intent": "allergy" },
+        "after_life": { "family": "life", "tag": "생활", "label": "약 복용 여부", "text": "그동안 집에서 약 드셨나요?", "intent": "meds" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "선생님이 건강해야 아이들도 건강해요", "text": "선생님이 건강해야 아이들도 잘 돌볼 수 있어요.", "intent": "self_care_message" }
+      },
+      "responses": {
+        "blood": { "text": "아니요, 그런 건 없었어요.", "emotion": "neutral" },
+        "past_treatment": { "text": "처음엔 약국에서 감기약 샀어요. 일주일 먹었는데 기침이 안 가시더라고요.", "emotion": "anxious" },
+        "reassure_kids": { "text": "정말요? 그 말이 제일 듣고 싶었어요.", "emotion": "warming" },
+        "allergy": { "text": "알레르기는 없어요. 천식은 어릴 때 좀 있었는데 지금은 괜찮아요.", "emotion": "neutral", "innerVoice": "소아 천식 병력. 현재 활성화 가능성 확인 필요." },
+        "meds": { "text": "일반 감기약 열흘 먹었고, 가래에 기침 완화제 약국 것도 먹어봤어요.", "emotion": "neutral" },
+        "self_care_message": { "text": "..그렇죠. 그걸 머리로는 아는데 잘 안 되더라고요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "천식 재활성 가능성 설명", "text": "소아 천식 병력이 있으면 성인 이후에도 기침 지속되는 경우가 있어요.", "intent": "asthma_explain" },
+        { "tag": "생활", "family": "life", "label": "어린이집 환경 개선 조언", "text": "환기와 공기청정기 관리가 감염 예방에 도움이 돼요.", "intent": "ventilation" },
+        { "tag": "공감", "family": "emotional", "label": "몸이 먼저라는 걸 아셔야 해요", "text": "아이들 걱정 전에 선생님 본인이 먼저예요.", "intent": "self_first" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "폐렴 가능성 확인 필요성", "text": "열흘 이상 지속 기침이면 흉부 X선 찍어보는 게 좋아요.", "intent": "xray" },
+        "after_life": { "family": "life", "tag": "생활", "label": "업무 강도와 피로", "text": "요즘 특히 피곤하신 편이에요?", "intent": "fatigue" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "병가가 죄책감이 아니에요", "text": "병가 쓰는 게 죄책감을 느낄 일이 아니에요.", "intent": "sick_leave_ok" }
+      },
+      "responses": {
+        "asthma_explain": { "text": "어릴 때 천식은 다 나은 줄 알았는데, 다시 나타날 수 있는 건가요?", "emotion": "anxious" },
+        "ventilation": { "text": "환기를 자주 시키고 있긴 한데, 공기청정기 필터 점검을 안 했네요.", "emotion": "neutral" },
+        "self_first": { "text": "...맞는 말씀인데, 막상 그렇게 하기가 쉽지 않아요.", "emotion": "anxious" },
+        "xray": { "text": "오늘 여기서 찍을 수 있나요?", "emotion": "anxious" },
+        "fatigue": { "text": "원래 좀 피곤하긴 한데, 요즘은 더 피곤한 것 같아요. 기침에 잠도 못 자니까요.", "emotion": "anxious" },
+        "sick_leave_ok": { "text": "그 말이 사실... 위로가 되네요. 죄책감이 좀 있었거든요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "항생제 및 흡입제 처방 설명", "text": "노란 가래와 지속 기침으로 세균성 기관지염 가능성이 있어요. 항생제 처방할게요.", "intent": "antibiotic" },
+        { "tag": "생활", "family": "life", "label": "직장 복귀 기준 설명", "text": "기침이 줄고 가래 색이 맑아지면 출근 가능해요.", "intent": "return" },
+        { "tag": "공감", "family": "emotional", "label": "이번엔 충분히 쉬세요", "text": "이번엔 몸이 회복될 때까지 충분히 쉬셔야 해요.", "intent": "rest_message" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "흉부 X선 촬영 안내", "text": "오늘 흉부 X선 촬영 같이 하겠습니다.", "intent": "xray_order" },
+        "after_life": { "family": "life", "tag": "생활", "label": "마스크 교체 주기 안내", "text": "어린이집 복귀 후에도 KF94 마스크 필수로 착용해주세요.", "intent": "mask_advice" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "마무리", "text": "빨리 나으실 거예요. 조심히 가세요.", "intent": "closure" }
+      },
+      "responses": {
+        "antibiotic": { "text": "항생제 며칠 치인가요? 아이들 접촉해도 되는지도 알고 싶어요.", "emotion": "anxious" },
+        "return": { "text": "며칠 정도 걸릴 것 같아요?", "emotion": "anxious" },
+        "rest_message": { "text": "네... 이번엔 좀 쉬어볼게요.", "emotion": "warming" },
+        "xray_order": { "text": "네, 알겠어요. 바로 갈게요.", "emotion": "neutral" },
+        "mask_advice": { "text": "그렇게 할게요. 아이들 앞에서 마스크 벗는 건 당분간 삼가야겠네요.", "emotion": "neutral" },
+        "closure": { "text": "감사합니다. 빨리 나아서 복귀해야겠어요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "재진 안내", "text": "5일 후에 다시 오세요. 항생제 효과 확인할게요.", "intent": "followup" },
+        { "tag": "생활", "family": "life", "label": "수면 자세 조언", "text": "기침이 심하면 상체를 약간 세워 주무시면 좀 나아요.", "intent": "sleep_position" },
+        { "tag": "공감", "family": "emotional", "label": "마무리", "text": "선생님들도 아플 수 있어요. 충분히 회복하세요.", "intent": "closure" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "악화 시 응급 기준 안내", "text": "고열 다시 오르거나 호흡 곤란 생기면 바로 응급실 오세요.", "intent": "emergency" },
+        "after_life": { "family": "life", "tag": "생활", "label": "충분한 수분 섭취 강조", "text": "하루 2리터 이상 수분 드시면 가래 배출에 도움이 돼요.", "intent": "hydration" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "빨리 회복하시길", "text": "아이들이 빨리 선생님 보고 싶어할 거예요.", "intent": "kids_miss" }
+      },
+      "responses": {
+        "followup": { "text": "네, 그렇게 할게요.", "emotion": "neutral" },
+        "sleep_position": { "text": "베개를 좀 높이면 되는 건가요? 해볼게요.", "emotion": "neutral" },
+        "closure": { "text": "감사합니다. 아이들한테 괜찮다고 말해줄 수 있어서 다행이에요.", "emotion": "warming" },
+        "emergency": { "text": "알겠어요. 그런 증상 생기면 바로 올게요.", "emotion": "neutral" },
+        "hydration": { "text": "물 의식적으로 마셔야겠네요.", "emotion": "neutral" },
+        "kids_miss": { "text": "...그럴 거예요. 감사합니다." , "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 빨리 나아서 복귀해야겠어요." },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간입니다.",
+    "patient": "네, 감사합니다. (자리에서 일어나 가방을 챙긴다)"
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "소아 천식 병력과 현재 폐 기능 상태를 더 자세히 확인했다면 치료 방향을 더 정확히 잡을 수 있었다.",
+      "life": "어린이집 환경과 노출 경로, 남편의 기침 증상을 더 파악하지 못했다.",
+      "emotional": "병가 죄책감과 책임감 과부하에 대해 충분히 이야기 나누지 못했다."
+    },
+    "lastScene": "환자가 자리에서 일어나 가방을 메며 처방전을 확인한다. 잠깐 핸드폰을 보더니 무언가를 입력한다.",
+    "lastSceneGated": "환자가 문 앞에서 돌아본다. '선생님, 병가 써도 된다는 말... 사실 제일 필요했던 말이었어요. 감사합니다.' 눈가가 촉촉하다."
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "opening": { "speaker": "patient", "text": "아내가 예약해줘서 왔는데요. 코가 좀 막히긴 한데, 별거 아닌 것 같아서요." },
+  "nurseInfo": { "available": true, "text": "44세 남성분이에요. 만성 코막힘과 코골이가 주 증상이에요. 배우자가 예약해서 오셨고, 본인은 대수롭지 않게 여기는 것 같아요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "코막힘 증상 확인", "text": "코막힘이 언제부터 있었어요?", "intent": "onset" },
+        { "tag": "생활", "family": "life", "label": "아내가 뭘 걱정했는지", "text": "아내분이 특별히 걱정하신 부분이 있었나요?", "intent": "wife_concern" },
+        { "tag": "공감", "family": "emotional", "label": "직접 오기 번거로우셨겠다", "text": "예약이 돼 있어서 오신 거군요.", "intent": "came" }
+      ],
+      "responses": {
+        "onset": { "text": "한 몇 년 됐나요. 원래 비염이 있었어요.", "emotion": "neutral", "innerVoice": "만성 비염 기저가 있다. 코골이 동반이면 수면의 질 문제일 수 있다." },
+        "wife_concern": { "text": "코 골이가 심하다고요. 저는 모르는데 아내가 많이 불편한가봐요.", "emotion": "neutral" },
+        "came": { "text": "네, 뭐. 어차피 예약이 됐으니까요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "코골이 정도", "text": "코골이가 얼마나 심한 편인가요? 수면 중에 숨이 멈추는 일은 없나요?", "intent": "snoring" },
+        { "tag": "생활", "family": "life", "label": "직업과 생활 패턴", "text": "주로 어떤 일 하세요?", "intent": "job" },
+        { "tag": "공감", "family": "emotional", "label": "아내분도 고생하셨겠다", "text": "코골이 때문에 아내분도 수면에 영향을 받으셨겠네요.", "intent": "wife_sleep" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "낮 피로감", "text": "낮에 졸리거나 피로감이 많이 느껴지세요?", "intent": "daytime" },
+        "after_life": { "family": "life", "tag": "생활", "label": "체중 변화", "text": "최근 체중이 늘었나요?", "intent": "weight" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "본인은 불편함을 못 느끼셨나요?", "text": "본인은 수면 중에 불편함을 못 느끼셨어요?", "intent": "self_aware" }
+      },
+      "responses": {
+        "snoring": { "text": "아내가 옆에서 보다가 숨 멈춘다고 깨운 적 있다고 해요. 저는 기억이 없고요.", "emotion": "neutral", "innerVoice": "수면 무호흡 가능성이 있다. 간과하면 안 된다." },
+        "job": { "text": "영업직이에요. 외근 많이 해요.", "emotion": "neutral" },
+        "wife_sleep": { "text": "다른 방에서 자고 있어요. 제가 너무 심하다고 해서요.", "emotion": "neutral" },
+        "daytime": { "text": "운전할 때 좀 졸리긴 해요. 근데 다들 그렇지 않나요?", "emotion": "neutral" },
+        "weight": { "text": "한 3킬로 정도 찐 것 같아요. 술자리가 좀 있다 보니까요.", "emotion": "neutral" },
+        "self_aware": { "text": "그냥 자는 것 같은데요. 아침에 좀 무거운 것 같긴 해요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "비염 과거 치료", "text": "비염으로 전에 치료받거나 약 드신 적 있어요?", "intent": "past_treatment" },
+        { "tag": "생활", "family": "life", "label": "음주와 흡연", "text": "술이나 담배 하세요?", "intent": "alcohol" },
+        { "tag": "공감", "family": "emotional", "label": "운전 중 졸음이 위험할 수 있어요", "text": "운전 중에 졸린 건 사실 위험할 수 있거든요.", "intent": "driving_risk" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "콧물이나 재채기 동반 여부", "text": "코막힘 외에 콧물이나 재채기도 자주 있나요?", "intent": "rhinitis" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면 시간과 환경", "text": "보통 몇 시에 자고 몇 시간 자세요?", "intent": "sleep_hours" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "피로가 쌓이면 업무에도 영향이 가요", "text": "수면의 질이 낮으면 낮 업무에도 영향이 가거든요.", "intent": "work_impact" }
+      },
+      "responses": {
+        "past_treatment": { "text": "이비인후과 몇 번 갔는데, 약 먹으면 좀 낫고 그랬어요. 계속 다니기 귀찮아서요.", "emotion": "neutral" },
+        "alcohol": { "text": "술은 주 두세 번, 담배는 안 피워요.", "emotion": "neutral" },
+        "driving_risk": { "text": "뭐... 그렇긴 하죠. 그냥 창문 열고 버텼어요.", "emotion": "neutral" },
+        "rhinitis": { "text": "봄가을에 좀 나오는 것 같아요. 지금은 코막힘이 더 심해요.", "emotion": "neutral" },
+        "sleep_hours": { "text": "12시쯤 자고 6시에 일어나요. 여섯 시간 정도요.", "emotion": "neutral" },
+        "work_impact": { "text": "..그게 좀 관련이 있는 건가요?", "emotion": "neutral",
+          "gatedResponse": { "text": "요즘 오후 되면 집중이 좀 안 되는 게 있긴 해요. 그게 수면 때문이었나요?", "emotion": "warming" }
+        }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "수면 무호흡 위험성 설명", "text": "수면 무호흡은 심혈관에 영향을 줄 수 있어서 검사가 필요해요.", "intent": "apnea_risk" },
+        { "tag": "생활", "family": "life", "label": "수면 자세", "text": "주로 어떤 자세로 자세요?", "intent": "position" },
+        { "tag": "공감", "family": "emotional", "label": "아내가 걱정한 데 이유가 있었던 것 같아요", "text": "아내분이 예약을 잡은 게 괜한 게 아니었네요.", "intent": "wife_right" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "두통이나 구강 건조 여부", "text": "아침에 일어나면 두통이 있거나 입이 건조한 편이에요?", "intent": "morning" },
+        "after_life": { "family": "life", "tag": "생활", "label": "취침 전 음주 여부", "text": "자기 전에 술 마시는 날이 많아요?", "intent": "presleepalcohol" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "아내분이 따로 오셨으면 하신 말이 있으셨나요", "text": "아내분이 오실 때 특별히 부탁하신 말 있었어요?", "intent": "wife_message" }
+      },
+      "responses": {
+        "apnea_risk": { "text": "심혈관이요? 그냥 코 골이인데요?", "emotion": "neutral" },
+        "position": { "text": "등으로 자요. 옆으로 자면 불편해서요.", "emotion": "neutral" },
+        "wife_right": { "text": "..뭐, 그렇게 되네요.", "emotion": "neutral" },
+        "morning": { "text": "두통은 가끔요. 입은 좀 마르긴 해요.", "emotion": "neutral" },
+        "presleepalcohol": { "text": "자기 전에 한두 잔 마시는 날 있어요. 잠이 잘 온다고 생각했는데.", "emotion": "neutral" },
+        "wife_message": { "text": "검사 받고 오래요. (피식) 잔소리를 처방으로 받았네요.", "emotion": "neutral",
+          "gatedResponse": { "text": "뭐... 그냥 건강 챙기라는 거겠죠. 신경 써주는 거니까요.", "emotion": "warming" }
+        }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "수면다원검사 안내", "text": "수면다원검사를 권해드려요. 무호흡 여부를 정확히 확인할 수 있어요.", "intent": "sleep_study" },
+        { "tag": "생활", "family": "life", "label": "체중 조절 효과 설명", "text": "3킬로 정도만 빠져도 코골이가 줄어들 수 있어요.", "intent": "weight_effect" },
+        { "tag": "공감", "family": "emotional", "label": "아내분이 많이 걱정하셨겠다", "text": "아내분이 오래 참다가 예약 잡으셨겠다 싶어요.", "intent": "wife_patience" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "이비인후과 연계 안내", "text": "비염 치료와 병행하면 더 효과적이에요. 이비인후과도 가보세요.", "intent": "ent_referral" },
+        "after_life": { "family": "life", "tag": "생활", "label": "음주 줄이기 조언", "text": "특히 자기 전 음주는 무호흡을 악화시켜요.", "intent": "reduce_alcohol" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "잘 오셨어요", "text": "솔직히 이걸 방치하다가 큰 일 생기는 분들 있어요. 잘 오셨어요.", "intent": "good_came" }
+      },
+      "responses": {
+        "sleep_study": { "text": "검사 받으면 어떻게 되는 건가요?", "emotion": "neutral" },
+        "weight_effect": { "text": "그게 연관이 있어요? 그럼 좀 빼봐야겠네요.", "emotion": "neutral" },
+        "wife_patience": { "text": "오래 불편했겠죠. 내가 모르는 거지.", "emotion": "neutral" },
+        "ent_referral": { "text": "이비인후과랑 같이 다니면 되는 건가요?", "emotion": "neutral" },
+        "reduce_alcohol": { "text": "잠에 도움이 되는 줄 알았는데 오히려 반대네요.", "emotion": "neutral" },
+        "good_came": { "text": "그렇군요. 솔직히 그냥 비염인 줄 알았는데.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방 및 다음 단계 설명", "text": "오늘은 비강 통기 개선 약 처방하고, 수면 클리닉 의뢰서 드릴게요.", "intent": "prescription" },
+        { "tag": "생활", "family": "life", "label": "수면 자세 교정 방법", "text": "옆으로 자는 자세로 바꾸면 코골이가 줄어들 수 있어요.", "intent": "position_fix" },
+        { "tag": "공감", "family": "emotional", "label": "아내한테 결과 알려드려요", "text": "오늘 결과 아내분한테 잘 말씀해 드리세요.", "intent": "tell_wife" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "재진 안내", "text": "두 주 뒤에 다시 오시면 약 효과 확인해드릴게요.", "intent": "followup" },
+        "after_life": { "family": "life", "tag": "생활", "label": "체중 관리 시작 방법", "text": "주 3회 30분 걷기부터 시작해보세요.", "intent": "exercise" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "마무리", "text": "오늘 잘 오셨어요. 검사까지 마저 받으시면 좋겠어요.", "intent": "closure" }
+      },
+      "responses": {
+        "prescription": { "text": "수면 클리닉이요? 알겠어요. 어디로 가면 되죠?", "emotion": "neutral" },
+        "position_fix": { "text": "옆으로 자면 아프던데... 뭔가 받쳐야 하나요?", "emotion": "neutral" },
+        "tell_wife": { "text": "네, 말해줘야겠죠. 왜 불편했는지 이해가 되네요.", "emotion": "warming" },
+        "followup": { "text": "네, 그렇게 할게요.", "emotion": "neutral" },
+        "exercise": { "text": "걷기는 할 수 있을 것 같아요.", "emotion": "neutral" },
+        "closure": { "text": "감사합니다. 검사 받고 다시 올게요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "응급 증상 안내", "text": "숨이 멈추는 게 자주 있거나 두통이 심해지면 빨리 오세요.", "intent": "emergency" },
+        { "tag": "생활", "family": "life", "label": "생활 습관 정리", "text": "금주는 못 해도 취침 전 2시간은 음주를 피하는 게 좋아요.", "intent": "habit" },
+        { "tag": "공감", "family": "emotional", "label": "마무리", "text": "아내분이 걱정해서 데려온 거, 고마운 일이에요.", "intent": "closure" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "혈압 확인 권고", "text": "수면 무호흡은 혈압에도 영향을 주니, 혈압도 한번 체크해보세요.", "intent": "bp" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면 환경 개선", "text": "방 습도를 55-60%로 유지하면 비염 증상이 줄어들 수 있어요.", "intent": "environment" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "건강 챙기는 거 미루지 마세요", "text": "영업 뛰어야 하면 몸이 더 중요해요.", "intent": "health_priority" }
+      },
+      "responses": {
+        "emergency": { "text": "네, 알겠어요.", "emotion": "neutral" },
+        "habit": { "text": "2시간... 그게 좀 빠르게 자야 한다는 거네요. 해볼게요.", "emotion": "neutral" },
+        "closure": { "text": "그렇죠. 감사합니다. 검사 예약하고 갈게요.", "emotion": "warming" },
+        "bp": { "text": "혈압까지요? 알겠어요. 같이 재고 가겠어요.", "emotion": "neutral" },
+        "environment": { "text": "가습기 사야겠네요.", "emotion": "neutral" },
+        "health_priority": { "text": "맞는 말씀이에요. 감사합니다.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 검사 받고 다시 오겠습니다." },
+  "closingGated": { "speaker": "patient", "text": "감사합니다. 오늘 얘기 들으니까 좀 더 신경 써야겠다 싶네요. 아내한테 잘 얘기해줘야겠어요." },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간입니다.",
+    "patient": "아, 네. 감사합니다. (자리에서 일어서며 핸드폰을 꺼낸다)"
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "수면 무호흡의 구체적 빈도와 심혈관 위험인자를 더 평가하지 못했다.",
+      "life": "음주 빈도와 취침 전 습관, 영양 상태를 더 확인했다면 생활 지도가 더 구체적이었을 것이다.",
+      "emotional": "아내와의 관계와 수면 문제로 인한 생활 불편감을 더 이야기 나누지 못했다."
+    },
+    "lastScene": "환자가 의뢰서를 받아 들고 나가다 잠깐 멈춘다. 핸드폰을 꺼내 아내에게 문자를 보내는 것 같다.",
+    "lastSceneGated": "환자가 문을 나서다 돌아본다. '선생님, 아내한테 전화해서 고맙다고 해야겠어요.' 처음으로 자연스럽게 웃었다."
+  }
+}
