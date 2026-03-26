@@ -20,6 +20,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run lint` — ESLint (flat config, JS/JSX only)
 - `npm run preview` — Preview production build
 
+테스트 인프라(Vitest/Jest 등) 미설치. 테스트 파일 없음.
+
 ## Architecture
 
 ### Game Flow (Finite State Machine)
@@ -62,7 +64,7 @@ title → corridor → morningNav → phaseIntro → consultation
 - `App.jsx` — Screen router based on `game.screen`; renders `NotebookPanel` alongside `ConsultationScreen` for Phase 2+
 - `useGame.js` — All game state and logic. Returns a flat object consumed by components. `send()` handles Phase 1 (no arg) and Phase 2+ (choice object). Key helpers: `computeChoices()`, `buildDayEnd()`, `resetScript()`
 - `ConsultationScreen` — Opening→playing→closing→done lifecycle via `useEffect` chains. Shows last 4 messages with fade, emotion orb, turn indicator dots (Phase 3), inner voice (Phase 2+)
-- `NavigationScreen` — Pixel-art side-scrolling hospital. Real-time movement via `useHospitalNavigation.js`. Morning nav: entering clinic starts episode; Evening nav: exiting left on floor 1 ends day
+- `NavigationScreen` — Pixel-art side-scrolling hospital. Real-time movement via `useHospitalNavigation.js` (60fps rAF 게임 루프, WASD 이동). Morning nav: entering clinic starts episode; Evening nav: exiting left on floor 1 ends day. `useHospitalNavigation`은 가이드 투어 waypoint 시스템, NPC 근접 상호작용, 층 전환, 아침/저녁 팔레트 전환, pendingDocument 표시, Phase 3 진입 시 nurse rumor 팝업을 모두 내부에서 처리하며 NavigationScreen에 콜백으로 노출
 - `ApartmentScreen` — Post-phase apartment scene. Shows entry text, window/phone interaction points. Content driven by `apartmentTier` (반지하/원룸/투룸). Phone shows bank overlay (`getBankEntries`). Pending move (tier change) shown on entry.
 - `DayEndScreen` — Phase-end summary: accumulated patients, unasked family hints, lastScene snippets, overtime notes, evaluation grade (Phase 2+)
 - `NotebookPanel` — Toggle panel (📓 button) with patient chart + memo textarea. First appearance shows hint pulse
