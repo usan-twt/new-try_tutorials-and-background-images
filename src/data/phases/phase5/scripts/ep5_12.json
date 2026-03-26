@@ -1,0 +1,475 @@
+{
+  "nurseInfo": {
+    "speaker": "nurse",
+    "text": "63세 남성분이에요. 발열·기침·탈수 증상이 있어요. 수일째 주무시지 못한 것 같아요.",
+    "available": true
+  },
+  "opening": {
+    "speaker": "patient",
+    "text": "(조용히 앉아서) 열이 좀 나고요. 기침도요."
+  },
+  "turns": [
+    {
+      "firstChoices": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "증상을 더 들어보자",
+          "text": "언제부터 이러셨어요?",
+          "intent": "symptom_onset"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "요즘 어떻게 지내시는지",
+          "text": "요즘 어떻게 지내고 계세요?",
+          "intent": "daily_life"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "힘드신 것 같다",
+          "text": "많이 힘드셔 보여요.",
+          "intent": "rapport_opening"
+        },
+        {
+          "tag": "용모",
+          "family": "appearance",
+          "label": "많이 지쳐 보이세요",
+          "text": "요즘 어디서 지내세요?",
+          "intent": "appearance_shelter"
+        }
+      ],
+      "responses": {
+        "symptom_onset": {
+          "text": "사흘쯤요. 좀 있다 나을 것 같아서 있었는데.",
+          "emotion": "neutral"
+        },
+        "daily_life": {
+          "text": "... 그냥요.",
+          "emotion": "neutral"
+        },
+        "rapport_opening": {
+          "text": "괜찮아요.",
+          "emotion": "neutral"
+        },
+        "appearance_shelter": {
+          "text": "... 요즘은 역 근처에서요.",
+          "emotion": "neutral",
+          "innerVoice": "역 근처. 노숙이다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "기침이 어느 정도인지 확인하자",
+          "text": "기침할 때 가래가 나오거나, 가슴이 아프진 않으세요?",
+          "intent": "cough_detail"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "식사는 어떻게 하고 계신지",
+          "text": "요즘 밥은 드시고 있으세요?",
+          "intent": "meal_situation"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "사흘 동안 혼자 버티신 것이다",
+          "text": "사흘 동안 많이 힘드셨겠어요.",
+          "intent": "empathy_endurance"
+        },
+        {
+          "tag": "용모",
+          "family": "appearance",
+          "label": "역 근처에서 지내신다고 하셨는데",
+          "text": "밤에는 어디서 주무세요?",
+          "intent": "appearance_sleep"
+        }
+      ],
+      "responses": {
+        "cough_detail": {
+          "text": "가래도 좀 나와요. 가슴은 좀 답답하고요.",
+          "emotion": "neutral"
+        },
+        "meal_situation": {
+          "text": "... 좀 못 먹었어요.",
+          "emotion": "neutral"
+        },
+        "empathy_endurance": {
+          "text": "뭐, 그냥 있었어요.",
+          "emotion": "neutral"
+        },
+        "appearance_sleep": {
+          "text": "그냥... 의자 같은 데서요.",
+          "emotion": "neutral",
+          "innerVoice": "사흘 동안 발열 상태로 역 의자에서 버텼다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "탈수 상태가 걱정된다",
+          "text": "물은 드시고 계셨어요? 소변이 잘 나오시나요?",
+          "intent": "hydration_check"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "연락할 수 있는 분이 있는지",
+          "text": "지금 연락하실 수 있는 가족분이 계세요?",
+          "intent": "family_contact"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "여기까지 오시는 게 쉽지 않으셨을 것이다",
+          "text": "여기까지 오시는 게 쉽지 않으셨겠어요.",
+          "intent": "empathy_coming"
+        },
+        {
+          "tag": "용모",
+          "family": "appearance",
+          "label": "역 근처에서 지내신 지 오래됐는지",
+          "text": "거기서 지내신 지 얼마나 됐어요?",
+          "intent": "appearance_duration"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "열이 어느 정도인지 재보자",
+          "text": "지금 체온을 재볼게요.",
+          "intent": "check_temp"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "요즘 어디서 식사를 하시는지",
+          "text": "밥은 어디서 드세요?",
+          "intent": "food_source"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "혼자 버티기 어려운 상황이다",
+          "text": "도움받을 곳이 없으신 것 같아서요.",
+          "intent": "empathy_alone"
+        }
+      },
+      "responses": {
+        "hydration_check": {
+          "text": "물은 좀 마셨어요. 소변은... 잘 모르겠어요.",
+          "emotion": "neutral"
+        },
+        "family_contact": {
+          "text": "... 없어요.",
+          "emotion": "neutral"
+        },
+        "empathy_coming": {
+          "text": "누가 가보라고 해서요. 역에서 봉사하는 분이.",
+          "emotion": "neutral",
+          "innerVoice": "본인 의지로 오신 게 아니다. 누군가가 이끌어서 왔다."
+        },
+        "appearance_duration": {
+          "text": "... 꽤 됐어요.",
+          "emotion": "neutral",
+          "gatedResponse": {
+            "text": "한 2년쯤 됐나요. 처음엔 잠깐인 줄 알았는데.",
+            "emotion": "neutral"
+          }
+        },
+        "check_temp": {
+          "text": "네.",
+          "emotion": "neutral"
+        },
+        "food_source": {
+          "text": "무료 급식소 가요. 거기서 먹어요.",
+          "emotion": "neutral"
+        },
+        "empathy_alone": {
+          "text": "... 뭐.",
+          "emotion": "neutral",
+          "gatedResponse": {
+            "text": "혼자죠. 예전엔 아니었는데.",
+            "emotion": "neutral"
+          }
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "독감 검사를 해보자",
+          "text": "독감 검사를 해보는 게 좋겠어요.",
+          "intent": "flu_test"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "회복할 수 있는 공간이 필요하다",
+          "text": "지금 상태로는 따뜻한 곳에서 쉬셔야 해요.",
+          "intent": "shelter_need"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "처음엔 아니었다는 말이 마음에 걸린다",
+          "text": "예전엔 어떠셨어요?",
+          "intent": "empathy_past"
+        },
+        {
+          "tag": "용모",
+          "family": "appearance",
+          "label": "옷이 많이 얇으신데",
+          "text": "이 날씨에 겉옷이 없으신 거예요?",
+          "intent": "appearance_clothing"
+        }
+      ],
+      "responses": {
+        "flu_test": {
+          "text": "네.",
+          "emotion": "neutral"
+        },
+        "shelter_need": {
+          "text": "... 어디요.",
+          "emotion": "neutral",
+          "innerVoice": "어디로 가야 하는지 모르거나, 갈 곳이 없는 것이다."
+        },
+        "empathy_past": {
+          "text": "... (잠시 침묵)",
+          "emotion": "neutral",
+          "gatedResponse": {
+            "text": "예전에는 공장 다녔는데요. 그게 좀 오래됐어요.",
+            "emotion": "neutral"
+          }
+        },
+        "appearance_clothing": {
+          "text": "... 있었는데, 잃어버렸어요.",
+          "emotion": "neutral"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "탈수가 심하면 수액이 필요하다",
+          "text": "탈수 증상이 있어서 수액을 맞으시는 게 좋겠어요.",
+          "intent": "iv_fluid"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "노숙인 지원 시설 연계가 필요하다",
+          "text": "회복하실 수 있는 시설과 연결해드릴 수 있어요.",
+          "intent": "shelter_referral"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "공장 일을 언급하셨다",
+          "text": "공장 일 하셨다고 하셨는데, 그게 언제쯤이에요?",
+          "intent": "empathy_work_past"
+        },
+        {
+          "tag": "용모",
+          "family": "appearance",
+          "label": "발 상태도 걱정이 된다",
+          "text": "발은 괜찮으세요? 상처는 없으세요?",
+          "intent": "appearance_feet"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "폐렴으로 진행될 수 있다",
+          "text": "기침에 가래가 있고 발열이 사흘이면 폐렴 가능성도 봐야 해요.",
+          "intent": "pneumonia_risk"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "지금 당장 갈 곳이 있는지",
+          "text": "오늘 밤 주무실 곳이 있으세요?",
+          "intent": "tonight_shelter"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "공장 일이 끝나고 나서 이렇게 된 것인지",
+          "text": "공장 그만두시고 나서 많이 힘드셨겠어요.",
+          "intent": "empathy_after_work"
+        }
+      },
+      "responses": {
+        "iv_fluid": {
+          "text": "... 네.",
+          "emotion": "neutral"
+        },
+        "shelter_referral": {
+          "text": "... 그런 데가 있어요?",
+          "emotion": "neutral"
+        },
+        "empathy_work_past": {
+          "text": "... 한 10년 전요.",
+          "emotion": "neutral",
+          "gatedResponse": {
+            "text": "그때는 괜찮았어요. 월급도 받고. 가족도 있었고.",
+            "emotion": "neutral"
+          }
+        },
+        "appearance_feet": {
+          "text": "... 좀 아파요.",
+          "emotion": "neutral",
+          "innerVoice": "발이 아프다고 했다. 길에서 오래 걸었거나, 신발이 맞지 않는 것이다."
+        },
+        "pneumonia_risk": {
+          "text": "... 그렇군요.",
+          "emotion": "neutral"
+        },
+        "tonight_shelter": {
+          "text": "... 모르겠어요.",
+          "emotion": "neutral"
+        },
+        "empathy_after_work": {
+          "text": "... (고개를 숙인다)",
+          "emotion": "neutral",
+          "gatedResponse": {
+            "text": "공장 없어지고 나서 좀... 이것저것 안 됐어요.",
+            "emotion": "neutral"
+          }
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "흉부 엑스레이가 필요하다",
+          "text": "흉부 엑스레이 찍어볼게요. 폐 상태 확인이 필요해요.",
+          "intent": "xray_order"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "사회복지팀과 연계하자",
+          "text": "저희 병원 사회복지팀에서 도움받으실 수 있는 게 있어요.",
+          "intent": "social_work_referral"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "가족이 있었다고 하셨는데",
+          "text": "가족분들은 지금 연락이 안 되시는 거예요?",
+          "intent": "empathy_family_lost"
+        },
+        {
+          "tag": "용모",
+          "family": "appearance",
+          "label": "발 상처 치료도 해드려야 한다",
+          "text": "발 상처 확인해드릴게요. 이쪽으로 오세요.",
+          "intent": "appearance_wound_care"
+        }
+      ],
+      "responses": {
+        "xray_order": {
+          "text": "네.",
+          "emotion": "neutral"
+        },
+        "social_work_referral": {
+          "text": "... 그게 뭘 해줘요?",
+          "emotion": "neutral",
+          "innerVoice": "처음으로 질문을 했다. 관심이 생긴 것이다."
+        },
+        "empathy_family_lost": {
+          "text": "... 연락 안 하고 있어요.",
+          "emotion": "neutral",
+          "gatedResponse": {
+            "text": "애들한테 이 꼴 보이기 싫어서요. 전화 안 해요. 걔들도 안 하고.",
+            "emotion": "neutral"
+          }
+        },
+        "appearance_wound_care": {
+          "text": "... 괜찮아요.",
+          "emotion": "neutral",
+          "innerVoice": "괜찮지 않다. 거절이 습관이 된 사람이다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "오늘 치료부터 받으시자",
+          "text": "일단 수액 맞으시면서 검사 결과 기다려요. 몸부터 추스르셔야 해요.",
+          "intent": "treatment_today"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "사회복지팀이 연계해줄 수 있는 게 있다",
+          "text": "임시 거처나 급식 지원 같은 것들, 사회복지팀에서 연결해드릴 수 있어요.",
+          "intent": "welfare_options"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "이 꼴을 보이기 싫다는 말이 마음에 걸린다",
+          "text": "지금이 힘드시더라도, 연락하시는 게 나중에 더 나을 수도 있어요.",
+          "intent": "empathy_reconnect"
+        }
+      ],
+      "responses": {
+        "treatment_today": {
+          "text": "... 네.",
+          "emotion": "neutral"
+        },
+        "welfare_options": {
+          "text": "... 그래도 돼요?",
+          "emotion": "neutral",
+          "innerVoice": "도움을 받아도 되는지 허락을 구한다. 오랫동안 당연하게 여기지 않았던 것이다."
+        },
+        "empathy_reconnect": {
+          "text": "... 모르겠어요.",
+          "emotion": "neutral"
+        }
+      }
+    }
+  ],
+  "closing": {
+    "speaker": "patient",
+    "text": "(수액 맞으면서 조용히 앉아있다. 아무 말이 없다.)"
+  },
+  "closingGated": {
+    "speaker": "patient",
+    "text": "... 고맙습니다. (작게)"
+  },
+  "forceClose": {
+    "nurse": "선생님, 처치실 준비됐어요.",
+    "patient": "... 가면 되나요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "발 상처가 어느 정도인지, 다른 기저질환이 있는지 다 확인하지 못했다.",
+      "life": "무료 급식소 외에 어떤 지원을 받고 있는지, 하루 일과가 어떤지 묻지 못했다.",
+      "emotional": "가족과 어떻게 단절됐는지, 그게 언제였는지, 더 듣지 못했다."
+    },
+    "lastScene": "처치실 의자에 앉아 수액을 맞으며 창밖을 본다. 표정은 변하지 않는다.",
+    "lastSceneGated": "수액 맞다가 한 번 눈이 마주친다. 작게 고개를 끄덕인다."
+  }
+}

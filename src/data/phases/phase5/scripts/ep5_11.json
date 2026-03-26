@@ -1,0 +1,378 @@
+{
+  "nurseInfo": {
+    "speaker": "nurse",
+    "text": "22세 남성분이에요. 이명이 한 달째라고 하세요. 이어폰 사용량이 많은 것 같아요.",
+    "available": true
+  },
+  "opening": {
+    "speaker": "patient",
+    "text": "귀에서 소리가 나요. 한 달쯤 됐어요. 삐 하는 소리요."
+  },
+  "turns": [
+    {
+      "firstChoices": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "증상을 더 들어보자",
+          "text": "어느 쪽 귀에서 나요? 항상 나나요, 가끔 나나요?",
+          "intent": "symptom_detail"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "이어폰을 많이 쓰시는 것 같다",
+          "text": "평소에 이어폰 많이 사용하시는 편이에요?",
+          "intent": "earphone_usage"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "소리가 계속 들리면 많이 신경 쓰일 것이다",
+          "text": "귀에서 소리가 계속 나면 많이 신경 쓰이겠어요.",
+          "intent": "rapport_opening"
+        }
+      ],
+      "responses": {
+        "symptom_detail": {
+          "text": "양쪽 다요. 조용한 데 있으면 더 잘 들려요. 밤에 자려고 누우면 특히요.",
+          "emotion": "neutral"
+        },
+        "earphone_usage": {
+          "text": "많이 써요. 공부할 때 거의 끼고 있어요.",
+          "emotion": "neutral"
+        },
+        "rapport_opening": {
+          "text": "공부할 때 집중이 안 돼서요. 소리 때문에 책이 안 읽혀요.",
+          "emotion": "neutral"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "청력 변화도 있는지 확인하자",
+          "text": "소리가 잘 안 들리거나, 먹먹한 느낌이 있으세요?",
+          "intent": "hearing_change"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "이어폰을 하루에 얼마나 쓰시는지",
+          "text": "하루에 이어폰을 몇 시간 정도 쓰세요?",
+          "intent": "usage_hours"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "공부에 지장이 생긴 게 가장 걱정일 것이다",
+          "text": "공부에 지장이 생기면 많이 답답하시겠어요.",
+          "intent": "empathy_study"
+        }
+      ],
+      "responses": {
+        "hearing_change": {
+          "text": "먹먹한 건 없어요. 그냥 삐 소리가 계속 들려요.",
+          "emotion": "neutral"
+        },
+        "usage_hours": {
+          "text": "한 8시간? 공부할 때 거의 끼고 있으니까요. 소음 차단 이어폰이에요.",
+          "emotion": "neutral",
+          "innerVoice": "하루 8시간. 소음 차단 이어폰은 더 큰 소리로 듣게 만든다."
+        },
+        "empathy_study": {
+          "text": "시험 기간인데 집중을 못 하겠으니까요. 빨리 낫고 싶어요.",
+          "emotion": "neutral"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "이어폰 볼륨이 어느 정도인지",
+          "text": "이어폰 볼륨을 보통 어느 정도로 하세요?",
+          "intent": "volume_level"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "무엇을 들으면서 공부하는지",
+          "text": "공부할 때 이어폰으로 뭘 들으세요?",
+          "intent": "what_listening"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "이어폰 없이는 공부가 안 된다는 거 알 것 같다",
+          "text": "이어폰 없으면 공부가 더 힘드신 편이에요?",
+          "intent": "empathy_dependency"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "소음성 난청 가능성이 있다",
+          "text": "하루 8시간 고볼륨이면 내이에 손상이 올 수 있어요.",
+          "intent": "noise_damage"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "도서관이나 카페에서 주로 공부하는지",
+          "text": "주로 어디서 공부하세요?",
+          "intent": "study_environment"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "이어폰이 집중 도구가 된 것이다",
+          "text": "이어폰이 집중하는 데 도움이 돼서 쓰시는 거잖아요.",
+          "intent": "empathy_tool"
+        }
+      },
+      "responses": {
+        "volume_level": {
+          "text": "좀 크게 해요. 주변 소리 차단이 되어야 집중이 되니까요. 80퍼센트? 그 정도요.",
+          "emotion": "neutral"
+        },
+        "what_listening": {
+          "text": "백색 소음이요. 아니면 빗소리. 음악은 잘 안 들어요.",
+          "emotion": "neutral"
+        },
+        "empathy_dependency": {
+          "text": "네, 솔직히 이어폰 없으면 공부가 잘 안 돼요. 주변 소리가 신경 쓰여서요.",
+          "emotion": "neutral"
+        },
+        "noise_damage": {
+          "text": "진짜요? 그 정도로 심각한 거예요?",
+          "emotion": "anxious"
+        },
+        "study_environment": {
+          "text": "카페에서 주로 해요. 거기서 이어폰 끼고 해야 잡음이 안 들려요.",
+          "emotion": "neutral"
+        },
+        "empathy_tool": {
+          "text": "맞아요. 끼면 세상이 차단되는 느낌이랄까요. 그래야 집중이 돼요.",
+          "emotion": "neutral",
+          "innerVoice": "이어폰이 단순한 소음 차단을 넘어 집중 장치가 된 것이다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "청력 검사를 해보자",
+          "text": "청력 검사를 해보는 게 좋을 것 같아요. 이명이 한 달 됐으면 확인이 필요해요.",
+          "intent": "hearing_test"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "이어폰 사용을 줄이는 게 핵심이다",
+          "text": "솔직히 말씀드리면, 이어폰 사용량을 줄이시는 게 가장 중요해요.",
+          "intent": "reduce_usage"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "원인을 알면서도 못 바꾸는 상황인 것이다",
+          "text": "이어폰이 원인인 건 알고 계셨을 것 같아요.",
+          "intent": "empathy_knows_cause"
+        }
+      ],
+      "responses": {
+        "hearing_test": {
+          "text": "네, 해볼게요. 청력이 떨어진 건 아닌지 걱정됐거든요.",
+          "emotion": "anxious"
+        },
+        "reduce_usage": {
+          "text": "줄여야죠, 근데... 솔직히 그게 제일 어려워요. 이어폰 없이는 공부가 잘 안 되거든요.",
+          "emotion": "neutral",
+          "innerVoice": "알면서도 못 바꾼다. 그 사이에 이명이 생긴 것이다."
+        },
+        "empathy_knows_cause": {
+          "text": "알죠... 이어폰이 문제인 건. 근데 그게 없으면 진짜로 공부를 못 하겠어요.",
+          "emotion": "neutral"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "이명이 자연 회복되는 경우도 있다",
+          "text": "초기 소음성 이명은 자극을 줄이면 호전되는 경우가 있어요. 지금이 중요한 시점이에요.",
+          "intent": "recovery_possible"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "이어폰 없이 집중하는 대안을 찾아볼 수 있다",
+          "text": "이어폰 대신 다른 방법으로 집중하는 방법을 찾아보신 적 있으세요?",
+          "intent": "alternative_focus"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "지금 못 바꾸는 이유가 있을 것이다",
+          "text": "시험 기간에 갑자기 바꾸는 게 쉽지 않죠.",
+          "intent": "empathy_timing"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "계속 방치하면 만성이 될 수 있다",
+          "text": "계속 자극이 가해지면 만성 이명으로 굳어질 수도 있어요.",
+          "intent": "chronic_risk"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "볼륨이라도 낮추는 것부터 시작하자",
+          "text": "당장 끊기 어려우시면, 볼륨을 낮추는 것부터 시작해보는 건 어떨까요?",
+          "intent": "volume_reduction"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "시험이 끝나고 나서라도 바꿔야 한다",
+          "text": "시험 끝나고 나서라도 사용 습관을 바꾸시는 게 필요해요.",
+          "intent": "empathy_after_exam"
+        }
+      },
+      "responses": {
+        "recovery_possible": {
+          "text": "진짜요? 그러면 지금 이어폰 확 줄이면 나을 수 있어요?",
+          "emotion": "neutral"
+        },
+        "alternative_focus": {
+          "text": "귀마개 써봤는데 불편하고... 그냥 이어폰이 제일 편해요.",
+          "emotion": "neutral"
+        },
+        "empathy_timing": {
+          "text": "맞아요. 지금 시험 한 달 남았는데, 지금 바꾸면 공부 패턴이 다 무너질 것 같아요.",
+          "emotion": "neutral"
+        },
+        "chronic_risk": {
+          "text": "만성이요? 그럼 계속 이 소리가 나는 건가요?",
+          "emotion": "anxious"
+        },
+        "volume_reduction": {
+          "text": "볼륨 낮추면 주변 소리가 들려서 집중이 안 될 것 같아요. 근데... 해봐야겠죠.",
+          "emotion": "neutral",
+          "innerVoice": "한 걸음도 못 물러선다고 느끼던 것에서 조금 움직인다."
+        },
+        "empathy_after_exam": {
+          "text": "시험 끝나면 줄여볼게요. 근데 그때도 이어폰 없이 공부할 수 있을지는 모르겠어요.",
+          "emotion": "neutral"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "이명에 특별한 약은 없다",
+          "text": "이명 자체를 없애는 약은 없어요. 원인 제거가 핵심이에요.",
+          "intent": "no_quick_fix"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "실천 가능한 목표를 작게 잡자",
+          "text": "하루 이어폰 4시간으로 줄여보는 게 어떨까요? 반으로만 줄여도 많이 달라요.",
+          "intent": "realistic_goal"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "변화가 쉽지 않다는 걸 안다",
+          "text": "바꾸는 게 쉽지 않다는 거 알아요. 그래도 조금씩 해보시는 게 중요해요.",
+          "intent": "empathy_change_hard"
+        }
+      ],
+      "responses": {
+        "no_quick_fix": {
+          "text": "그렇군요. 결국 이어폰을 줄여야 한다는 거네요.",
+          "emotion": "neutral"
+        },
+        "realistic_goal": {
+          "text": "4시간... 해볼게요. 확실히 안 줄이면 안 되는 상황이네요.",
+          "emotion": "neutral"
+        },
+        "empathy_change_hard": {
+          "text": "네. 솔직히 이어폰이 없어지면 공부를 어떻게 해야 할지 모르겠어요. 근데 해봐야죠.",
+          "emotion": "warming"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "청력 검사 후 결과를 확인하자",
+          "text": "청력 검사 결과 보고 추가로 필요한 게 있으면 말씀드릴게요.",
+          "intent": "test_followup"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "이어폰 사용 규칙을 만들어보자",
+          "text": "60-60 규칙이라고 있어요. 볼륨 60%, 1시간 쓰면 10분 쉬는 방법이에요.",
+          "intent": "usage_rule"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "작은 변화부터 시작하면 된다",
+          "text": "한 번에 다 바꾸실 필요는 없어요. 오늘 조금 줄이는 것부터 시작해도 돼요.",
+          "intent": "empathy_small_steps"
+        }
+      ],
+      "responses": {
+        "test_followup": {
+          "text": "알겠어요. 결과 나오면 다시 올게요.",
+          "emotion": "neutral"
+        },
+        "usage_rule": {
+          "text": "60-60 규칙이요. 그거 해볼게요. 시험 끝나고 집중해서 바꿔볼게요.",
+          "emotion": "warming"
+        },
+        "empathy_small_steps": {
+          "text": "네. 오늘부터 볼륨 조금 낮춰볼게요. 그 정도부터 해볼게요.",
+          "emotion": "warming"
+        }
+      }
+    }
+  ],
+  "closing": {
+    "speaker": "patient",
+    "text": "이어폰 진짜 줄여야겠네요. 알면서 안 했던 것 같아요."
+  },
+  "closingGated": null,
+  "forceClose": {
+    "nurse": "선생님, 다음 분 기다리세요.",
+    "patient": "아, 네. 청력 검사 하고 갈게요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "이명이 야간에 얼마나 심한지, 수면에 어느 정도 영향을 주는지 다 확인하지 못했다.",
+      "life": "시험 과목이 무엇인지, 공부 환경이 어떤지 더 들어보지 못했다.",
+      "emotional": "이어폰이 단순한 집중 도구를 넘어 어떤 의미인지, 더 깊이 묻지 못했다."
+    },
+    "lastScene": "나가면서 이어폰을 꺼낸다. 잠깐 보더니 주머니에 다시 넣는다.",
+    "lastSceneGated": null
+  }
+}
