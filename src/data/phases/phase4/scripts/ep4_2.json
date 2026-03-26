@@ -1,0 +1,152 @@
+{
+  "opening": { "speaker": "patient", "text": "...배가 아파서요." },
+  "nurseInfo": { "available": true, "text": "14세 남학생입니다. 보호자 없이 혼자 내원하셨어요. 어제 점심 급식 먹은 후부터 복통 있다고 하시네요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 시작 시점 확인", "text": "어제부터 아팠어요?", "intent": "ask_onset" },
+        { "tag": "생활", "family": "life", "label": "학교 결석 여부 확인", "text": "오늘 학교는 쉬고 온 거예요?", "intent": "ask_school" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 온 것에 공감", "text": "혼자 왔군요. 부모님은 연락이 안 되셨어요?", "intent": "empathy_alone" }
+      ],
+      "responses": {
+        "ask_onset": { "text": "어제 점심 먹고 나서요. 오후에 갑자기 배가 너무 아팠어요.", "emotion": "guarded" },
+        "ask_school": { "text": "...네. 오늘 못 갔어요. 아침에 일어나니까 더 힘들어서요.", "emotion": "guarded" },
+        "empathy_alone": { "text": "엄마가 일하셔서요. 그냥 혼자 왔어요. 뭐, 별거 아닌 것 같아서.", "emotion": "guarded", "innerVoice": "스스로 찾아온 게 대견하다. 별거 아니라고 하지만 꽤 힘들어 보인다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "구토·설사 동반 여부", "text": "설사나 구토도 있었나요?", "intent": "ask_symptoms" },
+        { "tag": "생활", "family": "life", "label": "같이 먹은 친구 상황", "text": "같이 급식 먹은 친구들도 아프다고 하던가요?", "intent": "ask_contact" },
+        { "tag": "공감", "family": "emotional", "label": "현재 통증 공감", "text": "많이 힘들었겠다. 통증은 지금도 있어요?", "intent": "empathy_pain" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "어제 점심 메뉴 확인", "text": "어제 점심에 뭘 먹었는지 기억해요?", "intent": "ask_diet" },
+        "after_life": { "family": "life", "label": "학교 결석자 수", "text": "학교에서 많이 아픈 학생들 있다고 하던가요?", "intent": "ask_school_situation" },
+        "after_emotional": { "family": "emotional", "label": "통증 위치 확인", "text": "어디가 제일 아픈지 손으로 짚어줄 수 있어요?", "intent": "ask_location" }
+      },
+      "responses": {
+        "ask_symptoms": { "text": "구토는 어제 두 번 했어요. 설사도... 좀 있었어요.", "emotion": "guarded" },
+        "ask_contact": { "text": "단체방에 아프다는 애들이 몇 명 있긴 했어요.", "emotion": "warming" },
+        "empathy_pain": { "text": "...지금도 좀 있어요. 아침보다는 나은 것 같기도 하고.", "emotion": "warming" },
+        "ask_diet": { "text": "잡채랑 국이랑... 다 먹었어요. 급식 다 먹었는데요.", "emotion": "neutral" },
+        "ask_school_situation": { "text": "몇 명 결석했다는 얘기는 들었어요. 저도 오늘 쉬었고.", "emotion": "neutral" },
+        "ask_location": { "text": "여기요. (배 가운데를 짚는다) 쥐어짜는 것 같아요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "발열 여부", "text": "열은 있었나요? 잰 적 있어요?", "intent": "ask_fever" },
+        { "tag": "생활", "family": "life", "label": "수분 섭취 여부", "text": "오늘 물은 좀 마셨어요?", "intent": "ask_hydration" },
+        { "tag": "공감", "family": "emotional", "label": "처음 경험 공감", "text": "갑자기 이렇게 아프면 무서웠겠다.", "intent": "empathy_worry" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "집에서 약 복용 여부", "text": "집에서 먹은 약이 있어요?", "intent": "ask_medication" },
+        "after_life": { "family": "life", "label": "아침 식사 여부", "text": "오늘 아침은 먹었어요?", "intent": "ask_breakfast" },
+        "after_emotional": { "family": "emotional", "label": "부모님 연락 여부", "text": "부모님한테는 아프다고 알렸어요?", "intent": "ask_parent" }
+      },
+      "responses": {
+        "ask_fever": { "text": "어제 재봤는데 37.8도 나왔어요. 지금은 모르겠어요.", "emotion": "neutral" },
+        "ask_hydration": { "text": "조금요. 많이 마시면 또 토할 것 같아서.", "emotion": "neutral" },
+        "empathy_worry": { "text": "...좀 그랬어요. 처음에는 그냥 지나가는 줄 알았거든요.", "emotion": "warming" },
+        "ask_medication": { "text": "아니요. 집에 별로 없어서요.", "emotion": "neutral" },
+        "ask_breakfast": { "text": "못 먹었어요. 입맛이 없고 먹으면 토할 것 같아서.", "emotion": "neutral" },
+        "ask_parent": { "text": "엄마한테 문자는 보냈어요. 일하는 중이라 답장은 못 받고.", "emotion": "warming", "innerVoice": "혼자 해결하려고 했구나." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "두통·근육통 여부", "text": "머리가 아프거나 몸이 쑤시는 느낌은 있어요?", "intent": "ask_other_symptoms" },
+        { "tag": "생활", "family": "life", "label": "평소 위장 상태", "text": "평소에 위나 장이 좀 약한 편이에요?", "intent": "ask_history" },
+        { "tag": "공감", "family": "emotional", "label": "학교 걱정 공감", "text": "공부 빠지는 거 걱정되지 않아요?", "intent": "empathy_school" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "혈변 여부", "text": "설사할 때 피가 섞여 있지는 않았나요?", "intent": "ask_blood" },
+        "after_life": { "family": "life", "label": "식품 알레르기 여부", "text": "특정 음식에 알레르기 있는 건 없어요?", "intent": "ask_allergy" },
+        "after_emotional": { "family": "emotional", "label": "시험 기간 여부", "text": "요즘 시험 기간이에요?", "intent": "ask_exam" }
+      },
+      "responses": {
+        "ask_other_symptoms": { "text": "머리는 좀 지끈거려요. 몸이 무거운 것 같기도 하고.", "emotion": "neutral" },
+        "ask_history": { "text": "좀 예민한 편이에요. 스트레스 받으면 배가 아프기도 하고.", "emotion": "neutral" },
+        "empathy_school": { "text": "...그냥 좀 쉬고 싶기도 해서요. (작게 웃음)", "emotion": "warming" },
+        "ask_blood": { "text": "그런 건 없었어요. 그냥 물처럼 나왔어요.", "emotion": "neutral" },
+        "ask_allergy": { "text": "없어요.", "emotion": "neutral" },
+        "ask_exam": { "text": "다음 주에 중간고사가 있어요. 공부는 못 해서 걱정이에요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "회복 추이 확인", "text": "어제 최고로 심할 때에 비해 지금은 좀 나아졌어요?", "intent": "ask_recovery" },
+        { "tag": "생활", "family": "life", "label": "방과 후 환경", "text": "집에 혼자 있는 시간이 긴 편이에요?", "intent": "ask_home_alone" },
+        { "tag": "공감", "family": "emotional", "label": "지금 가장 힘든 것", "text": "지금 제일 힘든 게 뭐예요?", "intent": "empathy_need" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "마지막 식사 시간", "text": "마지막으로 뭔가 먹은 게 언제예요?", "intent": "ask_last_meal" },
+        "after_life": { "family": "life", "label": "저녁 가족 복귀 시간", "text": "저녁에는 부모님 오시나요?", "intent": "ask_family_schedule" },
+        "after_emotional": { "family": "emotional", "label": "빨리 낫고 싶은 이유", "text": "빨리 나아서 하고 싶은 게 있어요?", "intent": "empathy_hope" }
+      },
+      "responses": {
+        "ask_recovery": { "text": "네, 좀 나아진 것 같아요. 어제는 진짜 죽는 줄 알았거든요.", "emotion": "warming" },
+        "ask_home_alone": { "text": "학교 끝나고 나서 엄마 퇴근하기 전까지는 혼자 있어요.", "emotion": "neutral" },
+        "empathy_need": { "text": "...배 안 아팠으면 좋겠어요. 그리고 배고파요. 근데 못 먹겠어요.", "emotion": "warming", "innerVoice": "솔직하게 말해준다. 신뢰가 생기고 있다." },
+        "ask_last_meal": { "text": "어제 점심이요. 그 이후로 아무것도 못 먹었어요.", "emotion": "neutral" },
+        "ask_family_schedule": { "text": "저녁 7시쯤 오세요. 아빠는 늦게 오시고요.", "emotion": "neutral" },
+        "empathy_hope": { "text": "...친구들이랑 놀고 싶어요. 이번 주 주말에 약속이 있어서.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "현재 통증 점수", "text": "지금 통증이 10점 만점에 몇 점 정도예요?", "intent": "ask_pain_scale" },
+        { "tag": "생활", "family": "life", "label": "병원 방문 경험", "text": "병원에 혼자 온 게 처음이에요?", "intent": "ask_hospital_experience" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 온 것 격려", "text": "혼자 찾아온 거 잘했어요. 용기 있네요.", "intent": "empathy_brave" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "소변 색 확인", "text": "소변 색깔은 어때요? 많이 노랗지는 않나요?", "intent": "ask_urine" },
+        "after_life": { "family": "life", "label": "집에서 혼자 있을 수 있는지", "text": "오늘 약 받고 집에서 혼자 쉴 수 있겠어요?", "intent": "ask_home_plan" },
+        "after_emotional": { "family": "emotional", "label": "안심 전달", "text": "이 정도면 잘 회복될 거예요. 너무 걱정 안 해도 돼요.", "intent": "empathy_reassure" }
+      },
+      "responses": {
+        "ask_pain_scale": { "text": "지금은 4점 정도요? 어제는 8점 넘었는데.", "emotion": "warming" },
+        "ask_hospital_experience": { "text": "네. 처음이에요. 어디 가야 하는지도 몰라서 걸어서 왔어요.", "emotion": "warming" },
+        "empathy_brave": { "text": "...그냥 왔어요. (쑥스러운 듯) 별거 아니에요.", "emotion": "opened", "innerVoice": "照れ隠しか. 사실 많이 불안했을 텐데. 인정받고 싶었을 거다." },
+        "ask_urine": { "text": "좀 진한 것 같아요. 물을 별로 못 마셔서 그런가요?", "emotion": "neutral" },
+        "ask_home_plan": { "text": "네. 집에서 쉬면 나을 것 같아요.", "emotion": "warming" },
+        "empathy_reassure": { "text": "다행이에요. 빨리 나았으면 좋겠어요.", "emotion": "opened" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "수분 보충 확인", "text": "이온음료나 물을 자주 조금씩 마시고 있어요?", "intent": "ask_fluids" },
+        { "tag": "생활", "family": "life", "label": "부모님 귀가 후 전달", "text": "오늘 어떻게 됐는지 부모님께 꼭 말씀드려요, 알겠죠?", "intent": "ask_tell_parents" },
+        { "tag": "공감", "family": "emotional", "label": "학교 복귀 가능성", "text": "증상이 좀 나아지면 내일은 학교 갈 수 있을 것 같아요?", "intent": "empathy_school_return" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "악화 시 병원 재방문 안내", "text": "열이 다시 오르거나 복통이 심해지면 바로 다시 와야 해요.", "intent": "ask_warning_signs" },
+        "after_life": { "family": "life", "label": "오늘 먹을 수 있는 것", "text": "오늘은 죽이나 미음 같은 걸로 조금씩 먹어봐요.", "intent": "ask_diet_plan" },
+        "after_emotional": { "family": "emotional", "label": "다음 주 시험 응원", "text": "다음 주 시험은 충분히 준비할 수 있을 거예요.", "intent": "empathy_exam_support" }
+      },
+      "responses": {
+        "ask_fluids": { "text": "이온음료 집에 있어요. 조금씩 마시면 되는 거죠?", "emotion": "neutral" },
+        "ask_tell_parents": { "text": "네, 알겠어요. 엄마한테 카톡 보낼게요.", "emotion": "warming" },
+        "empathy_school_return": { "text": "내일은 갈 수 있을 것 같아요. 시험 준비도 해야 하고.", "emotion": "opened" },
+        "ask_warning_signs": { "text": "네, 알겠어요. 그러면 또 혼자 오면 되는 거죠?", "emotion": "warming" },
+        "ask_diet_plan": { "text": "집에 죽 있는지 모르겠는데... 엄마한테 사다 달라고 해볼게요.", "emotion": "warming" },
+        "empathy_exam_support": { "text": "...네. 빨리 나아야겠어요. 감사해요.", "emotion": "opened" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. ...약은 어떻게 먹는 거죠?" },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간입니다.",
+    "patient": "아, 네. 알겠어요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "혈변이나 점액변 동반 여부를 미처 확인하지 못했다.",
+      "life": "방과 후 집에 혼자 있는 환경에 대해 더 물어볼 수 있었다.",
+      "emotional": "시험 스트레스와 아픔이 겹쳐 얼마나 힘든지 충분히 공감하지 못했다."
+    },
+    "lastScene": "약 봉투를 받아 든 김태현이 조심스럽게 인사하고 문을 나선다.",
+    "lastSceneGated": "약 봉투를 받아 들다가 잠깐 멈추더니, '감사해요'라고 조용히 말하고 문을 나선다. 처음보다 훨씬 가벼운 발걸음이다."
+  }
+}

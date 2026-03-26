@@ -1,0 +1,152 @@
+{
+  "opening": { "speaker": "patient", "text": "배가 아파서요... (엄마가 옆에서) 어제부터 아팠는데 오늘도 낫질 않아서 데려왔어요." },
+  "nurseInfo": { "available": true, "text": "13세 여학생이에요. 어머니가 동반하셨는데, 환자는 수줍어하고 어머니가 대신 말씀하시려는 경향이 있어요. 어제 급식 후 복통과 구역질이 생겼다고 하시네요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "환자 직접 증상 확인", "text": "지수야, 직접 얘기해줄 수 있어요? 어디가 제일 아파요?", "intent": "ask_direct" },
+        { "tag": "생활", "family": "life", "label": "언제부터 시작됐는지", "text": "어제 점심 먹고 나서 바로 아팠어요?", "intent": "ask_onset" },
+        { "tag": "공감", "family": "emotional", "label": "오느라 힘들었겠다고", "text": "많이 아픈데도 병원까지 왔네요. 힘들었겠어요.", "intent": "empathy_came" }
+      ],
+      "responses": {
+        "ask_direct": { "text": "(작은 목소리로) 배가 아프고... 밥 먹으면 토할 것 같아요.", "emotion": "neutral" },
+        "ask_onset": { "text": "(엄마가) 점심 먹고 오후 수업 중에 아프다고 연락이 왔어요. 일찍 데리고 왔는데 밤에 좀 심해졌고.", "emotion": "neutral" },
+        "empathy_came": { "text": "(살짝 고개를 끄덕인다) 네...", "emotion": "neutral", "innerVoice": "말수가 적은 아이다. 편하게 말할 수 있도록 해야 한다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "구토 여부", "text": "토한 적이 있어요?", "intent": "ask_vomit" },
+        { "tag": "생활", "family": "life", "label": "친구들 상황 확인", "text": "같은 반 친구들도 아프다고 하던가요?", "intent": "ask_friends" },
+        { "tag": "공감", "family": "emotional", "label": "배 많이 아프냐고", "text": "지금도 배가 많이 아파요?", "intent": "empathy_pain" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "설사 여부", "text": "설사는요?", "intent": "ask_diarrhea" },
+        "after_life": { "family": "life", "label": "급식 무엇 먹었는지", "text": "어제 급식에 뭐가 나왔는지 기억해요?", "intent": "ask_meal" },
+        "after_emotional": { "family": "emotional", "label": "어디가 아픈지", "text": "배 어느 부분이 아파요? 손으로 짚어줄 수 있어요?", "intent": "ask_location" }
+      },
+      "responses": {
+        "ask_vomit": { "text": "어제 한 번요. 학교 화장실에서.", "emotion": "neutral" },
+        "ask_friends": { "text": "(엄마가) 단체방에서 아프다는 애들이 있더라고요. 여러 명인 것 같던데.", "emotion": "neutral" },
+        "empathy_pain": { "text": "...어제보다는 좀 나아진 것 같아요.", "emotion": "neutral" },
+        "ask_diarrhea": { "text": "어제 한 번이요. 지금은 없어요.", "emotion": "neutral" },
+        "ask_meal": { "text": "(잠깐 생각하다가) 잡채랑 국이랑 김치... 다 먹은 것 같아요.", "emotion": "neutral" },
+        "ask_location": { "text": "(배꼽 주변을 가리키며) 여기요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "발열 여부 확인", "text": "열은요? 어젯밤에 재봤어요?", "intent": "ask_fever" },
+        { "tag": "생활", "family": "life", "label": "오늘 식사 여부", "text": "오늘 밥은 먹었어요?", "intent": "ask_eating" },
+        { "tag": "공감", "family": "emotional", "label": "병원 오기 싫지 않았냐고", "text": "병원 오기 싫지는 않았어요?", "intent": "empathy_hospital" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "두통이나 몸살 여부", "text": "머리가 아프거나 몸이 쑤시는 느낌은요?", "intent": "ask_other" },
+        "after_life": { "family": "life", "label": "물은 마시고 있는지", "text": "물은 좀 마시고 있어요?", "intent": "ask_hydration" },
+        "after_emotional": { "family": "emotional", "label": "빨리 낫고 싶은 이유", "text": "빨리 나아서 하고 싶은 게 있어요?", "intent": "empathy_hope" }
+      ],
+      "responses": {
+        "ask_fever": { "text": "(엄마가) 어젯밤에 37.9도 나왔어요. 지금은 안 재봤는데.", "emotion": "neutral" },
+        "ask_eating": { "text": "아침에 죽을 좀 먹었는데, 반도 못 먹었어요.", "emotion": "neutral" },
+        "empathy_hospital": { "text": "(작게) 조금요. 주사 맞는 건 아니죠?", "emotion": "neutral", "innerVoice": "주사를 무서워하는 것 같다. 일반적인 아이의 반응이다." },
+        "ask_other": { "text": "어제는 머리도 아팠는데 지금은 좀 나아요.", "emotion": "neutral" },
+        "ask_hydration": { "text": "이온음료 조금 마셨어요.", "emotion": "neutral" },
+        "empathy_hope": { "text": "...빨리 학교 가고 싶어요. 발표 연습을 못 해서요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "혈변 여부 확인", "text": "설사할 때 피가 섞였거나 하지는 않았죠?", "intent": "ask_blood" },
+        { "tag": "생활", "family": "life", "label": "학교 활동 참여 여부", "text": "오늘 학교는 결석한 거죠?", "intent": "ask_school" },
+        { "tag": "공감", "family": "emotional", "label": "주사 없다고 안심", "text": "오늘은 주사는 없어요. 약만 처방해줄 거예요.", "intent": "empathy_no_injection" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "지금 통증 정도", "text": "지금 배가 얼마나 아파요? 10점이면 제일 심한 거인데.", "intent": "ask_pain_scale" },
+        "after_life": { "family": "life", "label": "어머니께 경과 설명", "text": "어머니, 어젯밤 이후로 상태가 어떻게 변했어요?", "intent": "ask_parent_report" },
+        "after_emotional": { "family": "emotional", "label": "발표가 뭔지 물어보기", "text": "발표가 어떤 발표예요?", "intent": "ask_presentation" }
+      },
+      "responses": {
+        "ask_blood": { "text": "피는 없었어요.", "emotion": "neutral" },
+        "ask_school": { "text": "(엄마가) 네, 오늘 결석이에요. 선생님한테 연락드렸어요.", "emotion": "neutral" },
+        "empathy_no_injection": { "text": "(표정이 풀리며) 다행이에요.", "emotion": "warming" },
+        "ask_pain_scale": { "text": "지금은 3점? 어제 밤이 제일 심했는데 그때는 7점 정도였어요.", "emotion": "neutral" },
+        "ask_parent_report": { "text": "(엄마가) 새벽에 한 번 더 토했고, 아침에는 좀 나아져서 죽을 조금 먹었어요. 지금은 어제보다 훨씬 나아 보여요.", "emotion": "neutral" },
+        "ask_presentation": { "text": "국어 시간 발표요. 제가 발표자여서 걱정돼요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "경과 설명", "text": "이 정도면 많이 호전되고 있어요. 앞으로 하루 이틀 더 쉬면 괜찮을 것 같아요.", "intent": "explain_prognosis" },
+        { "tag": "생활", "family": "life", "label": "내일 학교 복귀 가능 여부", "text": "내일 학교 갈 수 있을 것 같아요?", "intent": "ask_return" },
+        { "tag": "공감", "family": "emotional", "label": "발표는 나중에 해도 된다고", "text": "발표는 선생님께 상황 말씀드리면 미뤄줄 거예요.", "intent": "empathy_presentation" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "음식 재개 방법", "text": "오늘은 죽이나 미음으로 조금씩 드시고, 내일부터 일반 식사 시도해요.", "intent": "advise_diet" },
+        "after_life": { "family": "life", "label": "등교 전 상태 확인", "text": "내일 아침에 일어났을 때 열이 없고 배 안 아프면 가도 돼요.", "intent": "advise_return_criteria" },
+        "after_emotional": { "family": "emotional", "label": "선생님께 연락해주기", "text": "어머니가 담임 선생님께 오늘 상황 말씀드리시면 배려해 주실 거예요.", "intent": "advise_teacher_contact" }
+      },
+      "responses": {
+        "explain_prognosis": { "text": "(엄마가) 다행이에요. 괜찮아지겠죠?", "emotion": "warming" },
+        "ask_return": { "text": "...내일은 가고 싶어요. 빨리 나아야 해서.", "emotion": "warming" },
+        "empathy_presentation": { "text": "(살짝 안도한 표정으로) 그래도 되는 거예요?", "emotion": "warming" },
+        "advise_diet": { "text": "(엄마가) 알겠어요. 죽 좀 더 만들어줄게.", "emotion": "neutral" },
+        "advise_return_criteria": { "text": "알겠어요. 아침에 괜찮으면 갈 수 있겠네요.", "emotion": "neutral" },
+        "advise_teacher_contact": { "text": "(엄마가) 이미 연락은 했는데 자세히 다시 말씀드릴게요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "수분 보충 중요성", "text": "이온음료나 물을 자주 조금씩 마셔야 해요.", "intent": "advise_hydration" },
+        { "tag": "생활", "family": "life", "label": "안정을 취해야 한다고", "text": "오늘은 핸드폰이나 TV 줄이고 좀 쉬어야 해요.", "intent": "advise_rest" },
+        { "tag": "공감", "family": "emotional", "label": "발표 잘할 수 있을 거라고", "text": "발표 준비했으니까 나중에도 잘할 수 있을 거예요.", "intent": "empathy_encourage" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "악화 시 재방문 기준", "text": "열이 다시 오르거나 복통이 심해지면 다시 오세요.", "intent": "advise_return_warning" },
+        "after_life": { "family": "life", "label": "학교 결석 서류 필요 여부", "text": "학교에 제출할 서류가 필요하면 말씀해주세요.", "intent": "ask_document" },
+        "after_emotional": { "family": "emotional", "label": "긍정적인 태도 격려", "text": "이렇게 발표 걱정할 정도면 빨리 나을 것 같은데요.", "intent": "empathy_motivation" }
+      },
+      "responses": {
+        "advise_hydration": { "text": "(고개를 끄덕이며) 집에 이온음료 있어요.", "emotion": "neutral" },
+        "advise_rest": { "text": "핸드폰요? (엄마가) 그렇게 해야겠죠. 오늘은 좀 쉬자.", "emotion": "neutral" },
+        "empathy_encourage": { "text": "(작게 웃으며) 감사해요.", "emotion": "warming" },
+        "advise_return_warning": { "text": "(엄마가) 알겠어요. 조심할게요.", "emotion": "neutral" },
+        "ask_document": { "text": "(엄마가) 아, 필요할 수도 있겠네요. 발급해 주실 수 있나요?", "emotion": "neutral" },
+        "empathy_motivation": { "text": "빨리 낫고 싶어요. 발표도 하고 싶고.", "emotion": "opened" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방약 복용 설명", "text": "약은 하루 세 번, 밥 먹고 30분 후에 드세요.", "intent": "explain_meds" },
+        { "tag": "생활", "family": "life", "label": "귀가 방법 확인", "text": "오늘 집에 바로 가실 거죠?", "intent": "ask_home" },
+        { "tag": "공감", "family": "emotional", "label": "잘 나을 거라고", "text": "이제 나아지고 있으니까 곧 괜찮아질 거예요.", "intent": "empathy_final" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "약 다 먹어야 한다고", "text": "증상이 나아도 처방받은 약은 끝까지 다 드세요.", "intent": "advise_finish_meds" },
+        "after_life": { "family": "life", "label": "집에서 주의사항", "text": "집에서도 지수씨가 혼자 화장실 가는 게 힘들면 도와주세요.", "emotion": "neutral", "intent": "advise_home_care" },
+        "after_emotional": { "family": "emotional", "label": "발표 이야기 마무리", "text": "발표 잘 마치면 나중에 알려줘요.", "intent": "empathy_presentation_final" }
+      },
+      "responses": {
+        "explain_meds": { "text": "(엄마가) 세 번이요. 알겠어요.", "emotion": "neutral" },
+        "ask_home": { "text": "(엄마가) 네, 바로 집에 갈 거예요.", "emotion": "neutral" },
+        "empathy_final": { "text": "(살짝 웃으며) 감사해요.", "emotion": "opened" },
+        "advise_finish_meds": { "text": "알겠어요. 다 먹을게요.", "emotion": "neutral" },
+        "advise_home_care": { "text": "(엄마가) 당연하죠. 오늘은 옆에 있을게요.", "emotion": "neutral" },
+        "empathy_presentation_final": { "text": "(작게 웃으며) 네. 잘할게요.", "emotion": "opened" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. (엄마가) 감사합니다, 선생님." },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간입니다.",
+    "patient": "아, 네. 감사합니다. (엄마가 아이를 데리고 나간다)"
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "열 변화 추이와 복통 정도를 더 객관적으로 확인하지 못했다.",
+      "life": "학교에서 아프다고 연락이 왔을 때 상황에 대해 더 물어볼 수 있었다.",
+      "emotional": "발표에 대한 걱정을 통해 학교생활에 대한 관심을 더 표현해줄 수 있었다."
+    },
+    "lastScene": "박지수 양이 엄마 손을 잡고 조용히 진료실을 나선다.",
+    "lastSceneGated": "박지수 양이 나가면서 살짝 뒤를 돌아보며 고개를 숙인다. 작은 인사가 마음에 남는다."
+  }
+}

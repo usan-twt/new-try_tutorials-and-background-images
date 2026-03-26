@@ -1,0 +1,154 @@
+{
+  "opening": { "speaker": "patient", "text": "선생님, 밥을 먹어도 뭔가 잘 안 내려가는 것 같고... 입맛도 영 없어서요." },
+  "nurseInfo": { "available": true, "text": "67세 여성분이세요. 소화불량과 식욕저하가 2주째 지속된다고 하시네요. 딸분이 모시고 오셨는데, 진료는 환자분 혼자 들어오셨어요." },
+  "rapportGating": { "threshold": 2, "families": ["emotional", "life"] },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 기간 및 양상 확인", "text": "소화가 안 된다고 하셨는데, 구체적으로 어떤 느낌이에요?", "intent": "ask_symptom_detail" },
+        { "tag": "생활", "family": "life", "label": "식사 패턴 확인", "text": "평소에 식사는 어떻게 하세요? 규칙적으로 드시는 편인가요?", "intent": "ask_meal_pattern" },
+        { "tag": "공감", "family": "emotional", "label": "불편함 공감", "text": "2주나 입맛이 없으셨군요. 많이 힘드셨겠어요.", "intent": "empathy_hardship" }
+      ],
+      "responses": {
+        "ask_symptom_detail": { "text": "먹고 나면 속이 더부룩하고, 명치 쪽이 꽉 막힌 느낌이에요. 가스도 많이 차는 것 같고.", "emotion": "neutral" },
+        "ask_meal_pattern": { "text": "원래는 세 끼 다 챙겨 먹었는데, 요즘은 두 끼도 못 먹겠어요. 억지로 먹으면 더 불편하니까.", "emotion": "neutral" },
+        "empathy_hardship": { "text": "그러게요. 밥을 못 먹으니까 힘이 없고, 힘이 없으니까 더 먹기 싫고... 악순환이에요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "복통 여부 확인", "text": "배가 아프기도 하세요?", "intent": "ask_pain" },
+        { "tag": "생활", "family": "life", "label": "체중 변화 확인", "text": "2주 사이에 체중이 빠지셨나요?", "intent": "ask_weight" },
+        { "tag": "공감", "family": "emotional", "label": "걱정되는 것 확인", "text": "혹시 혼자 많이 걱정되셨겠다 싶어서요.", "intent": "empathy_worry" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "구역감·구토 여부", "text": "메스꺼운 느낌이나 구토도 있으셨어요?", "intent": "ask_nausea" },
+        "after_life": { "family": "life", "label": "식사 내용 변화", "text": "요즘 드시는 음식이 달라지셨나요?", "intent": "ask_diet_change" },
+        "after_emotional": { "family": "emotional", "label": "증상이 언제 심한지", "text": "언제 특히 더 불편하게 느껴지세요?", "intent": "ask_worse_when" }
+      },
+      "responses": {
+        "ask_pain": { "text": "아프진 않아요. 그냥 묵직하고 답답한 느낌이에요.", "emotion": "neutral" },
+        "ask_weight": { "text": "한 2킬로 정도 빠진 것 같아요. 딸이 그러더라고요, 얼굴이 야위었다고.", "emotion": "neutral" },
+        "empathy_worry": { "text": "딸이 걱정해서 억지로 데려온 거예요. 저는 그냥 나이 들면 다 이런가 싶어서.", "emotion": "neutral", "innerVoice": "스스로를 낮추고 있다. 실은 많이 신경 쓰일 것 같다." },
+        "ask_nausea": { "text": "토하지는 않았는데, 울렁거리는 느낌은 가끔 있어요.", "emotion": "neutral" },
+        "ask_diet_change": { "text": "요즘은 그냥 죽 같은 거 먹게 되더라고요. 단단한 건 먹기 싫어서.", "emotion": "neutral" },
+        "ask_worse_when": { "text": "아침에 일어나면 제일 심한 것 같아요. 밤새 위에 뭔가 남아있는 느낌.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "대변 상태 확인", "text": "대변은 어때요? 횟수나 색깔이 달라진 건 없나요?", "intent": "ask_bowel" },
+        { "tag": "생활", "family": "life", "label": "기저질환·복용약 확인", "text": "평소에 드시는 약이 있으세요?", "intent": "ask_medication" },
+        { "tag": "공감", "family": "emotional", "label": "일상 변화 공감", "text": "밥을 제대로 못 드시면 하루하루가 힘드셨을 것 같아요.", "intent": "empathy_daily" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "위장약 복용 경험", "text": "소화제나 위장약을 드셔보셨나요?", "intent": "ask_antacid" },
+        "after_life": { "family": "life", "label": "이전 위장 관련 진료", "text": "이전에 위 때문에 진료 받으신 적 있으세요?", "intent": "ask_past_treatment" },
+        "after_emotional": { "family": "emotional", "label": "요즘 스트레스 여부", "text": "요즘 스트레스를 많이 받으시는 건 아닌가요?", "intent": "ask_stress", "gated": true }
+      },
+      "responses": {
+        "ask_bowel": { "text": "변비가 좀 있는 것 같아요. 이틀에 한 번 정도 보는 것 같은데.", "emotion": "neutral" },
+        "ask_medication": { "text": "혈압약은 먹고 있어요. 다른 건 별로 없는데.", "emotion": "neutral" },
+        "empathy_daily": { "text": "그렇죠. 밥이 맛없으니까 뭘 해도 재미가 없어요.", "emotion": "warming", "gatedResponse": { "text": "그렇죠. 밥이 맛없으니까 뭘 해도 재미가 없어요. 집에서 혼자 밥 해먹는 것도 귀찮아지고... 이런 말 하기 민망한데.", "emotion": "opened" } },
+        "ask_antacid": { "text": "약국에서 소화제 사서 먹어봤는데 별로 나아지는 것 같지는 않아요.", "emotion": "neutral" },
+        "ask_past_treatment": { "text": "몇 년 전에 위내시경 했는데, 위염이 있다고 했어요.", "emotion": "neutral" },
+        "ask_stress": { "text": "스트레스야 뭐, 나이 드면 다 있는 거 아닌가요.", "emotion": "neutral", "gatedResponse": { "text": "...사실 남편이 작년에 돌아가시고 나서부터 좀 그런 것 같기도 해요. 혼자 먹으니까 뭘 해먹기가 싫어지더라고요.", "emotion": "opened" } }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "속쓰림 여부", "text": "속이 쓰린 느낌은 없으세요?", "intent": "ask_heartburn" },
+        { "tag": "생활", "family": "life", "label": "운동·활동량", "text": "요즘 움직이시는 건 어떠세요? 산책 같은 거 하세요?", "intent": "ask_activity" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 식사하는 것", "text": "혼자 식사하시는 거예요?", "intent": "ask_eating_alone" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "음주·흡연 여부", "text": "술이나 담배는 하세요?", "intent": "ask_alcohol_smoking" },
+        "after_life": { "family": "life", "label": "수면 상태", "text": "잠은 잘 자고 계세요?", "intent": "ask_sleep" },
+        "after_emotional": { "family": "emotional", "label": "딸과의 관계", "text": "딸이 자주 오는 편이에요?", "intent": "ask_family" }
+      },
+      "responses": {
+        "ask_heartburn": { "text": "쓰리기보다는 답답하고 막힌 느낌이 더 강해요.", "emotion": "neutral" },
+        "ask_activity": { "text": "요즘은 별로 안 나가게 되더라고요. 피곤하기도 하고.", "emotion": "neutral" },
+        "ask_eating_alone": { "text": "네, 혼자요. 딸은 따로 살고, 결혼해서.", "emotion": "neutral", "gatedResponse": { "text": "네, 혼자요. 남편이 가고 나서 혼자예요. 밥상 차리기가 귀찮아서 대충 먹게 되더라고요.", "emotion": "opened" } },
+        "ask_alcohol_smoking": { "text": "둘 다 안 해요.", "emotion": "neutral" },
+        "ask_sleep": { "text": "새벽에 자꾸 깨요. 한숨 자면 눈이 떠지고, 잠이 안 오고.", "emotion": "neutral" },
+        "ask_family": { "text": "가끔씩요. 바쁘니까. 오늘도 억지로 시간 냈을 거예요.", "emotion": "neutral", "gatedResponse": { "text": "가끔씩요. 딸도 애들 키우느라 바쁜데. 오늘 내 건강 때문에 걱정한다고 데려와줬는데 고맙긴 한데 미안하기도 하고.", "emotion": "opened" } }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "위내시경 필요성 설명", "text": "위내시경을 다시 해보시는 게 좋을 것 같은데요.", "intent": "suggest_endoscopy" },
+        { "tag": "생활", "family": "life", "label": "식사 개선 방향", "text": "지금은 소화가 잘 되는 음식 위주로 드시는 게 좋겠어요.", "intent": "advise_diet" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 지내는 것에 공감", "text": "혼자 계시면서 밥 챙기는 게 쉽지 않으시겠어요.", "intent": "empathy_alone" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "내시경 예약 안내", "text": "내과에 연결해드릴 테니까 예약 잡아서 보시면 좋겠어요.", "intent": "ask_endoscopy_schedule" },
+        "after_life": { "family": "life", "label": "음식 종류 추천", "text": "자극적인 거나 기름진 건 좀 줄이시고, 따뜻하고 부드러운 걸 드세요.", "intent": "advise_food_type" },
+        "after_emotional": { "family": "emotional", "label": "딸과 함께 하는 것 권유", "text": "딸이 걱정하는 만큼, 밥은 가능하면 같이 드시는 게 도움이 될 것 같아요.", "intent": "advise_eat_together" }
+      },
+      "responses": {
+        "suggest_endoscopy": { "text": "내시경이요... 그게 꼭 필요한 건가요?", "emotion": "anxious" },
+        "advise_diet": { "text": "네, 그렇게 해볼게요. 뭘 먹어야 좋은지 모르겠어서.", "emotion": "neutral" },
+        "empathy_alone": { "text": "쉽지 않죠. 혼자 밥상 차리기가 귀찮아서 대충 먹게 되고.", "emotion": "warming", "gatedResponse": { "text": "쉽지 않아요. 남편이랑 둘이 먹을 때는 그래도 차려 먹었는데, 혼자 먹으려니 의욕이 없어요. 선생님한테 이런 말 해도 되나요.", "emotion": "opened" } },
+        "ask_endoscopy_schedule": { "text": "네, 그렇게 할게요. 딸한테 같이 가자고 해야겠네요.", "emotion": "neutral" },
+        "advise_food_type": { "text": "알겠어요. 된장국이나 그런 거 먹으면 되겠네요.", "emotion": "neutral" },
+        "advise_eat_together": { "text": "딸이 바쁘긴 한데... 가끔은 그렇게 해봐야겠어요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "혈압약과 위장 증상 관련", "text": "혈압약을 드시는 거랑 위장 증상이 연관 있을 수 있어요.", "intent": "ask_med_side_effect" },
+        { "tag": "생활", "family": "life", "label": "규칙적인 식사 중요성", "text": "식욕이 없어도 조금씩 규칙적으로 드시는 게 중요해요.", "intent": "advise_regularity" },
+        { "tag": "공감", "family": "emotional", "label": "좋아질 거라고 안심", "text": "약을 좀 써보면서 내시경도 하시면 훨씬 나아지실 거예요.", "intent": "empathy_hope" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "복용 시간 확인", "text": "혈압약은 언제 드세요? 식사 전인지 후인지.", "intent": "ask_med_timing" },
+        "after_life": { "family": "life", "label": "걷기 운동 권유", "text": "날씨 좋은 날은 조금이라도 걸으시면 소화에 도움이 돼요.", "intent": "advise_walk" },
+        "after_emotional": { "family": "emotional", "label": "다시 올 것 권유", "text": "한 2주 후에 다시 오시면 경과를 확인해볼게요.", "intent": "ask_follow_up" }
+      },
+      "responses": {
+        "ask_med_side_effect": { "text": "그럴 수도 있어요? 몰랐네요.", "emotion": "neutral" },
+        "advise_regularity": { "text": "억지로라도 먹어야겠군요. 네, 그렇게 해볼게요.", "emotion": "neutral" },
+        "empathy_hope": { "text": "그랬으면 좋겠어요. 이런 게 오래가면 걱정이 돼서.", "emotion": "warming" },
+        "ask_med_timing": { "text": "아침 식사 후에 먹어요.", "emotion": "neutral" },
+        "advise_walk": { "text": "그렇군요. 예전엔 공원도 나갔는데 요즘은 안 나가게 됐어요. 다시 해봐야겠네요.", "emotion": "warming" },
+        "ask_follow_up": { "text": "네, 그렇게 할게요. 딸한테도 같이 오자고 해야겠어요.", "emotion": "opened" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "응급 증상 주의사항", "text": "혹시 검은 변을 보거나 토혈이 있으면 바로 응급실 가셔야 해요.", "intent": "ask_emergency_signs" },
+        { "tag": "생활", "family": "life", "label": "오늘 귀가 방법", "text": "오늘 딸분이랑 같이 가시는 거죠?", "intent": "ask_transport" },
+        { "tag": "공감", "family": "emotional", "label": "잘 오셨다고 격려", "text": "오늘 오시길 잘하셨어요. 그냥 두지 않으신 게 다행이에요.", "intent": "empathy_came" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "마지막 당부", "text": "처방약 꼬박꼬박 드시고, 식사 조금씩 규칙적으로 해주세요.", "intent": "final_advice" },
+        "after_life": { "family": "life", "label": "딸에게 설명해드릴지", "text": "딸분께도 오늘 상황 설명해드릴게요.", "intent": "ask_explain_family" },
+        "after_emotional": { "family": "emotional", "label": "걱정 덜어드리기", "text": "심각한 병일 가능성은 낮으니 너무 걱정하지 마세요.", "intent": "empathy_reassure" }
+      },
+      "responses": {
+        "ask_emergency_signs": { "text": "그런 증상이요? 무서운 얘기네요. 그런 건 없었어요.", "emotion": "anxious" },
+        "ask_transport": { "text": "네, 딸이 밖에서 기다리고 있어요.", "emotion": "neutral" },
+        "empathy_came": { "text": "딸이 데려오지 않았으면 그냥 있었을 것 같아요. 다행이에요.", "emotion": "opened" },
+        "final_advice": { "text": "네, 그렇게 할게요. 감사합니다.", "emotion": "warming" },
+        "ask_explain_family": { "text": "네, 같이 들어오라고 할까요?", "emotion": "neutral" },
+        "empathy_reassure": { "text": "그 말이 제일 듣고 싶었어요. 고맙습니다.", "emotion": "opened" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 딸이 기다리고 있을 텐데... 가볼게요." },
+  "closingGated": { "speaker": "patient", "text": "감사합니다. 오늘 이렇게 얘기 나누고 나니까 조금 홀가분하네요. 딸한테도 더 자주 연락해봐야겠어요." },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간입니다.",
+    "patient": "아, 네. 고맙습니다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "위내시경 검사 이후 추적 경과에 대해 더 자세히 설명하지 못했다.",
+      "life": "혼자 지내는 생활 환경과 식사 준비 현실에 대해 더 여쭤볼 수 있었다.",
+      "emotional": "배우자를 잃은 후의 외로움에 대해 충분히 공감하지 못했다."
+    },
+    "lastScene": "박현자 씨가 천천히 자리에서 일어나 가방을 챙기고 조용히 진료실을 나선다.",
+    "lastSceneGated": "박현자 씨가 자리에서 일어나며 작게 웃는다. '오늘 많이 얘기했네요. 고마워요, 선생님.' 그 말이 마음에 남는다."
+  }
+}

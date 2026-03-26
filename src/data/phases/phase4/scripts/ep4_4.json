@@ -1,0 +1,152 @@
+{
+  "opening": { "speaker": "patient", "text": "저... 저도 아프긴 한데, 그것보다 제가 혹시 원인이 된 건 아닌지 걱정이 돼서요." },
+  "nurseInfo": { "available": true, "text": "45세 남성분이세요. 해당 중학교 급식실 조리원이신데, 본인도 어제부터 복통·구토 증상이 있으시고, 자신이 식중독 원인이 된 건 아닌지 매우 불안해하고 계세요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "본인 증상 먼저 확인", "text": "먼저 지금 어떤 증상이 있으신지 말씀해주세요.", "intent": "ask_own_symptoms" },
+        { "tag": "생활", "family": "life", "label": "언제부터 증상이 시작됐는지", "text": "증상이 언제부터 시작됐어요?", "intent": "ask_onset" },
+        { "tag": "공감", "family": "emotional", "label": "걱정에 공감", "text": "많이 걱정되시겠어요. 먼저 진정하시고 천천히 얘기해요.", "intent": "empathy_worry" }
+      ],
+      "responses": {
+        "ask_own_symptoms": { "text": "어제 저녁부터 배가 심하게 아프고, 밤에 두 번 토했어요. 설사도 계속 나오고... 근데 그것보다 제가 조리했는데 학생들이 아프다니까.", "emotion": "anxious" },
+        "ask_onset": { "text": "어제 오후 늦게부터요. 근무 끝나고 집에 가는 길에 갑자기 배가 아팠어요.", "emotion": "anxious" },
+        "empathy_worry": { "text": "네... 죄송한데, 제가 뭔가 잘못한 게 있는 건 아닌지 자꾸 생각이 나서요.", "emotion": "distressed", "innerVoice": "심한 죄책감을 느끼고 있다. 아직 원인도 모르는데 자책이 앞서고 있다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "증상 정도 확인", "text": "지금 복통이 얼마나 심하세요? 열은요?", "intent": "ask_severity" },
+        { "tag": "생활", "family": "life", "label": "어제 급식 조리 과정", "text": "어제 급식은 어떻게 준비하셨어요? 평소와 달랐던 게 있었나요?", "intent": "ask_cooking_process" },
+        { "tag": "공감", "family": "emotional", "label": "원인은 아직 모른다는 것", "text": "아직 원인이 밝혀진 게 없어요. 본인 탓이라고 단정하지 마세요.", "intent": "empathy_reassure" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "구토 횟수 및 색깔", "text": "토할 때 피가 섞이거나 하지는 않았죠?", "intent": "ask_vomit_detail" },
+        "after_life": { "family": "life", "label": "식재료 보관 상태", "text": "어제 사용한 식재료 중에 상한 게 있거나 냄새가 이상했던 건 없었나요?", "intent": "ask_ingredients" },
+        "after_emotional": { "family": "emotional", "label": "보건 당국 신고 여부", "text": "학교 측에서 보건 당국에 신고는 했나요?", "intent": "ask_authority" }
+      },
+      "responses": {
+        "ask_severity": { "text": "열은 38도 넘게 나왔어요. 복통은... 쥐어짜는 것 같아요. 지금도 아파요.", "emotion": "anxious" },
+        "ask_cooking_process": { "text": "평소처럼 했어요. 잡채가 메인이었는데... 혹시 거기서 뭔가 잘못된 건 아닌지.", "emotion": "distressed" },
+        "empathy_reassure": { "text": "그렇게 말씀해주시니 조금 나은데... 그래도 자꾸 마음에 걸려요.", "emotion": "anxious" },
+        "ask_vomit_detail": { "text": "피는 없었어요. 그냥 먹은 것만 나왔고, 나중엔 아무것도 없는데 계속 구역질이 나왔어요.", "emotion": "neutral" },
+        "ask_ingredients": { "text": "이상한 냄새는 없었는데... 잡채 채소를 전날 미리 손질해뒀는데 그게 혹시. 냉장고에 넣어둔 건 맞거든요.", "emotion": "distressed" },
+        "ask_authority": { "text": "네, 교장 선생님이 바로 신고하셨대요. 역학조사관이 올 거라고 하더라고요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "혈변 여부", "text": "설사할 때 피가 섞여 나오거나 하지는 않았나요?", "intent": "ask_blood" },
+        { "tag": "생활", "family": "life", "label": "손 위생 관리", "text": "조리 전 손 위생은 철저히 하시는 편이죠?", "intent": "ask_hygiene" },
+        { "tag": "공감", "family": "emotional", "label": "역학조사 결과 기다려야 함", "text": "역학조사 결과가 나와야 원인이 밝혀져요. 지금 자책하는 건 너무 이르에요.", "intent": "empathy_wait" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "수분 섭취 상태", "text": "물이나 이온음료는 좀 마시고 계세요?", "intent": "ask_hydration" },
+        "after_life": { "family": "life", "label": "다른 조리원 상태", "text": "같이 일하신 다른 조리원분들은 어때요?", "intent": "ask_coworkers" },
+        "after_emotional": { "family": "emotional", "label": "직장에서의 압박 여부", "text": "지금 학교나 주변에서 압박받고 계신 건 아닌가요?", "intent": "empathy_pressure" }
+      },
+      "responses": {
+        "ask_blood": { "text": "피는 없었어요. 그냥 물 같은 게 나왔어요.", "emotion": "neutral" },
+        "ask_hygiene": { "text": "그건 철저히 해요. 매번 장갑도 끼고, 위생복도 챙기고. 그래서 더 억울하기도 하고.", "emotion": "distressed" },
+        "empathy_wait": { "text": "...맞는 말인데. 근데 학부모들이 저한테 뭐라고 할 것 같아서. SNS에도 올라오고 있다고 하고.", "emotion": "distressed", "innerVoice": "억울함과 두려움이 섞여있다. 사회적 낙인이 두렵다." },
+        "ask_hydration": { "text": "아까 조금 마셨는데, 마시면 다시 토할 것 같아서 조금씩만 마시고 있어요.", "emotion": "neutral" },
+        "ask_coworkers": { "text": "같이 일한 분 한 명도 오늘 증상이 있다고 하더라고요. 그쪽도 병원 간다고.", "emotion": "neutral" },
+        "ask_pressure": { "text": "직접적으로 뭐라고 하지는 않는데... 눈치가 보여서요. 내일부터 어떻게 나가야 하나 싶기도 하고.", "emotion": "distressed" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "지금 탈수 증상 확인", "text": "어지럽거나 힘이 없는 느낌이 있으세요?", "intent": "ask_dehydration" },
+        { "tag": "생활", "family": "life", "label": "오늘 업무 복귀 여부", "text": "오늘은 일은 쉬시는 거죠?", "intent": "ask_work_today" },
+        { "tag": "공감", "family": "emotional", "label": "SNS 상황에 공감", "text": "SNS에 올라온다고 하셨는데, 그게 많이 힘드시겠어요.", "intent": "empathy_sns" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "마지막 식사 시간", "text": "마지막으로 드신 게 언제예요?", "intent": "ask_last_meal" },
+        "after_life": { "family": "life", "label": "역학조사 협조 안내", "text": "역학조사 때 꼼꼼하게 진술하시면 오히려 도움이 될 거예요.", "intent": "advise_investigation" },
+        "after_emotional": { "family": "emotional", "label": "법적 보호 가능성", "text": "위생 관리를 철저히 하셨다면 법적으로 문제가 없을 수 있어요.", "intent": "empathy_legal" }
+      },
+      "responses": {
+        "ask_dehydration": { "text": "좀 어지럽긴 해요. 어제 잠을 거의 못 자서 그런 건지.", "emotion": "anxious" },
+        "ask_work_today": { "text": "네, 오늘은 출근 안 했어요. 학교에서도 조리원 전원 검사받고 쉬라고 했거든요.", "emotion": "neutral" },
+        "empathy_sns": { "text": "정말 힘들어요. 제 이름이 거론된 건 아닌데... 그냥 '급식 조리원'이라고만 나와도 저인 것 같고.", "emotion": "distressed" },
+        "ask_last_meal": { "text": "어제 아침이요. 그 이후론 아무것도 못 먹었어요.", "emotion": "neutral" },
+        "advise_investigation": { "text": "네, 그렇게 할게요. 제가 한 거 다 말할 거예요.", "emotion": "neutral" },
+        "empathy_legal": { "text": "그랬으면 좋겠어요. 근데 그게 증명이 되는 건지 모르겠어요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "입원 필요성 여부", "text": "지금 상태면 수액 치료가 필요할 수도 있어요. 어떻게 생각하세요?", "intent": "ask_iv" },
+        { "tag": "생활", "family": "life", "label": "가족 상황", "text": "가족분들은 알고 계세요? 도와드릴 분이 있나요?", "intent": "ask_family" },
+        { "tag": "공감", "family": "emotional", "label": "책임감을 탓하지 않기", "text": "그 책임감이 오히려 좋은 조리사라는 걸 보여주는 것 같아요.", "intent": "empathy_responsibility" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "수액 치료 설명", "text": "열이 높고 구토가 심하면 탈수를 막는 게 중요해요.", "intent": "explain_iv" },
+        "after_life": { "family": "life", "label": "아이 혹은 부양가족", "text": "돌봐야 할 가족이 있으세요?", "intent": "ask_dependents" },
+        "after_emotional": { "family": "emotional", "label": "잘 해결될 것이라는 격려", "text": "지금 최선을 다하고 있으니까, 결과도 잘 나올 거예요.", "intent": "empathy_encouragement" }
+      },
+      "responses": {
+        "ask_iv": { "text": "수액이요? 그렇게까지 해야 하나요... 빨리 나아야 하는데.", "emotion": "anxious" },
+        "ask_family": { "text": "아내가 알고 있어요. 걱정한다고 같이 오겠다는 걸 혼자 왔어요.", "emotion": "neutral" },
+        "empathy_responsibility": { "text": "...그렇게 봐주시니 고마운데, 지금은 그 책임감이 오히려 너무 무거워요.", "emotion": "warming" },
+        "explain_iv": { "text": "네, 알겠어요. 어차피 오늘 쉬어야 하니까 치료받고 가겠어요.", "emotion": "neutral" },
+        "ask_dependents": { "text": "중학생 아이가 둘 있어요. 걱정할까봐 아직 자세히 말은 안 했는데.", "emotion": "neutral" },
+        "empathy_encouragement": { "text": "감사합니다. 그 말 듣고 싶었어요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "복용 가능 여부 확인", "text": "지금 약을 먹으면 또 토할 것 같아요? 아니면 괜찮을 것 같아요?", "intent": "ask_can_take_meds" },
+        { "tag": "생활", "family": "life", "label": "검사 결과 후 복귀 계획", "text": "검사 결과 나오면 그에 맞게 복직 일정도 잡힐 거예요.", "intent": "advise_return_plan" },
+        { "tag": "공감", "family": "emotional", "label": "힘든 상황 인정", "text": "몸도 아프고 심리적으로도 너무 힘드신 상황이네요.", "intent": "empathy_double_burden" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "안정기까지 식이 조절", "text": "지금은 물 위주로 천천히 드시고, 증상이 가라앉으면 죽부터 시도해요.", "intent": "advise_diet" },
+        "after_life": { "family": "life", "label": "당분간 격리 필요성", "text": "세균성 식중독 가능성이 있으니, 완전히 회복될 때까지는 조리업무 복귀는 삼가야 해요.", "intent": "advise_isolation" },
+        "after_emotional": { "family": "emotional", "label": "가족에게 도움 받기", "text": "혼자 다 짊어지지 마시고, 아내분한테 의지하세요.", "intent": "advise_lean_on_family" }
+      },
+      "responses": {
+        "ask_can_take_meds": { "text": "지금은 좀 나아진 것 같아서 먹을 수 있을 것 같아요.", "emotion": "neutral" },
+        "advise_return_plan": { "text": "네, 그렇게 해야겠죠. 검사 결과가 빨리 나왔으면 좋겠어요.", "emotion": "neutral" },
+        "empathy_double_burden": { "text": "맞아요. 몸이 아픈 것보다 마음이 더 힘드네요.", "emotion": "warming" },
+        "advise_diet": { "text": "알겠어요. 집에 가면 물부터 천천히 마셔볼게요.", "emotion": "neutral" },
+        "advise_isolation": { "text": "그렇게 할게요. 어차피 학교에서도 쉬라고 했고.", "emotion": "neutral" },
+        "advise_lean_on_family": { "text": "...네. 집에 가면 얘기해야겠어요. 혼자 끙끙 앓고 있었어요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "악화 시 주의사항", "text": "열이 39도 이상 오르거나 복통이 더 심해지면 바로 응급실 가세요.", "intent": "ask_warning" },
+        { "tag": "생활", "family": "life", "label": "역학조사 시 도움말", "text": "조사관이 오면 어제 조리 과정을 최대한 상세하게 말씀하시면 돼요.", "intent": "advise_investigation_detail" },
+        { "tag": "공감", "family": "emotional", "label": "모두 회복될 것이라고 안심", "text": "학생들도 치료받고 있고, 다들 잘 회복될 거예요.", "intent": "empathy_students" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "처방약 복용법", "text": "처방약은 식사 후에 드시고, 구토하면 30분 후에 다시 드세요.", "intent": "explain_medication" },
+        "after_life": { "family": "life", "label": "기록 남겨두기", "text": "기억나는 것들 메모해두시면 조사 때 도움이 돼요.", "intent": "advise_note" },
+        "after_emotional": { "family": "emotional", "label": "오늘 잘 오셨다고", "text": "몸 아프신데도 오늘 오신 게 잘하신 거예요. 치료 받으셔야죠.", "intent": "empathy_came" }
+      },
+      "responses": {
+        "ask_warning": { "text": "네, 알겠어요. 그 정도면 진짜 심한 거잖아요.", "emotion": "neutral" },
+        "advise_investigation_detail": { "text": "네, 기억나는 대로 다 말할 거예요. 증거가 되든 안 되든.", "emotion": "neutral" },
+        "empathy_students": { "text": "그랬으면 좋겠어요. 애들이 다 빨리 나아야 할 텐데.", "emotion": "warming" },
+        "explain_medication": { "text": "알겠어요. 최대한 조금씩 먹으면서 약도 챙겨볼게요.", "emotion": "neutral" },
+        "advise_note": { "text": "네, 그렇게 해야겠어요. 집에 가면 바로 써둬야겠네요.", "emotion": "neutral" },
+        "empathy_came": { "text": "감사합니다. 선생님이 이렇게 들어주시니까 조금 나아진 것 같아요.", "emotion": "opened" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 저도 빨리 나아서... 일도 해결됐으면 좋겠어요." },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간입니다.",
+    "patient": "아, 네. 감사합니다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "탈수 정도를 더 꼼꼼히 확인하고 수액 필요 여부를 먼저 판단했어야 했다.",
+      "life": "다른 조리원들의 상태와 식재료 보관 기록에 대해 더 구체적으로 물어볼 수 있었다.",
+      "emotional": "사회적 낙인에 대한 두려움을 더 깊이 공감하지 못했다."
+    },
+    "lastScene": "오민준 씨가 처방전을 받아 들고 피곤한 얼굴로 진료실을 나선다. 어깨가 무거워 보인다.",
+    "lastSceneGated": "오민준 씨가 처방전을 받아 들며 작게 고개를 숙인다. '감사합니다.' 진료실을 나서는 발걸음이 올 때보다 조금 가벼워 보인다."
+  }
+}

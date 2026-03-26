@@ -1,0 +1,152 @@
+{
+  "opening": { "speaker": "patient", "text": "어제 급식 먹고 나서부터 배가... 학생들도 많이 아프다고 하던데 저도 같은 증상이에요." },
+  "nurseInfo": { "available": true, "text": "46세 남성 교사분이세요. 해당 중학교 담임 선생님이신데, 어제 급식 후부터 복통·구토 증상이 있으시고, 학생들 상태에 대한 걱정도 크신 것 같아요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "교사 본인 증상 확인", "text": "선생님 본인은 어떤 증상이 있으세요?", "intent": "ask_own_symptoms" },
+        { "tag": "생활", "family": "life", "label": "어제 급식 상황", "text": "어제 급식은 같이 드셨나요? 학생들이랑 같은 메뉴요.", "intent": "ask_meal_situation" },
+        { "tag": "공감", "family": "emotional", "label": "학생 걱정 공감", "text": "학생들도 아프다고 하니 많이 걱정되시겠어요.", "intent": "empathy_students" }
+      ],
+      "responses": {
+        "ask_own_symptoms": { "text": "어제 저녁부터 복통이 심하고, 두 번 구토했어요. 설사도 있었고. 오늘 아침은 좀 나아진 것 같긴 한데.", "emotion": "anxious" },
+        "ask_meal_situation": { "text": "같은 급식 먹었어요. 다 같이 먹는 거라. 근데 증상이 있는 학생이 몇 명인지 아직 파악이 안 됐어요.", "emotion": "anxious" },
+        "empathy_students": { "text": "담임반 애들이 많이 아프다고 연락이 왔어요. 결석한 애들 확인하고 나서 여기 왔는데.", "emotion": "anxious", "innerVoice": "자신의 몸보다 학생들 걱정을 먼저 한다. 책임감이 강한 교사다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "발열 여부 확인", "text": "열은요? 체온 재보셨어요?", "intent": "ask_fever" },
+        { "tag": "생활", "family": "life", "label": "담임 학급 상황", "text": "담임 반에 몇 명이나 아프다고 했어요?", "intent": "ask_class_situation" },
+        { "tag": "공감", "family": "emotional", "label": "본인 몸도 챙겨야 함", "text": "학생들 걱정도 중요하지만 선생님 몸도 먼저 챙겨야죠.", "intent": "empathy_own_health" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "복통 위치 확인", "text": "복통이 어느 부위에서 나와요? 배 전체가 아픈지, 특정 부위가 더 아픈지.", "intent": "ask_pain_location" },
+        "after_life": { "family": "life", "label": "학교 보건 대응", "text": "학교에서는 어떻게 대응하고 있어요?", "intent": "ask_school_response" },
+        "after_emotional": { "family": "emotional", "label": "언제부터 증상 악화됐는지", "text": "어젯밤에 제일 심했어요?", "intent": "ask_peak_symptom" }
+      },
+      "responses": {
+        "ask_fever": { "text": "어젯밤에 38.2도 나왔어요. 지금은 아직 안 재봤고.", "emotion": "anxious" },
+        "ask_class_situation": { "text": "제 반에서만 5명이 결석했어요. 다른 반도 있다고 하고. 전체적으로 많은 것 같아요.", "emotion": "anxious" },
+        "empathy_own_health": { "text": "그렇죠. 근데 아이들이 먼저 걱정되니까요. 빨리 나아서 복귀해야 해서요.", "emotion": "anxious" },
+        "ask_pain_location": { "text": "배 전체가 다 아픈 것 같아요. 특히 배꼽 주변이 심했어요.", "emotion": "neutral" },
+        "ask_school_response": { "text": "보건 선생님이랑 교장 선생님이 보건 당국에 신고하셨다고 하더라고요. 역학조사 나온다고.", "emotion": "neutral" },
+        "ask_peak_symptom": { "text": "어젯밤 11시에서 새벽 2시 사이에 제일 심했어요. 그 이후로 조금씩 나아지고 있는 것 같아요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "지금 탈수 상태 확인", "text": "어지럽거나 입이 마르는 느낌은요?", "intent": "ask_dehydration" },
+        { "tag": "생활", "family": "life", "label": "오늘 수업 여부", "text": "오늘은 학교 가셨나요?", "intent": "ask_school_today" },
+        { "tag": "공감", "family": "emotional", "label": "밤새 힘드셨겠다", "text": "밤새 많이 힘드셨겠네요. 잠은 좀 주무셨어요?", "intent": "empathy_night" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "마지막 음식 섭취 시간", "text": "마지막으로 드신 게 언제예요?", "intent": "ask_last_meal" },
+        "after_life": { "family": "life", "label": "대체 교사 여부", "text": "오늘 수업은 어떻게 됐어요?", "intent": "ask_substitute" },
+        "after_emotional": { "family": "emotional", "label": "학생들에게 연락했는지", "text": "아픈 학생들한테 연락은 하셨어요?", "intent": "ask_student_contact" }
+      },
+      "responses": {
+        "ask_dehydration": { "text": "좀 어지럽긴 해요. 물을 많이 못 마셔서 그런 것 같아요.", "emotion": "neutral" },
+        "ask_school_today": { "text": "아침에 출근은 했는데, 몸 상태가 너무 안 좋아서 조퇴했어요.", "emotion": "neutral" },
+        "empathy_night": { "text": "잠을 거의 못 잤어요. 토하고, 배 아프고. 거의 화장실에서 밤을 보냈어요.", "emotion": "neutral" },
+        "ask_last_meal": { "text": "어제 점심 급식이요. 그 이후로 아무것도 못 먹었어요.", "emotion": "neutral" },
+        "ask_substitute": { "text": "교감 선생님이 다른 선생님한테 부탁하셨대요. 미안하긴 한데 몸이 안 따라주니까.", "emotion": "neutral" },
+        "ask_student_contact": { "text": "결석한 애들 부모님한테 문자 보냈어요. 빨리 낫기 바란다고. 그리고 병원 꼭 가라고.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "혈변 여부 확인", "text": "혈변이나 점액 섞인 변은 없었죠?", "intent": "ask_blood" },
+        { "tag": "생활", "family": "life", "label": "역학조사 협조 예정 여부", "text": "역학조사 나오면 조사에 협조하실 거죠?", "intent": "ask_investigation" },
+        { "tag": "공감", "family": "emotional", "label": "담임으로서 책임감", "text": "학생들이 아픈 상황에서 담임 선생님으로서 많이 힘드시겠어요.", "intent": "empathy_responsibility" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "기저질환 여부", "text": "평소에 위장이 좀 약하신 편이에요? 기저질환은요?", "intent": "ask_history" },
+        "after_life": { "family": "life", "label": "복귀 예정일", "text": "언제쯤 복귀하실 수 있을 것 같아요?", "intent": "ask_return_date" },
+        "after_emotional": { "family": "emotional", "label": "본인도 피해자라는 점", "text": "선생님도 같은 상황에서 피해를 입으신 거예요. 너무 자책하지 마세요.", "intent": "empathy_victim" }
+      },
+      "responses": {
+        "ask_blood": { "text": "그런 건 없었어요. 그냥 설사였어요.", "emotion": "neutral" },
+        "ask_investigation": { "text": "당연히 협조해야죠. 아이들 위해서도 원인을 빨리 밝혀야 하니까.", "emotion": "neutral" },
+        "empathy_responsibility": { "text": "맞아요. 내 몸은 그러려니 하는데, 애들 생각하면 마음이 무겁죠.", "emotion": "warming" },
+        "ask_history": { "text": "위장은 평소에 좀 예민한 편이긴 해요. 특별한 병은 없고.", "emotion": "neutral" },
+        "ask_return_date": { "text": "내일은 복귀하고 싶은데... 몸 상태 보고 결정해야 할 것 같아요.", "emotion": "neutral" },
+        "empathy_victim": { "text": "그렇죠. 근데 어른이니까 더 잘 참을 수 있어서 괜찮다고 생각했어요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "현재 호전 여부 확인", "text": "어젯밤보다 지금 많이 나아진 느낌이에요?", "intent": "ask_improvement" },
+        { "tag": "생활", "family": "life", "label": "오늘 혼자 있는지", "text": "오늘 집에 혼자 계실 건가요?", "intent": "ask_alone" },
+        { "tag": "공감", "family": "emotional", "label": "일단 쉬는 게 중요", "text": "빨리 복귀하고 싶은 마음은 이해하지만, 일단은 쉬는 게 학생들을 위해서도 나아요.", "intent": "empathy_rest" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "내일 복귀 가능성 판단", "text": "오늘 충분히 쉬시면 내일 복귀 가능할 수도 있어요.", "intent": "assess_return" },
+        "after_life": { "family": "life", "label": "가족이 챙겨줄 수 있는지", "text": "가족분이 오늘 곁에 있을 수 있어요?", "intent": "ask_family_support" },
+        "after_emotional": { "family": "emotional", "label": "세균성이면 격리 필요", "text": "세균성 식중독이면 완전히 회복된 후에 복귀하는 게 원칙이에요.", "intent": "advise_isolation" }
+      },
+      "responses": {
+        "ask_improvement": { "text": "많이 나아졌어요. 그래서 이게 걸어서 올 수 있었고.", "emotion": "warming" },
+        "ask_alone": { "text": "아내가 재택근무라 같이 있을 것 같아요.", "emotion": "neutral" },
+        "empathy_rest": { "text": "맞는 말이에요. 제가 아픈 상태로 나가면 오히려 애들한테 더 안 좋을 수도 있고.", "emotion": "warming" },
+        "assess_return": { "text": "그렇게 해볼게요. 오늘 잘 쉬고, 내일 상태 봐서 결정하겠어요.", "emotion": "neutral" },
+        "ask_family_support": { "text": "아내가 집에 있어서 그나마 다행이에요.", "emotion": "neutral" },
+        "advise_isolation": { "text": "알겠어요. 무리하게 나가면 안 되겠네요. 학교에도 그렇게 얘기할게요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "약 복용 안내", "text": "처방약 드시고, 수분 보충하면서 쉬세요.", "intent": "explain_meds" },
+        { "tag": "생활", "family": "life", "label": "음식 재개 시점 조언", "text": "오늘은 물이나 이온음료만 드시고, 내일 좀 나아지면 죽부터 드세요.", "intent": "advise_diet" },
+        { "tag": "공감", "family": "emotional", "label": "학생들도 잘 회복할 것", "text": "학생들도 치료 잘 받으면 빨리 회복할 거예요.", "intent": "empathy_student_recovery" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "악화 시 응급실 안내", "text": "열이 39도 이상 오르거나 복통이 심해지면 응급실 가세요.", "intent": "ask_warning" },
+        "after_life": { "family": "life", "label": "카페인 음료 자제", "text": "커피나 차는 장을 자극할 수 있으니 오늘은 삼가세요.", "intent": "advise_no_caffeine" },
+        "after_emotional": { "family": "emotional", "label": "역학조사 결과 기다리기", "text": "역학조사 결과 나오면 원인이 밝혀지고, 재발 방지 대책도 나올 거예요.", "intent": "empathy_investigation_result" }
+      },
+      "responses": {
+        "explain_meds": { "text": "알겠어요. 오늘 쉬면서 잘 챙겨 먹겠어요.", "emotion": "neutral" },
+        "advise_diet": { "text": "죽이요. 집에 죽이 있는지 아내한테 물어봐야겠어요.", "emotion": "neutral" },
+        "empathy_student_recovery": { "text": "그랬으면 좋겠어요. 빨리 다들 나아서 다음 주에 다 함께 볼 수 있으면 좋겠고.", "emotion": "warming" },
+        "ask_warning": { "text": "알겠어요. 응급실이요. 그 정도면 확실히 심한 거네요.", "emotion": "neutral" },
+        "advise_no_caffeine": { "text": "커피를 못 마시는 게 더 힘들겠는데. (쓴웃음) 알겠어요.", "emotion": "warming" },
+        "empathy_investigation_result": { "text": "빨리 결과가 나왔으면 좋겠어요. 앞으로 이런 일이 없어야 하니까.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "마지막 상태 확인", "text": "지금 걷는 것도 크게 힘들지는 않은 거죠?", "intent": "ask_mobility" },
+        { "tag": "생활", "family": "life", "label": "진단서 필요 여부", "text": "혹시 학교에 제출할 진단서가 필요하세요?", "intent": "ask_certificate" },
+        { "tag": "공감", "family": "emotional", "label": "고생 많으셨다고", "text": "선생님도 아프신데 학생들 먼저 생각하시느라 고생 많으셨어요.", "intent": "empathy_hard_work" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "label": "충분한 휴식 강조", "text": "지금 많이 나아지긴 했지만, 오늘 하루는 푹 쉬셔야 해요.", "intent": "advise_rest" },
+        "after_life": { "family": "life", "label": "진단서 발급 안내", "text": "오늘 진료 내용으로 발급해드릴 수 있어요.", "intent": "advise_certificate" },
+        "after_emotional": { "family": "emotional", "label": "빨리 회복하길", "text": "빨리 나으셔서 아이들 만나러 가세요.", "intent": "empathy_recovery_wish" }
+      },
+      "responses": {
+        "ask_mobility": { "text": "네, 걷는 건 괜찮아요. 아직 힘은 없지만.", "emotion": "neutral" },
+        "ask_certificate": { "text": "아, 필요할 것 같아요. 교무실에 내야 할 것 같아서.", "emotion": "neutral" },
+        "empathy_hard_work": { "text": "아이들 담임이니까요. 당연한 거예요. 감사합니다.", "emotion": "opened" },
+        "advise_rest": { "text": "알겠어요. 오늘 진짜 쉬겠어요.", "emotion": "neutral" },
+        "advise_certificate": { "text": "감사해요. 그럼 부탁드릴게요.", "emotion": "neutral" },
+        "empathy_recovery_wish": { "text": "감사합니다. 선생님도요. 빨리 나아서 아이들 봐야죠.", "emotion": "opened" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 빨리 나아야겠어요." },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간입니다.",
+    "patient": "아, 네. 감사합니다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "탈수 정도를 더 꼼꼼히 평가하고 수액 필요 여부를 판단했어야 했다.",
+      "life": "학교 전체 상황과 역학조사 협조 계획에 대해 더 구체적으로 이야기할 수 있었다.",
+      "emotional": "교사로서 책임감과 죄책감 사이에서 느끼는 심리적 부담을 더 깊이 다뤘으면 좋았다."
+    },
+    "lastScene": "최인수 씨가 처방전을 챙기며 서둘러 진료실을 나선다.",
+    "lastSceneGated": "최인수 씨가 일어서며 '감사합니다. 애들이 다 빨리 나아야 할 텐데요'라고 중얼거린다. 환자가 아닌 교사로서의 얼굴이 보인다."
+  }
+}
