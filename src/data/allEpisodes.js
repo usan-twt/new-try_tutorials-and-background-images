@@ -8,9 +8,21 @@ import ep2_3 from './phases/phase2/scripts/ep2_3.json'
 import ep3_1 from './phases/phase3/scripts/ep3_1.json'
 import ep3_2 from './phases/phase3/scripts/ep3_2.json'
 import ep3_3 from './phases/phase3/scripts/ep3_3.json'
+import ep4_1 from './phases/phase4/scripts/ep4_1.json'
+import ep4_2 from './phases/phase4/scripts/ep4_2.json'
+import ep4_3 from './phases/phase4/scripts/ep4_3.json'
+import ep4_4 from './phases/phase4/scripts/ep4_4.json'
+import ep4_5 from './phases/phase4/scripts/ep4_5.json'
+import ep4_6 from './phases/phase4/scripts/ep4_6.json'
+import ep4_7 from './phases/phase4/scripts/ep4_7.json'
+import ep4_8 from './phases/phase4/scripts/ep4_8.json'
 
 export const dayBudgets = {
   4: { totalTurns: 10, episodes: ['phase3_ep1', 'phase3_ep2'] },
+  // Phase 4 — 하루 총 35턴
+  6: { totalTurns: 35 },
+  7: { totalTurns: 35 },
+  8: { totalTurns: 35 },
 }
 
 export const dayConfig = {
@@ -19,11 +31,16 @@ export const dayConfig = {
   3: { showApartment: true },
   4: { showApartment: false },
   5: { showApartment: true },
+  // Phase 4
+  6: { showApartment: false },
+  7: { showApartment: true },
+  8: { showApartment: false },
 }
 
 export const interludes = {
   // 식사 인터루드: type:'meal' placeholder — useGame.js에서 economy 기반으로 실제 텍스트 주입
   meal_day4: { type: 'meal' },
+  meal_day6: { type: 'meal' },
   // 사회화 채널: Phase 3 시작 전 선배 조언 (corporateHospitalEvents.js)
   senior_advice: SENIOR_ADVICE,
 
@@ -186,6 +203,69 @@ const allEpisodes = [
     interludeBefore: 'before_ep3_3',
     dayEndData: { patients: [{ name: '윤서연', age: 41, chiefComplaint: '불면' }] },
     notebook: { chart: '윤서연 / 41세 / 여 / 주증상: 불면 (기간 미상)' },
+  },
+  // ── Phase 4 ── (식중독 사건 이벤트, Day 6–8)
+  // Day 6: 집단 식중독 첫날 — 학교 관계자·가족 내원
+  {
+    id: 'phase4_ep1', phase: 4, day: 6,
+    patient: { name: '이승아', age: 42, chiefComplaint: '자녀 복통·구토 (대리 내원)', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 12, eventContext: 'food_poisoning',
+    script: ep4_1,
+    notebook: { chart: '이승아 / 42세 / 여 / 보호자 내원 — 자녀 복통·구토 (어제 급식 후)' },
+  },
+  {
+    id: 'phase4_ep2', phase: 4, day: 6,
+    patient: { name: '학생', age: 14, chiefComplaint: '복통·구토 (급식 후)', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 12, eventContext: 'food_poisoning',
+    script: ep4_2,
+    interludeBefore: 'meal_day6',
+    notebook: { chart: '14세 / 남 / 단독 내원 — 복통·구토 (어제 급식 후)' },
+  },
+  {
+    id: 'phase4_ep3', phase: 4, day: 6,
+    patient: { name: '최인수', age: 46, chiefComplaint: '복통·구토 (급식 후)', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 12, eventContext: 'food_poisoning',
+    script: ep4_7,
+    notebook: { chart: '최인수 / 46세 / 남 / 담임교사 — 복통·구토 (어제 급식 후)' },
+  },
+  // Day 7: 식중독 이틀째 + 일반 환자
+  {
+    id: 'phase4_ep4', phase: 4, day: 7,
+    patient: { name: '오민준', age: 45, chiefComplaint: '복통·구토, 식중독 감염 우려', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 12, eventContext: 'food_poisoning',
+    script: ep4_4,
+    notebook: { chart: '오민준 / 45세 / 남 / 급식 조리원 — 복통·구토, 식중독 감염 우려' },
+  },
+  {
+    id: 'phase4_ep5', phase: 4, day: 7,
+    patient: { name: '박지수', age: 13, chiefComplaint: '복통·오심 (급식 후)', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 12, eventContext: 'food_poisoning',
+    script: ep4_8,
+    notebook: { chart: '박지수 / 13세 / 여 / 보호자 동반 — 복통·오심 (어제 급식 후)' },
+  },
+  {
+    id: 'phase4_ep6', phase: 4, day: 7,
+    patient: { name: '박현자', age: 67, chiefComplaint: '소화불량·식욕 저하', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 12, eventContext: null,
+    rapportGating: { threshold: 2, families: ['emotional', 'life'] },
+    script: ep4_3,
+    notebook: { chart: '박현자 / 67세 / 여 / 주증상: 소화불량·식욕 저하 2주' },
+  },
+  // Day 8: 마무리 — 일반 외래 환자
+  {
+    id: 'phase4_ep7', phase: 4, day: 8,
+    patient: { name: '황도영', age: 51, chiefComplaint: '변비 (3주)', initialEmotion: 'guarded' },
+    directionTags: true, minTurns: 7, maxTurns: 12, eventContext: null,
+    rapportGating: { threshold: 2, families: ['emotional', 'life'] },
+    script: ep4_6,
+    notebook: { chart: '황도영 / 51세 / 남 / 주증상: 변비 3주' },
+  },
+  {
+    id: 'phase4_ep8', phase: 4, day: 8,
+    patient: { name: '이준혁', age: 38, chiefComplaint: '지속 기침·가래', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 12, eventContext: null,
+    script: ep4_5,
+    notebook: { chart: '이준혁 / 38세 / 남 / 주증상: 지속 기침·가래 2주 이상' },
   },
 ]
 

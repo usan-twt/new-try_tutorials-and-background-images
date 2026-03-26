@@ -44,7 +44,7 @@
         "after_medical": { "family": "medical", "label": "두통이나 몸살 여부", "text": "머리가 아프거나 몸이 쑤시는 느낌은요?", "intent": "ask_other" },
         "after_life": { "family": "life", "label": "물은 마시고 있는지", "text": "물은 좀 마시고 있어요?", "intent": "ask_hydration" },
         "after_emotional": { "family": "emotional", "label": "빨리 낫고 싶은 이유", "text": "빨리 나아서 하고 싶은 게 있어요?", "intent": "empathy_hope" }
-      ],
+      },
       "responses": {
         "ask_fever": { "text": "(엄마가) 어젯밤에 37.9도 나왔어요. 지금은 안 재봤는데.", "emotion": "neutral" },
         "ask_eating": { "text": "아침에 죽을 좀 먹었는데, 반도 못 먹었어요.", "emotion": "neutral" },

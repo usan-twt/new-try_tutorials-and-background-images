@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import allEpisodes, { interludes, dayBudgets, dayConfig } from '../data/allEpisodes'
 import { getApartmentTier } from '../data/apartmentData'
 import { getRelationLevel, episodeNurseDelta, applyRelationDelta } from '../data/relationThresholds'
-import { evaluatePhase } from '../data/evaluationData'
+import { evaluatePhase, PHASE_N } from '../data/evaluationData'
 import { NURSE_RUMOR, PERFORMANCE_NOTICE } from '../data/corporateHospitalEvents'
 import { getMealInterlude } from '../data/mealScenes'
 
@@ -21,7 +21,7 @@ function nextScreen(current, action) {
 }
 
 // ── 선택지 계산 ──
-function computeChoices(turn, lastFamily, turnsRemaining) {
+function computeChoices(turn, lastFamily, turnsRemaining, usedFamilies, activeEvent) {
   if (!turn) return null
   if (turn.choice) return null // Phase 1
   if (turn.firstChoices) return turn.firstChoices
@@ -43,6 +43,15 @@ function computeChoices(turn, lastFamily, turnsRemaining) {
     choices = choices.filter(c => !c.priority || c.priority <= 1)
   }
 
+  // Phase 4+: requiresFamily — 해당 family를 이미 사용한 경우에만 노출
+  if (usedFamilies) {
+    choices = choices.filter(c => !c.requiresFamily || usedFamilies.has(c.requiresFamily))
+  }
+  // Phase 4+: requiresContext — 현재 이벤트 맥락이 일치하는 경우에만 노출
+  if (activeEvent !== undefined) {
+    choices = choices.filter(c => !c.requiresContext || c.requiresContext === activeEvent)
+  }
+
   return choices.length > 0 ? choices : null
 }
 
@@ -62,7 +71,7 @@ export default function useGame() {
   // ── DayEnd 데이터 ──
   const [dayEndState, setDayEndState] = useState({
     patients: [], unasked: [], lastScene: [], overtime: [],
-    isFinalEpisode: false,
+    isFinalEpisode: false, missedCount: 0,
   })
   const dayEndStateRef = useRef(dayEndState)
   useEffect(() => { dayEndStateRef.current = dayEndState }, [dayEndState])
@@ -105,11 +114,18 @@ export default function useGame() {
   const [overtimeTurns, setOvertimeTurns] = useState(0)
   const [dayTurnsUsed, setDayTurnsUsed] = useState(0)
 
+  // Phase 4+ 상태
+  const [activeEvent, setActiveEvent] = useState(null)       // 'food_poisoning' | 'flu' | null
+  const [dailyPatientCounts, setDailyPatientCounts] = useState([]) // 하루별 진료 환자 수 누산
+  const [dayPatientsSeen, setDayPatientsSeen] = useState(0)  // 오늘 진료한 환자 수
+  const [postNewsScreen, setPostNewsScreen] = useState('morningNav')
+
   // ── 파생 값 ──
   const ep = allEpisodes[epIndex] || null
   const script = ep?.script || null
   const totalTurns = script?.turns?.length ?? 0
   const maxTurns = ep?.maxTurns ?? null
+  const minTurns = ep?.minTurns ?? null
   const rapportGating = ep?.rapportGating ?? null
   const rapportUnlocked = rapportGating ? rapportCount >= rapportGating.threshold : true
   const dayBudget = ep?.day != null ? (dayBudgets[ep.day] ?? null) : null
@@ -117,6 +133,8 @@ export default function useGame() {
   const turnsRemaining = maxTurns !== null ? Math.max(0, maxTurns - exchangeCount) : null
   // 도트 인디케이터 & 오버타임: day budget 기준
   const dayTurnsRemaining = dayBudget ? Math.max(0, dayBudget.totalTurns - dayTurnsUsed) : null
+  // Phase 4+: minTurns 이후 진료 자발 종료 가능
+  const canEndConsultation = minTurns !== null && exchangeCount >= minTurns && phase === 'playing'
 
   const apartmentTier = getApartmentTier(economy)
   const professorRelationLevel = getRelationLevel(professorRelation)
@@ -128,8 +146,8 @@ export default function useGame() {
   }, [phase, turnIndex, totalTurns, script])
 
   const currentChoices = useMemo(
-    () => computeChoices(currentTurn, lastFamily, turnsRemaining),
-    [currentTurn, lastFamily, turnsRemaining],
+    () => computeChoices(currentTurn, lastFamily, turnsRemaining, usedFamilies, activeEvent),
+    [currentTurn, lastFamily, turnsRemaining, usedFamilies, activeEvent],
   )
 
   // ── 스크립트 리셋 ──
@@ -174,8 +192,11 @@ export default function useGame() {
   const startGame = useCallback(() => {
     setEpIndex(0)
     setCurrentPhase(1)
-    setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false })
+    setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false, missedCount: 0 })
     setDayTurnsUsed(0)
+    setDayPatientsSeen(0)
+    setDailyPatientCounts([])
+    setActiveEvent(null)
     setEconomy(50)
     setPendingMove(null)
     setProfessorRelation(50)
@@ -194,8 +215,18 @@ export default function useGame() {
   const [guidedTourDone, setGuidedTourDone] = useState(false)
   const finishMorningNav = useCallback(() => {
     setGuidedTourDone(true)
-    setScreen('phaseIntro')
-  }, [])
+    // Phase 4+: 같은 Phase 내 일 전환이면 phaseIntro 없이 바로 진료
+    const ep = allEpisodes[epIndex]
+    const prevEp = allEpisodes[epIndex - 1]
+    const isSamePhaseDayTransition = ep && prevEp && ep.phase >= 4 && ep.phase === prevEp.phase
+    if (isSamePhaseDayTransition) {
+      const episode = allEpisodes[epIndex]
+      resetScript(episode, true)
+      setScreen('consultation')
+    } else {
+      setScreen('phaseIntro')
+    }
+  }, [epIndex, resetScript])
 
   const finishEveningNav = useCallback(() => {
     setScreen('dayEnd')
@@ -239,7 +270,7 @@ export default function useGame() {
   const beginOpening = useCallback(() => { setPhase('opening') }, [])
 
   // phase === 'done'이 되면 App에서 호출
-  // Phase 마지막 에피소드면 DayEnd 화면으로, 아니면 누적 후 다음 consultation
+  // Phase 4+: 일(day) 경계도 eveningNav → DayEnd로 처리
   const buildDayEnd = useCallback((usedFams, extraInfo = {}) => {
     if (!ep) return
     const patient = ep.patient
@@ -272,90 +303,154 @@ export default function useGame() {
     const isFinal = epIndex + 1 >= allEpisodes.length
     const nextEp = allEpisodes[epIndex + 1]
     const isPhaseEnd = isFinal || !nextEp || nextEp.phase !== ep.phase
-
-    // 환자 정보 누적
-    const newState = {
-      patients: [...dayEndStateRef.current.patients, { name: patient.name, age: patient.age, chiefComplaint: patient.chiefComplaint }],
-      unasked: [...dayEndStateRef.current.unasked, ...unasked],
-      lastScene: [...dayEndStateRef.current.lastScene, ...lastScene],
-      overtime: [...dayEndStateRef.current.overtime, ...overtime],
-      isFinalEpisode: isFinal,
-    }
-    setDayEndState(newState)
+    // Phase 4+: 일 경계도 DayEnd 화면 표시
+    const isDayBoundary = ep.phase >= 4 && (isFinal || !nextEp || nextEp.day !== ep.day)
+    const shouldShowDayEnd = isPhaseEnd || isDayBoundary
 
     // 에피소드 완료: 라포 기반 간호사 관계 변동
     const nurseDelta = episodeNurseDelta(rapportCount, rapportGating)
     if (nurseDelta !== 0) setNurseRelation(prev => applyRelationDelta(prev, nurseDelta))
 
-    if (isPhaseEnd) {
-      // Phase 마지막 → 저녁 네비 → DayEnd 화면
+    // 오늘 진료 환자 수 누적
+    const newDayPatientsSeen = dayPatientsSeen + 1
+    setDayPatientsSeen(newDayPatientsSeen)
+
+    if (shouldShowDayEnd) {
+      // Phase 4+: 일 단위로 dailyPatientCounts 기록
+      if (ep.phase >= 4) {
+        setDailyPatientCounts(prev => [...prev, newDayPatientsSeen])
+      }
+      // 미진료 환자 수: 해당 일의 전체 에피소드 수 - 실제 진료 수
+      const totalForDay = ep.phase >= 4
+        ? allEpisodes.filter(e => e.phase === ep.phase && e.day === ep.day).length
+        : 0
+      const missedCount = Math.max(0, totalForDay - newDayPatientsSeen)
+
+      const newState = {
+        patients: [...dayEndStateRef.current.patients, { name: patient.name, age: patient.age, chiefComplaint: patient.chiefComplaint }],
+        unasked: [...dayEndStateRef.current.unasked, ...unasked],
+        lastScene: [...dayEndStateRef.current.lastScene, ...lastScene],
+        overtime: [...dayEndStateRef.current.overtime, ...overtime],
+        isFinalEpisode: isFinal,
+        missedCount,
+      }
+      setDayEndState(newState)
       setScreen('eveningNav')
     } else {
       // Phase 중간 → DayEnd 건너뛰고 바로 다음 에피소드
+      const newState = {
+        patients: [...dayEndStateRef.current.patients, { name: patient.name, age: patient.age, chiefComplaint: patient.chiefComplaint }],
+        unasked: [...dayEndStateRef.current.unasked, ...unasked],
+        lastScene: [...dayEndStateRef.current.lastScene, ...lastScene],
+        overtime: [...dayEndStateRef.current.overtime, ...overtime],
+        isFinalEpisode: false,
+        missedCount: 0,
+      }
+      setDayEndState(newState)
+
       const next = epIndex + 1
       setEpIndex(next)
-
       const isNewDay = nextEp.day !== ep.day
 
-      // 인터루드 체크 (Phase 중간 → 항상 consultation으로)
       if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
         setCurrentInterlude(resolveInterlude(interludes[nextEp.interludeBefore], economy))
         setPostInterludeScreen('consultation')
         setScreen('interlude')
       } else {
-        resetScript(nextEp, isNewDay, true) // withTransition: 환자 교체 인식 오버레이
+        resetScript(nextEp, isNewDay, true)
         setScreen('consultation')
       }
     }
-  }, [ep, epIndex, resetScript, rapportCount, rapportGating, economy])
+  }, [ep, epIndex, resetScript, rapportCount, rapportGating, economy, dayPatientsSeen])
 
   const nextEpisode = useCallback(() => {
     const completedEp = allEpisodes[epIndex]
     const completedDay = completedEp?.day ?? null
-
-    // Phase 완료 평가: 오버타임 횟수 → 등급 → economy/교수 관계 변동
-    const overtimeCount = dayEndStateRef.current.overtime.length
-    const { grade, economyDelta, profRelationDelta } = evaluatePhase(currentPhase, overtimeCount)
-    setLastEvalGrade(grade)
-    if (profRelationDelta !== 0) setProfessorRelation(prev => applyRelationDelta(prev, profRelationDelta))
-    const prevEconomy = economy
-    const newEconomy = Math.min(100, Math.max(0, prevEconomy + economyDelta))
-    const prevTier = getApartmentTier(prevEconomy)
-    const newTier = getApartmentTier(newEconomy)
-    setEconomy(newEconomy)
-    setPendingMove(prevTier !== newTier ? { from: prevTier, to: newTier } : null)
+    const completedPhase = currentPhase
 
     const next = epIndex + 1
-    if (next >= allEpisodes.length) {
-      // Phase 3 완료 → Phase 4 진입 시 제도 채널 공지 예약
+    const isFinal = next >= allEpisodes.length
+    const nextEp = isFinal ? null : allEpisodes[next]
+    const isNewPhase = isFinal || nextEp.phase !== completedPhase
+    // Phase 4+: 일(day) 경계 — 같은 Phase 내에서도 dayEnd가 발생
+    const isPhase4DayTransition = completedPhase >= 4 && !isNewPhase
+
+    // ── Economy & 관계 변동 ──
+    let newEconomy = economy
+    if (completedPhase >= 4) {
+      // Phase 4+: 하루별 [(진료 환자 수 - N) + 2] × 2
+      const N = PHASE_N[completedPhase] ?? 5
+      const dayDelta = (dayPatientsSeen - N + 2) * 2
+      newEconomy = Math.min(100, Math.max(0, economy + dayDelta))
+      setEconomy(newEconomy)
+      setLastEvalGrade(null)
+      // tier 변경은 Phase 말에만 확정
+      if (isNewPhase) {
+        const prevTier = getApartmentTier(economy)
+        const newTier = getApartmentTier(newEconomy)
+        setPendingMove(prevTier !== newTier ? { from: prevTier, to: newTier } : null)
+      } else {
+        setPendingMove(null)
+      }
+    } else {
+      // Phase 1–3: 오버타임 횟수 기반 등급
+      const overtimeCount = dayEndStateRef.current.overtime.length
+      const { grade, economyDelta, profRelationDelta } = evaluatePhase(completedPhase, overtimeCount)
+      setLastEvalGrade(grade)
+      if (profRelationDelta !== 0) setProfessorRelation(prev => applyRelationDelta(prev, profRelationDelta))
+      newEconomy = Math.min(100, Math.max(0, economy + economyDelta))
+      const prevTier = getApartmentTier(economy)
+      const newTier = getApartmentTier(newEconomy)
+      setEconomy(newEconomy)
+      setPendingMove(prevTier !== newTier ? { from: prevTier, to: newTier } : null)
+    }
+
+    // ── 게임 종료 ──
+    if (isFinal) {
       setPendingDocument(PERFORMANCE_NOTICE)
       setScreen('complete')
       return
     }
 
-    const nextEp = allEpisodes[next]
-    const isNewPhase = nextEp.phase !== currentPhase
-
     setEpIndex(next)
     setCurrentPhase(nextEp.phase)
 
+    // ── Phase 전환 초기화 ──
     if (isNewPhase) {
-      setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false })
+      setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false, missedCount: 0 })
       setDayTurnsUsed(0)
-      // Phase 3 진입: 소문 채널 활성화 (2층 김 간호사 클릭 시 1회 표시)
-      if (nextEp.phase === 3) {
-        setPendingRumor(NURSE_RUMOR)
+      setDayPatientsSeen(0)
+      setDailyPatientCounts([])
+      if (nextEp.phase === 3) setPendingRumor(NURSE_RUMOR)
+      // Phase 4 진입: 식중독 뉴스 이벤트
+      if (nextEp.phase === 4) {
+        setActiveEvent('food_poisoning')
+        setPostNewsScreen('morningNav')
+        setScreen('news')
+        return
       }
+      // Phase 5 진입: 독감 뉴스 이벤트
+      if (nextEp.phase === 5) {
+        setActiveEvent('flu')
+        setPostNewsScreen('morningNav')
+        setScreen('news')
+        return
+      }
+    } else if (isPhase4DayTransition) {
+      // Phase 4+ 일 전환: dayEnd 데이터만 초기화, dailyPatientCounts는 유지
+      setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false, missedCount: 0 })
+      setDayTurnsUsed(0)
+      setDayPatientsSeen(0)
     }
 
-    // 자취방 등장 체크
+    // ── 자취방 등장 체크 ──
     if (completedDay && dayConfig[completedDay]?.showApartment) {
-      // apartment 이후 어디로 갈지 결정
+      const goToMorning = isNewPhase || isPhase4DayTransition
       if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
         setCurrentInterlude(resolveInterlude(interludes[nextEp.interludeBefore], newEconomy))
-        setPostInterludeScreen(isNewPhase ? 'morningNav' : 'consultation')
+        setPostInterludeScreen(goToMorning ? 'morningNav' : 'consultation')
         setPostApartmentScreen('interlude')
-      } else if (isNewPhase) {
+      } else if (goToMorning) {
         setPostApartmentScreen('morningNav')
       } else {
         setPostApartmentScreen('consultation')
@@ -364,21 +459,23 @@ export default function useGame() {
       return
     }
 
-    // 기존 내비게이션 로직
+    // ── 인터루드 체크 ──
     if (nextEp.interludeBefore && interludes[nextEp.interludeBefore]) {
+      const goToMorning = isNewPhase || isPhase4DayTransition
       setCurrentInterlude(resolveInterlude(interludes[nextEp.interludeBefore], newEconomy))
-      setPostInterludeScreen(isNewPhase ? 'morningNav' : 'consultation')
+      setPostInterludeScreen(goToMorning ? 'morningNav' : 'consultation')
       setScreen('interlude')
       return
     }
 
-    if (isNewPhase) {
+    // ── 화면 전환 ──
+    if (isNewPhase || isPhase4DayTransition) {
       setScreen('morningNav')
     } else {
       resetScript(nextEp)
       setScreen('consultation')
     }
-  }, [epIndex, currentPhase, economy, resetScript])
+  }, [epIndex, currentPhase, economy, dayPatientsSeen, resetScript])
 
   // ══════════ 스크립트 엔진 액션 ══════════
 
@@ -486,13 +583,33 @@ export default function useGame() {
         text: response.text, emotion: response.emotion,
       }])
 
-      // 턴 소진 경고
-      const warningAt = dayBudget ? dayBudget.totalTurns : maxTurns
-      const currentUsed = dayBudget ? newDayTurnsUsed : newExchange
-      if (warningAt !== null && currentUsed === warningAt) {
+      // day budget 소진 경고 (Phase 3: 일 턴 한도 도달 시 시스템 알림)
+      if (dayBudget && newDayTurnsUsed === dayBudget.totalTurns) {
         setTimeout(() => {
-          setMessages(prev => [...prev, { id: `nurse-${idx}`, speaker: 'system', text: '대기 환자가 있습니다.' }])
+          setMessages(prev => [...prev, { id: `nurse-day-${idx}`, speaker: 'system', text: '대기 환자가 있습니다.' }])
         }, 600)
+      }
+
+      // Phase 4+: 에피소드 maxTurns - 2 도달 시 간호사 눈치 메시지
+      if (maxTurns !== null && newExchange === maxTurns - 2) {
+        setTimeout(() => {
+          setMessages(prev => [...prev, { id: `nurse-hint-${idx}`, speaker: 'nurse', text: '다음 환자 오실 시간이 가까워요.' }])
+        }, 1000)
+        advanceOrClose(idx, script, isUnlocked)
+        return
+      }
+
+      // Phase 4+: 에피소드 maxTurns 도달 시 forceClose (강제 종료)
+      if (maxTurns !== null && newExchange >= maxTurns) {
+        const fc = script.forceClose
+        setTimeout(() => {
+          const forceMessages = []
+          if (fc?.nurse) forceMessages.push({ id: `fc-nurse-${idx}`, speaker: 'nurse', text: fc.nurse })
+          if (fc?.patient) forceMessages.push({ id: `fc-patient-${idx}`, speaker: 'patient', text: fc.patient })
+          setMessages(prev => [...prev, ...forceMessages])
+          setPhase('closing')
+        }, 600)
+        return // advanceOrClose 호출 안 함
       }
 
       advanceOrClose(idx, script, isUnlocked)
@@ -500,6 +617,22 @@ export default function useGame() {
   }, [currentTurn, waitingForChoice, turnIndex, script, exchangeCount, maxTurns,
       isOvertime, rapportGating, rapportCount, rapportUnlocked, advanceOrClose,
       dayBudget, dayTurnsUsed])
+
+  // Phase 4+: 뉴스 화면 종료 → postNewsScreen으로 이동
+  const finishNews = useCallback(() => {
+    const dest = postNewsScreen
+    setPostNewsScreen('morningNav')
+    setScreen(dest)
+  }, [postNewsScreen])
+
+  // Phase 4+: minTurns 이후 플레이어가 진료를 자발적으로 종료
+  const voluntaryClose = useCallback(() => {
+    if (!canEndConsultation || !script) return
+    const closing = rapportUnlocked && script.closingGated
+      ? script.closingGated : script.closing
+    setMessages(prev => [...prev, { id: 'closing-voluntary', speaker: closing.speaker, text: closing.text }])
+    setPhase('closing')
+  }, [canEndConsultation, script, rapportUnlocked])
 
   const clearRumor = useCallback(() => setPendingRumor(null), [])
   const clearDocument = useCallback(() => setPendingDocument(null), [])
@@ -528,5 +661,8 @@ export default function useGame() {
     beginPlaying, beginOpening, send, endConsultation, buildDayEnd,
     exchangeCount, overtimeTurns, dayTurnsUsed, dayTurnsRemaining,
     dayBudgetTotal: dayBudget?.totalTurns ?? null,
+    // Phase 4+
+    activeEvent, finishNews,
+    minTurns, canEndConsultation, voluntaryClose,
   }
 }
