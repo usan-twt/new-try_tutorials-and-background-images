@@ -8,12 +8,12 @@ const fadeStyle = (show) => ({
 })
 
 export default function DayEndScreen({ data, onNext }) {
-  const { patients = [], unasked = [], lastScene = [], overtime = [], isFinalEpisode } = data
+  const { patients = [], unasked = [], lastScene = [], overtime = [], isFinalEpisode, missedCount = 0 } = data
   const [count, setCount] = useState(0)
-  const [stages, setStages] = useState({ header: false, scene: false, overtime: false, final: false, next: false })
+  const [stages, setStages] = useState({ header: false, scene: false, overtime: false, missed: false, final: false, next: false })
 
   useEffect(() => {
-    setCount(0); setStages({ header: false, scene: false, overtime: false, final: false, next: false })
+    setCount(0); setStages({ header: false, scene: false, overtime: false, missed: false, final: false, next: false })
     const t = []
     let c = 600
     t.push(setTimeout(() => setStages(s => ({ ...s, header: true })), c))
@@ -22,6 +22,7 @@ export default function DayEndScreen({ data, onNext }) {
     c += patients.length * 500
     if (lastScene.length) { c += 1000; t.push(setTimeout(() => setStages(s => ({ ...s, scene: true })), c)) }
     if (overtime.length) { c += 800; t.push(setTimeout(() => setStages(s => ({ ...s, overtime: true })), c)) }
+    if (missedCount > 0) { c += 800; t.push(setTimeout(() => setStages(s => ({ ...s, missed: true })), c)) }
     if (isFinalEpisode) { c += 1200; t.push(setTimeout(() => setStages(s => ({ ...s, final: true })), c)) }
     c += 1500; t.push(setTimeout(() => setStages(s => ({ ...s, next: true })), c))
     return () => t.forEach(clearTimeout)
@@ -61,6 +62,14 @@ export default function DayEndScreen({ data, onNext }) {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, ...fadeStyle(stages.overtime) }}>
             {overtime.map((o, i) => <p key={i} style={{ fontFamily: sans, fontSize: 11, lineHeight: 1.6, color: 'rgba(232,224,208,0.2)', textAlign: 'center' }}>{o.note}</p>)}
           </div>
+        )}
+
+        {missedCount > 0 && (
+          <p style={{
+            fontFamily: sans, fontSize: 12, fontStyle: 'italic',
+            color: 'rgba(180,140,100,0.35)', letterSpacing: '0.04em', textAlign: 'center',
+            ...fadeStyle(stages.missed),
+          }}>오늘 {missedCount}명을 더 볼 수도 있었습니다.</p>
         )}
 
         {isFinalEpisode && <p style={{ fontFamily: serif, fontSize: 14, fontWeight: 300, color: 'rgba(232,224,208,0.35)', letterSpacing: '0.08em', textAlign: 'center', ...fadeStyle(stages.final) }}>다음 주에 다시 옵니다.</p>}

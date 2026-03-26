@@ -17,6 +17,7 @@ export default function ConsultationScreen({ game }) {
     waitingForChoice, showSeniorGuide, innerVoice,
     turnsRemaining, dayTurnsRemaining, maxTurns, isOvertime, dayBudgetTotal,
     beginPlaying, beginOpening, send,
+    canEndConsultation, voluntaryClose,
   } = game
 
   const [choiceDelayDone, setChoiceDelayDone] = useState(false)
@@ -213,6 +214,20 @@ export default function ConsultationScreen({ game }) {
                   <span style={{ fontFamily: 'system-ui,sans-serif', fontSize: 14, color: '#E8E0D0', lineHeight: 1.6 }}>"{c.text}"</span>
                 </button>
               ))}
+              {/* Phase 4+: minTurns 충족 후 자발 종료 버튼 */}
+              {canEndConsultation && (
+                <button onClick={voluntaryClose} style={{
+                  width: '100%', textAlign: 'center', padding: '10px 16px',
+                  background: 'none', border: '1px solid rgba(255,255,255,0.06)',
+                  borderRadius: 6, cursor: 'pointer', marginTop: 4,
+                  fontFamily: 'system-ui,sans-serif', fontSize: 11,
+                  color: 'rgba(232,224,208,0.28)', letterSpacing: '0.05em',
+                  transition: 'color 0.2s, border-color 0.2s',
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.color = 'rgba(232,224,208,0.5)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)' }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'rgba(232,224,208,0.28)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)' }}
+                >진료 마치기</button>
+              )}
             </div>
           )}
         </div>
