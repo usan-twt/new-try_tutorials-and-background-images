@@ -1,0 +1,152 @@
+{
+  "opening": { "speaker": "patient", "text": "기침이 3주째 안 낫고 있어요. 지하철 때문인 것 같아요. 요즘 공기가 안 좋잖아요." },
+  "nurseInfo": { "available": true, "text": "44세 여성분이에요. 기침과 흉부 압박감 3주째라고 하세요. 지하철 원인이라고 강하게 믿고 계세요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 양상 확인", "text": "기침이 어떤 편이에요? 마른 기침인가요, 가래도 있나요?", "intent": "cough_type" },
+        { "tag": "생활", "family": "life", "label": "지하철 이용 패턴", "text": "지하철을 하루에 얼마나 이용하세요?", "intent": "subway_use" },
+        { "tag": "공감", "family": "emotional", "label": "3주간 불편함 공감", "text": "3주나 기침이 계속되면 많이 힘드셨겠어요.", "intent": "empathy_3weeks" }
+      ],
+      "responses": {
+        "cough_type": { "text": "마른 기침이에요. 가래는 별로 없는데 목이 간질간질한 느낌이 있어요. 흉부 쪽이 답답하기도 하고요.", "emotion": "neutral", "innerVoice": "마른 기침과 흉부 압박감. 기관지 과민, 역류성 식도염, 혹은 후비루 등 다양한 가능성이 있다." },
+        "subway_use": { "text": "출퇴근 때마다요. 한 번에 40분씩 타는데, 사람이 많을 때는 정말 공기가 나쁘거든요.", "emotion": "neutral" },
+        "empathy_3weeks": { "text": "그렇죠. 직장 다니면서 계속 기침하니까 민망하기도 하고, 주변에서 이상하게 볼까봐 신경도 쓰이고.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "흉부 압박감 확인", "text": "흉부 답답함이 어느 정도예요? 숨이 찬 느낌도 있나요?", "intent": "chest_tightness" },
+        { "tag": "생활", "family": "life", "label": "지하철 외 환경", "text": "지하철 말고 직장이나 집 환경은 어떠세요?", "intent": "other_environment" },
+        { "tag": "공감", "family": "emotional", "label": "지하철 원인 신념 확인", "text": "지하철이 원인이라고 확신하시는 이유가 있나요?", "intent": "belief_reason" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "열·전신 증상", "text": "열이 나거나 몸살 기운은 없었나요?", "intent": "fever" },
+        "after_life": { "family": "life", "tag": "생활", "label": "기침 시점", "text": "기침이 언제 제일 심해요? 지하철 탈 때만인가요?", "intent": "cough_timing" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "뉴스나 정보 영향", "text": "지하철 공기 관련 뉴스 보셨어요?", "intent": "news_influence" }
+      },
+      "responses": {
+        "chest_tightness": { "text": "숨이 차진 않은데, 가슴이 조이는 느낌이 가끔 있어요.", "emotion": "neutral" },
+        "other_environment": { "text": "사무실이에요. 냉난방 많이 하긴 하는데... 직장 사람들은 괜찮으니까 거기는 아닌 것 같고요.", "emotion": "neutral", "innerVoice": "직장 동료들은 괜찮다고 하는데 본인만 증상이 있다. 개인적 요인을 고려해야 한다." },
+        "belief_reason": { "text": "지하철 탈 때부터 더 심해지는 것 같아서요. 그리고 요즘 미세먼지도 심하고, 지하철 공기 질 관련 기사도 봤거든요.", "emotion": "neutral" },
+        "fever": { "text": "열은 없었어요. 몸살 기운도 없고요.", "emotion": "neutral" },
+        "cough_timing": { "text": "지하철 탈 때만은 아닌데... 아침에 일어날 때도 기침하고, 밤에도 가끔 해요.", "emotion": "neutral", "innerVoice": "야간 기침과 기상 시 기침. 지하철과 무관한 기침 원인을 봐야 한다." },
+        "news_influence": { "text": "네, 지하철 공기 질이 나쁘다는 기사 많이 나오더라고요. 실제로 탈 때 코가 먹먹해지는 느낌도 있고요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "기침 이외 증상", "text": "콧물이 뒤로 넘어오는 느낌이나 목이 간지러운 거 외에 다른 증상은요?", "intent": "other_symptoms" },
+        { "tag": "생활", "family": "life", "label": "기침 시작 계기", "text": "3주 전에 뭔가 특별한 일이 있었나요? 감기 같은 거요.", "intent": "trigger" },
+        { "tag": "공감", "family": "emotional", "label": "가설 수용하며 탐색", "text": "지하철 공기가 자극이 될 수 있긴 해요. 다른 가능성도 같이 살펴볼까요?", "intent": "open_other_possibility" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "속쓰림 여부", "text": "속이 쓰리거나 신물이 올라오는 느낌은요?", "intent": "reflux" },
+        "after_life": { "family": "life", "tag": "생활", "label": "계절적 요인", "text": "매년 이맘때 기침이 심해지는 편인가요?", "intent": "seasonal" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "본인 생각 존중", "text": "환경 요인이 원인일 가능성도 충분히 있어요. 다만 몇 가지 더 확인해볼게요.", "intent": "respect_view" }
+      },
+      "responses": {
+        "other_symptoms": { "text": "콧물이 뒤로 넘어오는 느낌이 있어요. 목에 뭔가 걸린 것 같기도 하고요.", "emotion": "neutral", "innerVoice": "후비루 증상이다. 이게 만성 기침의 주요 원인일 수 있다." },
+        "trigger": { "text": "3주 전에 감기 걸렸어요. 그때 기침 시작했는데, 감기는 나았는데 기침이 계속되는 거예요.", "emotion": "neutral", "innerVoice": "감기 후 기침이 지속되는 경우다. 감염 후 기관지 과민이 원인일 가능성이 있다." },
+        "open_other_possibility": { "text": "다른 가능성이요? 지하철이 아닐 수도 있다는 건가요?", "emotion": "guarded" },
+        "reflux": { "text": "속이 쓰린 건 없는데... 가끔 신물 같은 게 올라올 때가 있는 것 같기도 해요.", "emotion": "neutral" },
+        "seasonal": { "text": "봄에 비염이 심한 편이긴 해요. 이 시기에 유독 코가 좀 예민해요.", "emotion": "neutral", "innerVoice": "계절성 알레르기 비염 가능성. 후비루와 연결될 수 있다." },
+        "respect_view": { "text": "그렇군요. 다른 건 어떤 걸 보시려는 건가요?", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "다른 원인 설명", "text": "감기 후에 기관지가 예민해져서 기침이 계속되는 경우가 꽤 흔해요.", "intent": "explain_post_viral" },
+        { "tag": "생활", "family": "life", "label": "비염 병력 확인", "text": "비염이 있으시다고 하셨는데, 치료를 받아보신 적 있나요?", "intent": "rhinitis_history" },
+        { "tag": "공감", "family": "emotional", "label": "저항감 확인", "text": "지하철이 아닐 수도 있다고 하면 어떤 느낌이 드세요?", "intent": "check_resistance" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "후비루 설명", "text": "콧물이 뒤로 넘어오면서 목을 자극해 기침이 생기는 경우도 많아요.", "intent": "explain_postnasal" },
+        "after_life": { "family": "life", "tag": "생활", "label": "환경 외 습관", "text": "흡연이나 음주는 어떠세요?", "intent": "lifestyle_habits" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "원인 찾기 중요성 인정", "text": "원인이 명확해야 제대로 치료할 수 있으니까, 제대로 찾아보자는 거예요.", "intent": "why_explore" }
+      },
+      "responses": {
+        "explain_post_viral": { "text": "감기 이후에도 기침이 남을 수 있군요. 그건 몰랐어요.", "emotion": "neutral" },
+        "rhinitis_history": { "text": "코감기처럼 자주 왔다 갔다 하는데, 정식으로 치료는 안 받아봤어요.", "emotion": "neutral" },
+        "check_resistance": { "text": "음... 그럴 수도 있겠다 싶은데, 지하철 탈 때 더 심한 건 사실이거든요.", "emotion": "guarded" },
+        "explain_postnasal": { "text": "아, 콧물이 뒤로 넘어가서요? 그게 기침이랑 연결될 수 있다는 거네요.", "emotion": "neutral" },
+        "lifestyle_habits": { "text": "담배는 안 피우고요, 술은 가끔 마셔요.", "emotion": "neutral" },
+        "why_explore": { "text": "그렇군요. 그러면 뭘 더 확인해야 하는 건가요?", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "검사 필요성 설명", "text": "폐 기능이나 알레르기 검사를 해보면 원인을 더 정확히 알 수 있어요.", "intent": "test_suggestion" },
+        { "tag": "생활", "family": "life", "label": "마스크 착용 여부", "text": "지하철 탈 때 마스크 쓰세요?", "intent": "mask_use" },
+        { "tag": "공감", "family": "emotional", "label": "본인 가설 인정하며 통합", "text": "지하철 공기가 기침을 악화시키는 요인이 될 수 있어요. 근본 원인이 따로 있을 수 있고요.", "intent": "integrate_view" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "천식 가능성 언급", "text": "흉부 압박감이 있으시니 기관지 과민이나 천식 가능성도 배제해야 해요.", "intent": "asthma_check" },
+        "after_life": { "family": "life", "tag": "생활", "label": "공기청정기 환경", "text": "집이나 직장 환경에서 공기청정기나 환기는 잘 되는 편인가요?", "intent": "air_quality" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "치료 접근 설명", "text": "원인에 따라 치료가 달라지니까, 여러 가능성을 같이 볼게요.", "intent": "treatment_approach" }
+      },
+      "responses": {
+        "test_suggestion": { "text": "검사를 해봐야 하는군요. 어떤 검사를 해야 하나요?", "emotion": "neutral" },
+        "mask_use": { "text": "코로나 때는 썼는데, 요즘은 안 쓰고 있어요.", "emotion": "neutral" },
+        "integrate_view": { "text": "그렇게 말씀하시니까, 그럴 수도 있겠다는 생각이 드네요.", "emotion": "warming" },
+        "asthma_check": { "text": "천식이요? 그 정도는 아닌 것 같은데... 걱정이 되네요.", "emotion": "anxious" },
+        "air_quality": { "text": "집에 공기청정기가 있어요. 사무실은 환기가 좀 안 되는 편이긴 해요.", "emotion": "neutral" },
+        "treatment_approach": { "text": "네, 원인을 제대로 알고 치료하는 게 맞겠죠.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "진단 방향 설명", "text": "지금 증상으로 볼 때 감염 후 기관지 과민과 후비루가 겹친 가능성이 높아요.", "intent": "diagnosis_explain" },
+        { "tag": "생활", "family": "life", "label": "생활 개선 제안", "text": "지하철에서 마스크 착용하시고, 실내 환기도 신경 써주세요.", "intent": "lifestyle_advice" },
+        { "tag": "공감", "family": "emotional", "label": "불안 감소", "text": "3주 됐지만 치료하면 나을 수 있는 상황이에요. 너무 걱정하지 않으셔도 돼요.", "intent": "reassure" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "처방 약 설명", "text": "기관지 항염제와 항히스타민제 처방해드릴게요.", "intent": "prescription" },
+        "after_life": { "family": "life", "tag": "생활", "label": "비염 관리", "text": "봄철 비염이 있으시면 알레르기 검사도 한번 해보시는 게 도움이 돼요.", "intent": "allergy_test" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "원인 이해로 안심", "text": "지하철이 악화 요인이 될 수는 있어요. 근본 치료를 하면 지하철 탈 때도 편해질 거예요.", "intent": "subway_resolution" }
+      },
+      "responses": {
+        "diagnosis_explain": { "text": "그렇군요. 지하철이 원인이 아닐 수도 있다는 거네요.", "emotion": "neutral" },
+        "lifestyle_advice": { "text": "마스크는 써야겠네요. 사무실 환기도 좀 신경 써야겠고요.", "emotion": "warming" },
+        "reassure": { "text": "그래요? 다행이네요. 오래가면 어떡하나 걱정했거든요.", "emotion": "warming" },
+        "prescription": { "text": "항히스타민제요. 비염 약이랑 비슷한 건가요?", "emotion": "neutral" },
+        "allergy_test": { "text": "알레르기 검사는 어디서 하나요?", "emotion": "neutral" },
+        "subway_resolution": { "text": "그렇군요. 치료하면 지하철도 편해질 수 있다니 다행이에요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "재진 필요성", "text": "2주 후에 다시 오셔서 기침이 개선됐는지 확인해봐요.", "intent": "followup" },
+        { "tag": "생활", "family": "life", "label": "환경 관리 마무리", "text": "건조한 환경도 기침을 악화시켜요. 가습기 사용이 도움이 돼요.", "intent": "humidity_advice" },
+        { "tag": "공감", "family": "emotional", "label": "마무리 격려", "text": "3주나 참으시다 오셨는데, 잘 오셨어요.", "intent": "final_empathy" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "악화 기준 안내", "text": "열이 생기거나 가래에 피가 섞이면 바로 오셔야 해요.", "intent": "emergency" },
+        "after_life": { "family": "life", "tag": "생활", "label": "지하철 마스크 재강조", "text": "지하철 마스크는 환경 자극을 줄이는 데 실제로 도움이 돼요.", "intent": "mask_reminder" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "원인 이해 마무리", "text": "원인을 알고 나면 치료도 더 효과적이에요. 잘 나을 거예요.", "intent": "closing_reassure" }
+      },
+      "responses": {
+        "followup": { "text": "네, 2주 후에 다시 오겠습니다.", "emotion": "warming" },
+        "humidity_advice": { "text": "건조함도 영향을 주는군요. 가습기 써봐야겠어요.", "emotion": "warming" },
+        "final_empathy": { "text": "3주를 그냥 뒀는데 왔어야 했네요. 감사합니다.", "emotion": "warming" },
+        "emergency": { "text": "네, 그런 증상 생기면 바로 올게요.", "emotion": "neutral" },
+        "mask_reminder": { "text": "내일부터 지하철 탈 때 마스크 챙겨야겠어요.", "emotion": "warming" },
+        "closing_reassure": { "text": "감사해요. 처음엔 지하철 원인이 아닐 수도 있다는 말에 좀 의아했는데, 이제 이해가 돼요.", "emotion": "opened" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 지하철만 탓했는데, 다른 원인도 있을 수 있다는 게 이해가 되네요. 잘 치료해볼게요." },
+  "forceClose": {
+    "nurse": "다음 환자분 대기하고 계세요.",
+    "patient": "아, 네. 알겠습니다. 감사합니다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "역류성 식도염 가능성을 더 자세히 탐색하지 못했다.",
+      "life": "직장 내 환기 환경과 실내 공기 질을 더 구체적으로 확인하지 못했다.",
+      "emotional": "3주간 기침으로 인한 사회적 불편감이나 스트레스에 대해 더 이야기 나누지 못했다."
+    },
+    "lastScene": "한지영 씨가 처방전을 받아 들고 잠깐 들여다보다 가방에 넣는다. '지하철 때문이 아닐 수도 있구나.' 혼잣말처럼 중얼거리며 나간다.",
+    "lastSceneGated": ""
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "opening": { "speaker": "patient", "text": "속이 좀 쓰려서요. 한 달 됐는데... 좀 참다가 왔어요." },
+  "nurseInfo": { "available": true, "text": "48세 남성분이에요. 속쓰림이 한 달째라고 하세요. 많이 참으신 것 같아요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 확인", "text": "속이 어떻게 쓰리세요?", "intent": "symptom_check" },
+        { "tag": "생활", "family": "life", "label": "한 달간 생활", "text": "한 달 동안 많이 불편하셨겠어요. 어떻게 지내셨어요?", "intent": "life_check" },
+        { "tag": "공감", "family": "emotional", "label": "오래 참으심", "text": "한 달이나 참으시다 오셨군요.", "intent": "empathy_wait" },
+        { "tag": "용모", "family": "appearance", "label": "손이 거칠고 옷이 많이 닳아있어요", "text": "일 많이 하시나요?", "intent": "appearance_work" }
+      ],
+      "responses": {
+        "symptom_check": { "text": "식사하고 나서 한 시간쯤 있다가 속이 쓰려요. 빈속에도 쓰리고요. 명치 쪽이요.", "emotion": "neutral", "innerVoice": "식후 및 공복 통증, 명치 불편감. 위염 혹은 위궤양 가능성을 고려해야 한다." },
+        "life_check": { "text": "뭐... 참을 만하다 싶어서요. 일하느라 병원 올 시간도 없었고요.", "emotion": "neutral", "innerVoice": "병원 방문을 미룬 데는 시간 외에 다른 이유가 있을 수 있다." },
+        "empathy_wait": { "text": "네, 좀 심해지니까 이제야 왔어요. 진작 올걸 그랬나요.", "emotion": "neutral" },
+        "appearance_work": { "text": "(손을 내려다보다가) 네... 일용직이에요. 공사 현장 일이요.", "emotion": "neutral", "innerVoice": "일용직 노동자다. 병원비와 일당 손실이 방문을 미루게 했을 것이다.", "gatedResponse": { "text": "하루 빠지면 그날 일당이 없으니까요. 그래서 웬만하면 참는 편이에요. 병원비도 그렇고요.", "emotion": "neutral" } }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "통증 빈도 확인", "text": "한 달 동안 얼마나 자주 아프셨어요?", "intent": "frequency" },
+        { "tag": "생활", "family": "life", "label": "식사 시간대 확인", "text": "주로 몇 시에 식사하세요?", "intent": "meal_time" },
+        { "tag": "공감", "family": "emotional", "label": "많이 참으셨겠다", "text": "한 달이나 참고 계셨군요.", "intent": "empathy_wait" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "구역감 여부", "text": "속이 울렁거리거나 신물이 올라오는 것도 있나요?", "intent": "nausea" },
+        "after_life": { "family": "life", "tag": "생활", "label": "결식 여부", "text": "밥을 거르는 날이 있나요?", "intent": "skip_meals" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "병원 오기 어려우셨겠다", "text": "병원 오기가 쉽지 않으셨을 것 같아요.", "intent": "hospital_barrier" }
+      },
+      "responses": {
+        "frequency": { "text": "매일은 아니고요. 일 없는 날은 좀 덜한 것 같기도 해요.", "emotion": "neutral" },
+        "meal_time": { "text": "일 있는 날은 현장에서 대충 때우고, 없는 날은... 좀 늦게 먹거나 그냥 넘어갈 때도 있어요.", "emotion": "neutral" },
+        "empathy_wait": { "text": "뭐, 참을 만하면 참게 되죠.", "emotion": "neutral" },
+        "nausea": { "text": "가끔 신물은 올라와요. 구역감은 심하진 않고요.", "emotion": "neutral" },
+        "skip_meals": { "text": "그게... 일이 없는 날은 나가기도 뭐하고, 그냥 넘길 때가 있어요.", "emotion": "neutral", "innerVoice": "결식이 있다. 경제적 이유일 수 있다." },
+        "hospital_barrier": { "text": "바빠서요. 일 끊기면 안 되니까... 오늘은 일이 없어서 왔어요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "체중 감소 여부", "text": "최근에 체중이 줄었나요?", "intent": "weight" },
+        { "tag": "생활", "family": "life", "label": "음주·흡연", "text": "술이나 담배 하세요?", "intent": "alcohol" },
+        { "tag": "공감", "family": "emotional", "label": "일이 힘드시겠다", "text": "일이 불규칙하면 몸도 많이 힘드시겠어요.", "intent": "work_hard" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "흑색변 여부", "text": "대변이 까맣거나 혈변이 있었던 적 있나요?", "intent": "blood" },
+        "after_life": { "family": "life", "tag": "생활", "label": "어제 뭐 드셨는지", "text": "어제 식사는 어떻게 하셨어요?", "intent": "yesterday" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "몸이 버텨줘야 일도 하죠", "text": "몸이 버텨줘야 일도 할 수 있잖아요.", "intent": "body_first" }
+      },
+      "responses": {
+        "weight": { "text": "좀 빠진 것 같긴 한데, 잘 모르겠어요.", "emotion": "neutral" },
+        "alcohol": { "text": "술은 가끔 마시고, 담배는 피워요.", "emotion": "neutral" },
+        "work_hard": { "text": "이 나이에 일용직이 달리 할 수도 없고요.", "emotion": "neutral" },
+        "blood": { "text": "그런 건 없었어요.", "emotion": "neutral" },
+        "yesterday": { "text": "어제는... 아침은 넘기고, 저녁에 라면 하나 먹었어요.", "emotion": "neutral", "innerVoice": "결식과 자극적 식사. 위염이 악화될 수밖에 없는 패턴이다." },
+        "body_first": { "text": "맞는 말이긴 한데...", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "이전 위 관련 진단 여부", "text": "전에 위염이나 위궤양 진단 받으신 적 있나요?", "intent": "history" },
+        { "tag": "생활", "family": "life", "label": "진통제 복용 여부", "text": "관절이나 근육 때문에 진통제 드시는 거 있어요?", "intent": "nsaid" },
+        { "tag": "공감", "family": "emotional", "label": "식사를 못 챙기시는 상황이군요", "text": "밥을 챙겨 드시기가 어려운 상황이신 것 같아요.", "intent": "meal_situation" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "헬리코박터 검사 여부", "text": "헬리코박터균 검사 받아보신 적 있나요?", "intent": "hpylori" },
+        "after_life": { "family": "life", "tag": "생활", "label": "일의 종류", "text": "주로 어떤 일 하세요?", "intent": "job_type" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "병원비 걱정되시죠", "text": "병원비도 좀 걱정되셨을 것 같아요.", "intent": "cost_worry" }
+      },
+      "responses": {
+        "history": { "text": "십 년 전에 위염 있었는데, 그때 약 먹고 나아서 그 이후로는 안 왔어요.", "emotion": "neutral" },
+        "nsaid": { "text": "무릎이 좀 안 좋아서 진통제 가끔 먹어요.", "emotion": "neutral", "innerVoice": "NSAIDs 복용. 위 점막 손상 원인이 될 수 있다." },
+        "meal_situation": { "text": "일 있는 날은 그나마 낫고, 없는 날은... 뭐, 그래요.", "emotion": "neutral" },
+        "hpylori": { "text": "그런 검사는 안 받았어요.", "emotion": "neutral" },
+        "job_type": { "text": "건설 현장 잡일이요. 있으면 나가고 없으면 쉬고요.", "emotion": "neutral" },
+        "cost_worry": { "text": "...그게 좀 그렇죠. 오늘도 많이 나오면 어떡하나 했어요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "위내시경 필요성", "text": "한 달 이상 지속된 속쓰림이면 위내시경 확인이 필요해요.", "intent": "endoscopy" },
+        { "tag": "생활", "family": "life", "label": "식사 개선 방향", "text": "지금 상황에서 식사를 조금이라도 챙기는 방법이 있을까요?", "intent": "meal_improve" },
+        { "tag": "공감", "family": "emotional", "label": "더 나빠지기 전에 잘 오셨어요", "text": "더 심해지기 전에 오신 게 잘 하신 거예요.", "intent": "good_came" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "위내시경 비용 안내", "text": "국가검진 대상이시면 무료로 받을 수 있어요.", "intent": "free_checkup" },
+        "after_life": { "family": "life", "tag": "생활", "label": "담배와 진통제 조절 조언", "text": "담배와 진통제가 위 점막을 자극해요. 줄이시면 많이 달라져요.", "intent": "reduce_triggers" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "오늘 처방비는 많지 않아요", "text": "오늘 처방은 크게 부담 안 되실 거예요.", "intent": "cost_reassure" }
+      },
+      "responses": {
+        "endoscopy": { "text": "내시경이요... 비용이 얼마나 돼요?", "emotion": "neutral" },
+        "meal_improve": { "text": "...편의점에서라도 뭔가 먹어야겠죠.", "emotion": "neutral" },
+        "good_came": { "text": "뭐, 그랬으면 좋겠네요.", "emotion": "neutral" },
+        "free_checkup": { "text": "무료요? 그럼 한번 알아봐야겠네요.", "emotion": "warming" },
+        "reduce_triggers": { "text": "진통제는 줄일 수 있는데 담배는... 좀 어렵네요.", "emotion": "neutral" },
+        "cost_reassure": { "text": "그거 다행이네요. 진짜.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방 설명", "text": "오늘은 위산 억제제하고 점막 보호제 처방해드릴게요.", "intent": "prescription" },
+        { "tag": "생활", "family": "life", "label": "식사 당부", "text": "공복을 최대한 피해주세요. 라면이라도 뭔가 드시는 게 낫습니다.", "intent": "diet_advice" },
+        { "tag": "공감", "family": "emotional", "label": "몸 챙기셔야 일도 할 수 있어요", "text": "몸이 버텨줘야 일도 계속할 수 있는 거니까요.", "intent": "encourage" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "복약 방법", "text": "아침 식사 전에 드시면 돼요. 4주 치 드릴게요.", "intent": "meds_guide" },
+        "after_life": { "family": "life", "tag": "생활", "label": "진통제 대안", "text": "무릎 때문에 먹는 진통제는 밥 먹고 드셔야 해요.", "intent": "nsaid_guide" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "마무리", "text": "다음에 또 심해지면 꼭 다시 오세요.", "intent": "closure" }
+      },
+      "responses": {
+        "prescription": { "text": "알겠어요. 약은 얼마나 먹어야 해요?", "emotion": "neutral" },
+        "diet_advice": { "text": "라면이라도요. 알겠어요.", "emotion": "neutral" },
+        "encourage": { "text": "...네. 그렇게 해야겠죠.", "emotion": "warming" },
+        "meds_guide": { "text": "네, 알겠어요.", "emotion": "neutral" },
+        "nsaid_guide": { "text": "밥 먹고요. 알겠어요.", "emotion": "neutral" },
+        "closure": { "text": "감사합니다.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "재진 및 악화 기준", "text": "한 달 뒤에도 안 나으면 다시 오세요. 피 토하거나 검은 변 나오면 바로 응급실이에요.", "intent": "followup" },
+        { "tag": "생활", "family": "life", "label": "국가검진 안내", "text": "48세시면 위내시경 국가검진 대상이에요. 보건소나 검진 기관에 문의해보세요.", "intent": "national_checkup" },
+        { "tag": "공감", "family": "emotional", "label": "마무리", "text": "힘드신데 오셨어요. 잘 나으시길 바랍니다.", "intent": "closure" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "금연 효과 설명", "text": "담배 끊으면 위 점막 회복이 훨씬 빨라져요.", "intent": "smoking_effect" },
+        "after_life": { "family": "life", "tag": "생활", "label": "복지 안내", "text": "일용직이시면 근로복지공단에서 지원받을 수 있는 것도 있어요.", "intent": "welfare" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "이 약 먹으면 나아질 거예요", "text": "이 약 규칙적으로 드시면 많이 나아질 거예요.", "intent": "reassure" }
+      },
+      "responses": {
+        "followup": { "text": "알겠어요.", "emotion": "neutral" },
+        "national_checkup": { "text": "국가검진이요? 한번 알아볼게요.", "emotion": "neutral" },
+        "closure": { "text": "감사합니다. (자리에서 일어선다)", "emotion": "neutral" },
+        "smoking_effect": { "text": "담배가 그것도 영향을 주는군요.", "emotion": "neutral" },
+        "welfare": { "text": "...그런 게 있어요? 잘 몰랐네요.", "emotion": "warming" },
+        "reassure": { "text": "그랬으면 좋겠어요. 감사합니다.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. (처방전을 받아들고 나간다)" },
+  "forceClose": {
+    "nurse": "다음 환자 들어오실 시간입니다.",
+    "patient": "네, 감사합니다. (자리에서 일어선다)"
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "결식 빈도와 진통제 복용 기간을 더 구체적으로 파악했다면 위 손상의 정도를 더 정확히 평가할 수 있었다.",
+      "life": "일용직 환경과 경제적 상황을 더 파악하지 못했다. 국가검진과 복지 정보 연결이 더 필요했다.",
+      "emotional": "병원비 걱정과 오래 참아온 상황에 대해 충분히 이야기 나누지 못했다."
+    },
+    "lastScene": "환자가 처방전을 받아들고 조용히 나간다. 다시 현장으로 돌아가는 하루의 일부처럼 보인다.",
+    "lastSceneGated": null
+  }
+}

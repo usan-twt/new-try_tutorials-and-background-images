@@ -1,0 +1,152 @@
+{
+  "opening": { "speaker": "patient", "text": "무기력증이 3개월째인 것 같아서요. 수면 시간이 5.3시간 정도고, 집중력 저하가 70% 체감돼요." },
+  "nurseInfo": { "available": true, "text": "31세 남성분이에요. 무기력·의욕 저하 3개월이에요. 본인 증상을 데이터처럼 기술하시는 분이에요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 데이터 확인", "text": "수면이 5.3시간이라고 하셨는데, 잠들기 어려운 건지 일찍 깨는 건지요?", "intent": "sleep_detail" },
+        { "tag": "생활", "family": "life", "label": "직업 확인", "text": "하시는 일이 어떻게 되세요?", "intent": "occupation" },
+        { "tag": "공감", "family": "emotional", "label": "3개월 경험 공감", "text": "3개월 동안 그런 상태가 지속됐다면 많이 힘드셨겠어요.", "intent": "empathy_3months" }
+      ],
+      "responses": {
+        "sleep_detail": { "text": "새벽 2~3시에 잠들고, 7시 전에 일어나요. 중간에 깨는 경우도 있고요. 평균 내면 5.3이에요.", "emotion": "guarded", "innerVoice": "수면 시작 지연과 수면 시간 부족. 불면 경향이 있다." },
+        "occupation": { "text": "IT 스타트업에서 개발자로 일하고 있어요. 4년 됐고요.", "emotion": "guarded" },
+        "empathy_3months": { "text": "힘들다는 표현이 맞는지 모르겠는데요. 기능은 하고 있는데 효율이 떨어진 상태라고 봐야 할 것 같아요.", "emotion": "guarded", "innerVoice": "감정 표현 대신 기능 중심으로 기술한다. 감정적 접근이 어색한 분이다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "집중력 저하 양상", "text": "집중력 저하 70%라고 하셨는데, 구체적으로 어떤 상황에서 느끼세요?", "intent": "concentration_detail" },
+        { "tag": "생활", "family": "life", "label": "업무 환경", "text": "스타트업이면 업무 강도가 높을 것 같아요. 어떤 편이에요?", "intent": "work_intensity" },
+        { "tag": "공감", "family": "emotional", "label": "언제부터인지 탐색", "text": "3개월 전에 특별히 달라진 게 있었나요?", "intent": "onset_event" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "식욕·체중 변화", "text": "밥맛이 없거나 체중이 달라진 건 없나요?", "intent": "appetite_weight" },
+        "after_life": { "family": "life", "tag": "생활", "label": "하루 근무 시간", "text": "하루에 몇 시간 정도 일하세요?", "intent": "work_hours" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "변화 시점 탐색", "text": "그 시점에 무언가 바뀌었다는 느낌이 있었어요?", "intent": "change_perception" }
+      },
+      "responses": {
+        "concentration_detail": { "text": "코드 짜다가 30분 이상 집중이 안 되고요. 이전엔 2~3시간 집중이 가능했는데, 지금은 그게 안 돼요.", "emotion": "guarded" },
+        "work_intensity": { "text": "높은 편이에요. 스프린트 주기가 2주고, 데드라인 미팅이 잦아요.", "emotion": "guarded" },
+        "onset_event": { "text": "3개월 전에 큰 프로젝트가 끝났어요. 그 이후부터인 것 같아요.", "emotion": "guarded", "innerVoice": "프로젝트 완료 후 에너지 고갈. 번아웃 패턴과 맞닿는다." },
+        "appetite_weight": { "text": "식욕은 있는데, 먹어도 맛을 잘 못 느껴요. 체중은 2킬로 줄었어요.", "emotion": "guarded" },
+        "work_hours": { "text": "평균 11시간 정도요. 피크 때는 14시간 이상도 해요.", "emotion": "guarded" },
+        "change_perception": { "text": "그 프로젝트 끝나고 나서 회복이 안 되는 느낌이에요. 원래는 쉬면 됐는데 이번엔 안 되는 것 같아요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "번아웃 vs 우울증 분류", "text": "번아웃이에요, 아니면 우울증이에요? 스스로는 어떻게 생각하세요?", "intent": "self_diagnosis" },
+        { "tag": "생활", "family": "life", "label": "회복 시도 여부", "text": "쉬거나 해결해보려고 뭔가 해보셨어요?", "intent": "recovery_attempt" },
+        { "tag": "공감", "family": "emotional", "label": "회복이 안 되는 느낌", "text": "쉬어도 회복이 안 된다는 게 어떤 느낌이에요?", "intent": "no_recovery_feeling" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "진단 기준 설명", "text": "번아웃과 우울증은 증상이 겹치는 부분이 많아서, 몇 가지 더 확인해볼게요.", "intent": "explain_overlap" },
+        "after_life": { "family": "life", "tag": "생활", "label": "여가 활동 변화", "text": "예전에 즐기던 것들을 요즘도 하세요?", "intent": "hobbies" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "감정 상태 탐색", "text": "기능은 하고 있다고 하셨는데, 일 외에 기분은 어때요?", "intent": "mood_check" }
+      },
+      "responses": {
+        "self_diagnosis": { "text": "그게 궁금해서 왔어요. 번아웃이면 휴식으로 해결 가능하고, 우울증이면 약이 필요한 거잖아요. 분류가 필요한 것 같아서요.", "emotion": "guarded", "innerVoice": "기능적·분류적 접근. 감정 처리보다 문제 해결 방식으로 대하고 있다." },
+        "recovery_attempt": { "text": "주말에 12시간 이상 자봤고요, 운동도 해봤는데 효과가 일시적이에요. 체감 회복률 20% 정도예요.", "emotion": "guarded" },
+        "no_recovery_feeling": { "text": "원래 충전이 되면 다시 돌아오는 느낌이 있는데, 그 느낌이 없어요. 배터리가 안 채워지는 것 같아요.", "emotion": "guarded" },
+        "explain_overlap": { "text": "네, 그러면 어떤 질문들이 오는 건가요?", "emotion": "guarded" },
+        "hobbies": { "text": "예전에 사이드 프로젝트를 즐겼는데, 요즘은 코드 보기가 싫어요. 취미도 별로 없어졌고요.", "emotion": "guarded", "innerVoice": "무쾌감증 경향이 있다. 이전에 즐겼던 것에 대한 흥미 상실." },
+        "mood_check": { "text": "기분이요. 뭐, 나쁜 건 아닌데... 딱히 좋지도 않아요. 플랫한 상태라고 해야 하나요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "우울감 증상 확인", "text": "슬프거나 공허한 느낌, 혹은 이유 없이 눈물이 나는 건 없나요?", "intent": "depressive_symptoms" },
+        { "tag": "생활", "family": "life", "label": "사회적 관계", "text": "요즘 사람 만나는 건 어떠세요?", "intent": "social_contact" },
+        { "tag": "공감", "family": "emotional", "label": "'플랫한' 감정 탐색", "text": "플랫하다고 하셨는데, 그 느낌이 구체적으로 어떤 건지 말씀해주실 수 있어요?", "intent": "flat_feeling" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "죽고 싶은 생각 확인", "text": "힘들다 보면 가끔 모든 걸 끝내고 싶다는 생각이 들기도 하나요?", "intent": "suicidal_ideation" },
+        "after_life": { "family": "life", "tag": "생활", "label": "직장 내 대인관계", "text": "팀원들이랑 관계는 어때요?", "intent": "team_relation" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "감정 인식 탐색", "text": "요즘 어떤 감정이 자주 올라오는 것 같아요?", "intent": "emotion_awareness" }
+      },
+      "responses": {
+        "depressive_symptoms": { "text": "슬프다는 게 어떤 건지 잘 모르겠어요. 눈물은 안 나요. 그냥 무감각한 것 같기도 하고요.", "emotion": "guarded" },
+        "social_contact": { "text": "줄었어요. 일 끝나면 에너지가 없어서. 연락이 와도 답장하기 싫고요.", "emotion": "guarded" },
+        "flat_feeling": { "text": "딱히 좋거나 나쁜 게 없어요. 뭔가 감정의 진폭이 없는 것 같아요. 예전에는 잘 됐을 때 기쁘고 그런 게 있었는데, 지금은 그냥 완료된 거예요.", "emotion": "guarded", "innerVoice": "감정 무뎌짐. 이건 번아웃보다 우울 경향에 더 가깝다." },
+        "suicidal_ideation": { "text": "...그런 생각은 없어요. 그냥 아무것도 하기 싫다는 생각은 있어요.", "emotion": "guarded" },
+        "team_relation": { "text": "그냥 평범해요. 특별히 좋지도 나쁘지도 않아요. 예전엔 같이 밥 먹고 했는데 요즘은 혼자 먹어요.", "emotion": "guarded" },
+        "emotion_awareness": { "text": "감정이요... 딱히 뭔가가 올라온다는 느낌이 없어요. 그냥 하루가 지나가요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "번아웃·우울증 설명", "text": "말씀하신 증상들은 번아웃보다 우울 경향에 가깝게 보여요. 감정 진폭이 없는 것, 흥미 감소, 이런 게 중요한 신호예요.", "intent": "clinical_assessment" },
+        { "tag": "생활", "family": "life", "label": "현재 업무 부담", "text": "지금 업무 강도를 줄이거나 휴가를 내는 게 가능한 상황인가요?", "intent": "leave_possibility" },
+        { "tag": "공감", "family": "emotional", "label": "감정 없음의 무게", "text": "감정이 없다는 게 사실 굉장히 힘든 상태예요. 그걸 느끼는 게 더 어렵기도 하고요.", "intent": "empathy_numbness" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "전문 치료 안내", "text": "정신건강의학과 상담을 받아보시는 게 좋겠어요.", "intent": "psych_referral" },
+        "after_life": { "family": "life", "tag": "생활", "label": "생활 루틴 변화", "text": "업무 외 시간에 신체 활동이나 규칙적인 루틴이 있으면 회복에 도움이 돼요.", "intent": "routine_recovery" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "지금 이 자리에 오신 것", "text": "이렇게 병원에 오신 것 자체가 중요한 거예요. 분류가 필요하다는 걸 아신 거잖아요.", "intent": "validate_visit" }
+      },
+      "responses": {
+        "clinical_assessment": { "text": "우울 경향이라고요. 번아웃이면 쉬면 낫는다고 했는데... 그럼 약을 먹어야 하는 건가요?", "emotion": "guarded" },
+        "leave_possibility": { "text": "지금 프로젝트 중이라 바로는 어렵고요. 다음 달이면 좀 가능할 것 같아요.", "emotion": "guarded" },
+        "empathy_numbness": { "text": "힘들다고 느끼려면 감정이 있어야 하는데, 그게 없으니까 힘든 건지도 잘 모르는 것 같아요.", "emotion": "warming", "innerVoice": "드디어 기술(記述)이 아닌 실제 감각이 나왔다." },
+        "psych_referral": { "text": "정신건강의학과요. 처음 가보는 건데... 거기서 뭘 하는 건가요?", "emotion": "guarded" },
+        "routine_recovery": { "text": "규칙적인 루틴이요. 운동은 했는데 지속이 안 됐어요. 뭔가 틀린 것 같아요.", "emotion": "guarded" },
+        "validate_visit": { "text": "병원에 와야 할지 한 달 넘게 생각했어요. 비효율적인 것 같아서.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "치료 방향 설명", "text": "우울 경향은 상담 치료와 약물 치료를 병행하는 게 효과적이에요. 지금 단계에서 빠를수록 좋아요.", "intent": "treatment_plan" },
+        { "tag": "생활", "family": "life", "label": "수면 개선 방법", "text": "일단 수면부터 개선하는 것도 중요해요. 수면 시간보다 질이 더 중요하고요.", "intent": "sleep_advice" },
+        { "tag": "공감", "family": "emotional", "label": "한 달 망설임 공감", "text": "한 달을 망설이셨다는 게 와닿네요. 그동안 혼자서 많이 버티셨겠어요.", "intent": "empathy_hesitation" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "정신건강의학과 안내", "text": "정신건강의학과에서 구체적인 진단과 치료 계획을 세울 수 있어요. 연결해드릴 수도 있어요.", "intent": "referral_detail" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면 위생 설명", "text": "잠자리에서 핸드폰 보는 습관, 불규칙한 취침 시간, 이런 게 수면의 질을 떨어뜨려요.", "intent": "sleep_hygiene" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "지금 감정 확인", "text": "오늘 여기 오면서 어떤 마음이었어요?", "intent": "today_feeling" }
+      },
+      "responses": {
+        "treatment_plan": { "text": "빠를수록 좋다는 건 지금 상태가 나쁘다는 건가요?", "emotion": "guarded" },
+        "sleep_advice": { "text": "수면의 질이요. 침대에서 많이 뒤척이는 편이에요. 잠드는 데 시간이 걸리고요.", "emotion": "guarded" },
+        "empathy_hesitation": { "text": "버텼다기보다는... 그냥 해결책이 명확하지 않으면 움직이기 싫더라고요. 근거가 필요했어요.", "emotion": "warming" },
+        "referral_detail": { "text": "연결해주실 수 있어요? 혼자 찾는 게 귀찮을 것 같아서.", "emotion": "warming" },
+        "sleep_hygiene": { "text": "핸드폰을 새벽 1시까지 보는 편이에요. 그게 문제긴 하다는 거 알고 있어요.", "emotion": "neutral" },
+        "today_feeling": { "text": "...이상하게 들릴 수 있는데, 여기 오는 게 귀찮았어요. 근데 오길 잘한 것 같아요.", "emotion": "opened" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "상태 정리", "text": "오늘 말씀해주신 것 정리하면, 수면 문제·집중력 저하·흥미 상실이 복합적으로 있어요. 가볍지 않은 상태예요.", "intent": "summary" },
+        { "tag": "생활", "family": "life", "label": "다음 달 계획 제안", "text": "다음 달 프로젝트 끝나면 적어도 며칠이라도 완전히 쉬어보세요.", "intent": "rest_plan" },
+        { "tag": "공감", "family": "emotional", "label": "오길 잘했다는 것", "text": "오길 잘하셨어요. 데이터로만 보던 것들이 실제 신호였던 거예요.", "intent": "final_validation" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "정신건강의학과 연결", "text": "오늘 진료 후에 정신건강의학과 예약 잡아드릴게요.", "intent": "book_appointment" },
+        "after_life": { "family": "life", "tag": "생활", "label": "소소한 루틴 제안", "text": "큰 변화보다 매일 20분 산책 같은 소소한 것부터 시작하는 게 지속 가능해요.", "intent": "small_habit" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "감정 신호 인정", "text": "몸이 보내는 신호를 데이터로 잘 기록하셨어요. 이제 그 신호대로 움직여볼 때예요.", "intent": "trust_signal" }
+      },
+      "responses": {
+        "summary": { "text": "가볍지 않다고요. 그러면 지금 많이 안 좋은 건가요?", "emotion": "guarded" },
+        "rest_plan": { "text": "쉬어도 회복이 안 됐는데... 그래도 해봐야겠죠.", "emotion": "neutral" },
+        "final_validation": { "text": "신호라는 게... 맞는 것 같아요. 제가 느끼는 걸 수치로 정리하니까 실제로 있긴 있는 거더라고요.", "emotion": "opened" },
+        "book_appointment": { "text": "네, 그렇게 해주세요. 혼자 찾으면 또 미룰 것 같아서요.", "emotion": "warming" },
+        "small_habit": { "text": "20분 산책. 그 정도면 할 수 있을 것 같아요. 측정 가능한 목표니까요.", "emotion": "warming" },
+        "trust_signal": { "text": "그렇네요. 데이터가 있으니까 방향이 생기는 것 같아요. 감사합니다.", "emotion": "opened" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사합니다. 번아웃인지 우울증인지 분류하러 왔는데, 그것보다 더 중요한 걸 이야기한 것 같아요." },
+  "forceClose": {
+    "nurse": "다음 환자분 기다리고 계세요.",
+    "patient": "아, 네. 감사합니다. 가볼게요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "자살 사고 여부를 좀 더 구체적으로 확인하지 못했다.",
+      "life": "운동 외에 사회적 활동 감소와 고립 정도를 더 파악하지 못했다.",
+      "emotional": "한 달간 혼자 버텨온 경험과 감정에 대해 더 깊이 이야기 나누지 못했다."
+    },
+    "lastScene": "노민호 씨가 처방전 대신 정신건강의학과 예약지를 받아 든다. 잠깐 들여다보다가 가방 앞주머니에 꽂는다. '일단 가보자.' 혼자 중얼거리며 나간다.",
+    "lastSceneGated": ""
+  }
+}
