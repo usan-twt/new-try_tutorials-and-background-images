@@ -1,0 +1,151 @@
+{
+  "opening": { "speaker": "patient", "text": "이틀 됐어요. 열도 나고 몸살 기운도 심하고요. 저희 팀에서 벌써 셋이나 됐어요." },
+  "nurseInfo": { "available": true, "text": "41세 남성분이에요. 발열 38.9도, 근육통, 기침 2일이에요. 직장 내 독감 유행과 관련 있어 보여요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 확인", "text": "어떤 증상이 있으신가요?", "intent": "symptom_check" },
+        { "tag": "생활", "family": "life", "label": "팀 상황", "text": "팀에서 아픈 분들이 많다고 하셨어요?", "intent": "team_situation" },
+        { "tag": "공감", "family": "emotional", "label": "힘들 공감", "text": "이틀 동안 많이 힘드셨겠어요.", "intent": "empathy_opening" }
+      ],
+      "responses": {
+        "symptom_check": { "text": "어제 오전부터 열이 확 오르더니 몸살이 심해요. 기침도 나고, 온몸이 다 쑤셔요.", "emotion": "neutral", "innerVoice": "발열, 근육통, 기침의 조합은 독감 가능성이 높다. 신속 검사가 필요하다." },
+        "team_situation": { "text": "네, 저까지 하면 셋이에요. 이번 주만에요. 다들 비슷한 증상이에요.", "emotion": "neutral", "innerVoice": "집단 발병 양상이다. 독감 유행 초기일 수 있다." },
+        "empathy_opening": { "text": "아, 뭐... 좀 쉬면 나으려나 싶었는데 오늘까지 이러길래 왔어요. 사실 좀 더 참으려 했는데요.", "emotion": "neutral", "innerVoice": "참는 것을 기본값으로 여기는 타입이다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "열 경과", "text": "열이 얼마나 올랐고 지금은 어떤가요?", "intent": "fever_course" },
+        { "tag": "생활", "family": "life", "label": "동료 증상", "text": "팀 동료분들도 비슷한 증상인가요?", "intent": "colleague_symptoms" },
+        { "tag": "공감", "family": "emotional", "label": "출근 걱정", "text": "쉬는 게 쉽지 않으셨죠?", "intent": "work_guilt" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "기침 양상", "text": "기침은 어떤가요? 가래가 나오나요?", "intent": "cough_detail" },
+        "after_life": { "family": "life", "tag": "생활", "label": "접촉 경로", "text": "언제쯤 감염됐을 것 같으세요?", "intent": "exposure" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "팀 압박", "text": "지금 팀 상황이 많이 촉박한가요?", "intent": "team_pressure" }
+      },
+      "responses": {
+        "fever_course": { "text": "어제 38.9도까지 올랐고, 오늘 아침에 재보니 38.5도예요. 해열제 먹었는데도 잘 안 떨어지더라고요.", "emotion": "anxious", "innerVoice": "해열제 반응이 불충분하다. 인플루엔자를 배제할 수 없다." },
+        "colleague_symptoms": { "text": "한 명은 어제 조퇴했고, 한 명은 오늘 병원 간다고 했어요. 셋 다 비슷해요.", "emotion": "neutral", "innerVoice": "집단 감염 패턴이 명확하다." },
+        "work_guilt": { "text": "솔직히 오늘도 그냥 출근하려 했는데, 열이 너무 심하니까요. 제가 없으면 팀 일이 좀 밀리거든요.", "emotion": "anxious", "innerVoice": "출근에 대한 죄책감이 있다. 쉬는 것을 허락받으려는 심리다." },
+        "cough_detail": { "text": "마른기침이에요. 가래는 없고요. 근데 목도 좀 따끔따끔해요.", "emotion": "neutral" },
+        "exposure": { "text": "먼저 아픈 직원이랑 이틀 동안 회의를 같이 했거든요. 그때인 것 같아요.", "emotion": "neutral" },
+        "team_pressure": { "text": "이달 말이 납기거든요. 근데 뭐... 몸이 이러니 어쩔 수 없죠.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "호흡 증상", "text": "숨쉬기 힘들거나 가슴이 답답한 느낌은 없으세요?", "intent": "respiratory" },
+        { "tag": "생활", "family": "life", "label": "재택 가능", "text": "재택근무가 가능한 상황인가요?", "intent": "remote_work" },
+        { "tag": "공감", "family": "emotional", "label": "본인 건강 우선", "text": "지금 팀보다 본인 몸이 먼저예요.", "intent": "self_first" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "오한·발한", "text": "오한이나 식은땀이 나진 않나요?", "intent": "chills" },
+        "after_life": { "family": "life", "tag": "생활", "label": "식사 여부", "text": "이틀 동안 식사는 하셨나요?", "intent": "eating" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "죄책감 확인", "text": "쉬면 안 될 것 같은 느낌이 드시나요?", "intent": "guilt_check" }
+      },
+      "responses": {
+        "respiratory": { "text": "숨쉬기는 괜찮아요. 가슴은 좀 답답한 것 같기도 하고... 그냥 몸살 때문인 것 같아요.", "emotion": "neutral" },
+        "remote_work": { "text": "재택은 팀장한테 말해봐야 해요. 사실 전례가 없어서요.", "emotion": "anxious", "innerVoice": "재택 자체를 허락받는 구조다. 쉬기 어려운 문화다." },
+        "self_first": { "text": "그렇긴 한데... 뭐, 진단서 받으면 좀 말하기 수월하겠죠.", "emotion": "warming", "innerVoice": "진단이 쉬는 것의 정당화 수단이 되고 있다." },
+        "chills": { "text": "어제 밤에 오한이 심했어요. 이불 덮어도 추웠어요.", "emotion": "anxious" },
+        "eating": { "text": "죽을 좀 먹었는데, 입맛이 없어서요. 반도 못 먹었어요.", "emotion": "neutral" },
+        "guilt_check": { "text": "팀원들이 고생하는데 나만 쉰다는 게 좀 그렇잖아요.", "emotion": "anxious", "innerVoice": "팀에 대한 부담감이 자기 돌봄을 가로막고 있다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "독감 검사", "text": "독감 신속 검사를 해볼게요.", "intent": "flu_test" },
+        { "tag": "생활", "family": "life", "label": "격리 필요성", "text": "지금 상태에서 출근하시면 다른 분들한테도 옮길 수 있어요.", "intent": "isolation_need" },
+        { "tag": "공감", "family": "emotional", "label": "안도 필요", "text": "이 정도면 쉬는 게 당연한 거예요.", "intent": "permission_rest" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "기저 질환", "text": "평소에 앓고 계신 질환이 있으신가요?", "intent": "underlying" },
+        "after_life": { "family": "life", "tag": "생활", "label": "가족 감염", "text": "가족 중에 비슷한 증상 있는 분 있나요?", "intent": "family_contact" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "팀 보호", "text": "쉬는 게 팀을 더 보호하는 방법이기도 해요.", "intent": "team_protection" }
+      },
+      "responses": {
+        "flu_test": { "text": "독감 검사요? 그거 해보면 나오는 건가요?", "emotion": "neutral", "innerVoice": "진단에 대한 기대감이 있다. 결과를 통해 쉬는 것을 정당화하고 싶어한다." },
+        "isolation_need": { "text": "그건 그렇죠. 팀원들한테 또 퍼뜨리면 안 되니까요.", "emotion": "neutral" },
+        "permission_rest": { "text": "선생님이 그렇게 말씀해주시니 좀 낫네요.", "emotion": "warming", "innerVoice": "의사의 허락이 쉬는 것의 정당화 근거가 되고 있다." },
+        "underlying": { "text": "없어요. 건강한 편이었는데, 이번에 좀 심하게 걸린 것 같아요.", "emotion": "neutral" },
+        "family_contact": { "text": "아직은 괜찮아요. 어제부터 마스크 쓰고 따로 방 쓰고 있어요.", "emotion": "neutral" },
+        "team_protection": { "text": "그렇게 생각하면 좀 덜 미안하네요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "검사 결과", "text": "양성이 나왔어요. 독감 A형이에요.", "intent": "positive_result" },
+        { "tag": "생활", "family": "life", "label": "휴식 기간", "text": "증상 호전될 때까지 집에 계셔야 해요.", "intent": "rest_period" },
+        { "tag": "공감", "family": "emotional", "label": "진단 반응", "text": "독감 확진이면 어떠세요?", "intent": "diagnosis_reaction" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "항바이러스제", "text": "타미플루 처방할게요. 빨리 시작할수록 효과가 좋아요.", "intent": "antiviral" },
+        "after_life": { "family": "life", "tag": "생활", "label": "진단서 발급", "text": "진단서 필요하시면 발급해드릴게요.", "intent": "certificate" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "팀장 설득", "text": "의사 소견으로 쉬어야 한다고 말씀드리셔도 돼요.", "intent": "boss_support" }
+      },
+      "responses": {
+        "positive_result": { "text": "역시나 그렇군요. 팀 동료들도 독감인 것 같은데, 신고를 해야 하나요?", "emotion": "neutral", "innerVoice": "본인 건강보다 팀 문제를 먼저 생각한다." },
+        "rest_period": { "text": "며칠이나 쉬어야 하나요?", "emotion": "anxious" },
+        "diagnosis_reaction": { "text": "그게 나오길 좀 기대했어요, 솔직히. 그래야 당당하게 쉬잖아요.", "emotion": "warming", "innerVoice": "진단이 쉬는 것의 허락이 되고 있다. 자기 돌봄이 허락 없이는 어렵다." },
+        "antiviral": { "text": "빨리 먹으면 얼마나 차이가 나요?", "emotion": "neutral" },
+        "certificate": { "text": "네, 부탁드려요. 팀장한테 보여줘야 할 것 같아서요.", "emotion": "neutral" },
+        "boss_support": { "text": "그렇게 하겠습니다. 감사해요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "복약 안내", "text": "타미플루는 5일 처방이에요. 증상이 없어도 다 드셔야 해요.", "intent": "meds_guide" },
+        { "tag": "생활", "family": "life", "label": "수분 섭취", "text": "열이 있을 때는 수분 섭취가 정말 중요해요.", "intent": "fluid_intake" },
+        { "tag": "공감", "family": "emotional", "label": "쉬는 것의 의미", "text": "이번에 제대로 쉬는 게 나중을 위해서도 좋아요.", "intent": "rest_meaning" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "증상 악화", "text": "호흡 곤란이나 고열이 지속되면 바로 다시 오세요.", "intent": "red_flag" },
+        "after_life": { "family": "life", "tag": "생활", "label": "해열제 병행", "text": "해열제는 타이레놀 계열로 드세요.", "intent": "antipyretic" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "자책 내려놓기", "text": "몸이 이러면 누구든 쉬어야 하는 거예요.", "intent": "no_guilt" }
+      },
+      "responses": {
+        "meds_guide": { "text": "네, 알겠어요. 다 먹을게요.", "emotion": "neutral" },
+        "fluid_intake": { "text": "물을 좀 더 많이 마셔야겠네요. 커피만 마셨거든요.", "emotion": "neutral" },
+        "rest_meaning": { "text": "그렇게 생각하니 좀 낫네요. 빨리 낫고 복귀하는 게 더 낫겠죠.", "emotion": "warming" },
+        "red_flag": { "text": "네, 뭔가 이상하면 바로 오겠습니다.", "emotion": "neutral" },
+        "antipyretic": { "text": "이부프로펜은 안 되나요?", "emotion": "neutral" },
+        "no_guilt": { "text": "그게 맞는데... 습관이 안 되니까요. 감사합니다.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "재진 안내", "text": "3일 후에 증상 확인 위해 오시는 게 좋겠어요.", "intent": "followup" },
+        { "tag": "생활", "family": "life", "label": "팀 공유", "text": "팀에도 독감이라고 알려서 다른 분들도 검사받게 하는 게 좋겠어요.", "intent": "team_inform" },
+        { "tag": "공감", "family": "emotional", "label": "마무리", "text": "이번엔 정말 푹 쉬세요.", "intent": "final_rest" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "회복 시기", "text": "보통 5~7일 내에 많이 좋아질 거예요.", "intent": "recovery_timeline" },
+        "after_life": { "family": "life", "tag": "생활", "label": "직장 신고", "text": "집단 독감이면 사업주에게도 알리는 게 맞아요.", "intent": "workplace_report" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "몸 회복 우선", "text": "이번만큼은 일 걱정 잠깐 내려놓아도 괜찮아요.", "intent": "work_pause" }
+      },
+      "responses": {
+        "followup": { "text": "네, 3일 후에 오겠습니다. 일정 잡아볼게요.", "emotion": "neutral" },
+        "team_inform": { "text": "그렇군요. 팀장한테 말해두겠습니다. 다들 검사받으라고요.", "emotion": "neutral" },
+        "final_rest": { "text": "네, 이번엔 그렇게 할게요. 감사합니다.", "emotion": "warming" },
+        "recovery_timeline": { "text": "5일이면 주말 지나서네요. 다음 주엔 복귀할 수 있겠다.", "emotion": "neutral" },
+        "workplace_report": { "text": "아, 그런 절차가 있군요. 몰랐어요.", "emotion": "neutral" },
+        "work_pause": { "text": "해볼게요. 쉽진 않겠지만요.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "알겠습니다. 처방이랑 진단서 받아서 가겠습니다." },
+  "forceClose": {
+    "nurse": "박상우 환자분, 다음 환자 들어오실 시간입니다.",
+    "patient": "네, 알겠습니다. 감사해요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "호흡기 합병증 가능성과 기저 질환 여부를 더 체계적으로 확인했다면 좋았을 것이다.",
+      "life": "가족 내 전파 예방 조치와 직장 집단 감염 신고 절차에 대해 더 안내하지 못했다.",
+      "emotional": "쉬는 것에 대한 죄책감이 반복되는 패턴인지, 직장 문화의 문제인지 더 탐색하지 못했다."
+    },
+    "lastScene": "박상우 씨가 진단서와 처방전을 받아들고 나간다. 문 앞에서 핸드폰을 꺼내 문자를 보낸다. '팀장님, 독감 확진이에요. 며칠 쉬어야 할 것 같습니다.'"
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "opening": { "speaker": "patient", "text": "이번에 또 나빠졌어요. 처방 좀 다시 받으러 왔어요." },
+  "nurseInfo": { "available": true, "text": "35세 여성분이에요. 과민성 대장 증후군으로 재진이세요. 회사원이시고, 정기적으로 오시는 분이에요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 확인", "text": "어떤 증상이 다시 생겼나요?", "intent": "symptom_check" },
+        { "tag": "생활", "family": "life", "label": "최근 생활", "text": "요즘 생활 패턴이 달라진 게 있나요?", "intent": "lifestyle" },
+        { "tag": "공감", "family": "emotional", "label": "고생 공감", "text": "또 심해졌군요. 많이 불편하셨겠어요.", "intent": "empathy_opening" }
+      ],
+      "responses": {
+        "symptom_check": { "text": "설사가 하루에 서너 번씩 다시 생겼어요. 배도 쥐어짜는 것처럼 아프고요. 지난달엔 좀 괜찮았는데.", "emotion": "neutral", "innerVoice": "전형적인 IBS 재발 패턴이다. 유발 요인을 확인해야 한다." },
+        "lifestyle": { "text": "그게... 요즘 야근이 좀 많아서요. 밥도 제때 못 먹고, 잠도 좀 부족하고요. 뭐, 늘 그렇긴 한데.", "emotion": "neutral", "innerVoice": "스트레스와 수면 부족이 재발에 영향을 줬을 것이다." },
+        "empathy_opening": { "text": "뭐, 늘 있는 일이라서요. 이번엔 좀 빨리 나빠진 것 같긴 해요.", "emotion": "neutral", "innerVoice": "체념이 깊다. 증상을 당연하게 받아들이고 있다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "통증 양상", "text": "통증이 언제 가장 심한가요?", "intent": "pain_timing" },
+        { "tag": "생활", "family": "life", "label": "식습관", "text": "식사는 어떻게 하고 계세요?", "intent": "diet_check" },
+        { "tag": "공감", "family": "emotional", "label": "재발 시점", "text": "언제부터 다시 나빠졌는지 기억하세요?", "intent": "trigger_moment" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "혈변 여부", "text": "대변에 피가 섞이거나 점액이 나온 건 없었나요?", "intent": "blood_check" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면 패턴", "text": "잠은 몇 시간 정도 주무세요?", "intent": "sleep_check" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "스트레스 원인", "text": "요즘 무슨 일이 있으셨나요?", "intent": "stress_inquiry" }
+      },
+      "responses": {
+        "pain_timing": { "text": "아침에 제일 심해요. 출근 준비하다가 화장실 두세 번 들락날락하거든요.", "emotion": "neutral", "innerVoice": "아침 출근 전 복통은 불안 연관 IBS 패턴이다." },
+        "diet_check": { "text": "아침은 거의 못 먹고, 점심은 편의점이나 회사 구내식당, 저녁은 또 야근하면 배달 시켜 먹고요.", "emotion": "neutral", "innerVoice": "불규칙한 식습관이 장 운동에 영향을 미치고 있다." },
+        "trigger_moment": { "text": "2주 전쯤부터요. 분기 실적 보고 기간이었는데... 뭐, 상관없을 수도 있죠.", "emotion": "neutral", "innerVoice": "스스로 연관성을 부정하려 한다. 이미 알고 있다." },
+        "blood_check": { "text": "아니요, 그런 건 없어요. 예전이랑 똑같은 증상이에요.", "emotion": "neutral" },
+        "sleep_check": { "text": "요즘 5시간도 못 자는 것 같아요. 퇴근하면 11시, 12시 되거든요.", "emotion": "neutral" },
+        "stress_inquiry": { "text": "분기 보고 기간이 끝났는데 이번엔 또 감사 일정이 잡혔어요. 뭐... 어쩔 수 없잖아요.", "emotion": "neutral", "innerVoice": "체념의 어조다. 상황을 바꿀 의지가 없다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "체중 변화", "text": "최근에 체중이 줄거나 늘었나요?", "intent": "weight" },
+        { "tag": "생활", "family": "life", "label": "야근 빈도", "text": "야근이 얼마나 잦으세요?", "intent": "overtime_freq" },
+        { "tag": "공감", "family": "emotional", "label": "직장 상황", "text": "회사 일이 많이 힘드신 것 같아요.", "intent": "work_empathy" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "가스·복부팽만", "text": "가스가 차거나 배가 부글거리는 느낌도 있나요?", "intent": "bloating" },
+        "after_life": { "family": "life", "tag": "생활", "label": "휴일 증상", "text": "주말이나 쉬는 날에는 증상이 어때요?", "intent": "weekend_symptom" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "체념 탐색", "text": "바꿀 수 없는 상황이라고 느끼세요?", "intent": "helplessness" }
+      },
+      "responses": {
+        "weight": { "text": "2킬로 정도 빠진 것 같아요. 밥을 제대로 못 먹으니까요.", "emotion": "neutral", "innerVoice": "영양 불균형이 우려된다." },
+        "overtime_freq": { "text": "주 3~4일은 야근해요. 저희 팀이 원래 그래요.", "emotion": "neutral" },
+        "work_empathy": { "text": "뭐... 다들 그렇게 사는 거 아닌가요. 저만 힘든 게 아니니까요.", "emotion": "neutral", "innerVoice": "자신의 고통을 최소화하는 경향이 있다." },
+        "bloating": { "text": "네, 오후 되면 배가 팽팽하게 불어있는 느낌이에요. 회의 중에 소리 날까봐 신경 쓰이고요.", "emotion": "anxious" },
+        "weekend_symptom": { "text": "주말엔 좀 나아요. 근데 일요일 저녁이 되면 또 시작되더라고요. 월요일 생각하면서요.", "emotion": "neutral", "innerVoice": "예기 불안이 장 증상과 직결되어 있다. 환자도 어느 정도 알고 있다." },
+        "helplessness": { "text": "솔직히 그렇죠. 직장을 그만둘 수도 없고, 일이 줄어들 것도 아니니까요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "이전 처방", "text": "지난번 처방약은 어떻게 드셨나요?", "intent": "prev_meds" },
+        { "tag": "생활", "family": "life", "label": "운동 여부", "text": "운동은 하고 계세요?", "intent": "exercise" },
+        { "tag": "공감", "family": "emotional", "label": "쉬는 시간", "text": "본인을 위한 시간이 있기는 한가요?", "intent": "personal_time" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "약 효과", "text": "약 먹을 때랑 안 먹을 때 차이가 느껴지나요?", "intent": "meds_effect" },
+        "after_life": { "family": "life", "tag": "생활", "label": "카페인 섭취", "text": "커피나 에너지 드링크 많이 드세요?", "intent": "caffeine" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "감당 정도", "text": "지금 이 상태가 어느 정도 힘드세요?", "intent": "burden_level" }
+      },
+      "responses": {
+        "prev_meds": { "text": "지시대로 먹다가... 증상 없어지면 그냥 끊었어요. 약 챙기기도 귀찮아서요.", "emotion": "neutral", "innerVoice": "치료 순응도가 낮다. 바쁜 생활 패턴 때문이다." },
+        "exercise": { "text": "전에는 요가 다녔는데 야근이 많아지면서 못 가게 됐어요. 벌써 석 달째 안 갔네요.", "emotion": "neutral" },
+        "personal_time": { "text": "없어요, 사실. 퇴근하면 씻고 자기 바빠요.", "emotion": "neutral", "innerVoice": "자기 돌봄의 여지가 거의 없다." },
+        "meds_effect": { "text": "먹으면 좀 나아요. 근데 매번 이러니까... 약만 먹으면 해결되는 건지 모르겠어요.", "emotion": "neutral" },
+        "caffeine": { "text": "하루에 커피 서너 잔은 마셔요. 없으면 일을 못 하겠더라고요.", "emotion": "neutral", "innerVoice": "카페인이 장 자극 요인 중 하나다." },
+        "burden_level": { "text": "힘들긴 한데... 뭐, 어쩔 수 없는 거잖아요. 다들 이렇게 사는 거니까요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "검사 필요성", "text": "이번엔 검사를 한번 해보는 게 좋을 것 같아요.", "intent": "exam_suggest" },
+        { "tag": "생활", "family": "life", "label": "식이 조절", "text": "식이 조절이 증상에 많이 영향을 줘요.", "intent": "diet_advice" },
+        { "tag": "공감", "family": "emotional", "label": "자기관리 한계", "text": "몸이 신호를 보내고 있는 것 같아요.", "intent": "body_signal" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "검사 동의", "text": "대장내시경이나 혈액 검사를 고려해볼 수 있어요.", "intent": "exam_type" },
+        "after_life": { "family": "life", "tag": "생활", "label": "자극 음식", "text": "맵고 자극적인 음식은 당분간 줄여보세요.", "intent": "food_avoid" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "변화 가능성", "text": "작은 것부터 바꿔보는 게 의미가 있을 수 있어요.", "intent": "small_change" }
+      },
+      "responses": {
+        "exam_suggest": { "text": "검사요? 아, 그건 좀... 시간이 없어서요. 그냥 약만 주시면 안 되나요?", "emotion": "neutral", "innerVoice": "치료보다 처방이 목적이다. 시간과 비용 부담도 있다." },
+        "diet_advice": { "text": "알아요. 근데 먹는 게 자유로운 상황이 아니라서요.", "emotion": "neutral" },
+        "body_signal": { "text": "몸이 힘든 건 알아요. 근데 그렇다고 일을 놓을 수는 없잖아요.", "emotion": "neutral" },
+        "exam_type": { "text": "언제 시간을 낼 수 있을지... 일단 생각해볼게요.", "emotion": "neutral" },
+        "food_avoid": { "text": "회식이 많아서 그게 마음대로 되질 않아요.", "emotion": "neutral" },
+        "small_change": { "text": "뭘 바꿀 수 있는지 모르겠어요, 솔직히.", "emotion": "neutral", "innerVoice": "체념이 근본적이다. 의지가 아닌 상황의 문제로 보고 있다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방 방향", "text": "이번엔 증상 조절과 함께 장 보호제를 같이 처방할게요.", "intent": "prescription_plan" },
+        { "tag": "생활", "family": "life", "label": "수면 중요성", "text": "수면 부족이 장 증상에 직접 영향을 줘요.", "intent": "sleep_importance" },
+        { "tag": "공감", "family": "emotional", "label": "반복 패턴", "text": "이 패턴이 반복되는 게 걱정돼요.", "intent": "pattern_concern" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "복용 방법", "text": "이번엔 꾸준히 드셔보세요. 효과가 다르거든요.", "intent": "adherence" },
+        "after_life": { "family": "life", "tag": "생활", "label": "현실적 조언", "text": "완벽하진 않아도 조금씩 챙겨보는 게 도움이 돼요.", "intent": "realistic_advice" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "지속 악화", "text": "이 상태가 오래 지속되면 몸이 더 힘들어질 수 있어요.", "intent": "deterioration_warning" }
+      },
+      "responses": {
+        "prescription_plan": { "text": "네, 처방 주시면 약국에서 받을게요.", "emotion": "neutral" },
+        "sleep_importance": { "text": "아, 알아요. 근데 퇴근 시간이 제 맘대로 안 되는걸요.", "emotion": "neutral" },
+        "pattern_concern": { "text": "저도 알아요. 근데 어쩔 수 없잖아요. 지금 당장은요.", "emotion": "neutral", "innerVoice": "알지만 바꿀 수 없다는 무력감이다." },
+        "adherence": { "text": "이번엔 좀 챙겨볼게요. 알람이라도 맞춰놓고요.", "emotion": "neutral" },
+        "realistic_advice": { "text": "그렇게 하면 좀 나아지긴 하나요?", "emotion": "neutral" },
+        "deterioration_warning": { "text": "그거 알아요. 그래서 왔잖아요. 어쩔 수 없이.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "재진 시점", "text": "2주 후에 한번 더 오시는 게 좋겠어요.", "intent": "followup_schedule" },
+        { "tag": "생활", "family": "life", "label": "점심 챙기기", "text": "점심이라도 좀 제대로 드시는 게 도움이 돼요.", "intent": "lunch_tip" },
+        { "tag": "공감", "family": "emotional", "label": "마무리 공감", "text": "바쁜 와중에 오셨군요. 오늘 오신 게 잘 하신 거예요.", "intent": "closing_empathy" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "악화 기준", "text": "이런 증상 생기면 바로 오세요.", "intent": "red_flag" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수분 섭취", "text": "물도 충분히 마셔주세요. 장에 도움이 돼요.", "intent": "hydration" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "작은 위로", "text": "몸 챙기는 게 결국 일도 잘 할 수 있게 해줘요.", "intent": "final_comfort" }
+      },
+      "responses": {
+        "followup_schedule": { "text": "2주 후에요? 일정 봐서 오겠는데... 바쁠 것 같아요.", "emotion": "neutral" },
+        "lunch_tip": { "text": "그거라도 챙겨볼게요. 구내식당이라도 가야겠네요.", "emotion": "neutral" },
+        "closing_empathy": { "text": "뭐, 처방 받으러 온 거지만요. 감사해요.", "emotion": "neutral" },
+        "red_flag": { "text": "네, 알겠어요.", "emotion": "neutral" },
+        "hydration": { "text": "커피만 마시다 보니 물을 별로 안 마셨네요. 신경 써볼게요.", "emotion": "neutral" },
+        "final_comfort": { "text": "그렇게 생각하면 좀 낫겠네요. 알겠어요.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "처방전 주시면 될 것 같아요. 감사합니다." },
+  "forceClose": {
+    "nurse": "이정민 환자분, 다음 환자 들어오실 시간입니다.",
+    "patient": "아, 네. 처방전만 받으면 되는 거죠? 바로 갈게요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "이전 처방 복용 여부와 대장내시경 권고를 더 구체적으로 확인했더라면 장기 치료 방향이 달라졌을 수 있다.",
+      "life": "식습관과 카페인 섭취, 수면 패턴을 더 자세히 탐색하지 못했다.",
+      "emotional": "반복되는 체념 뒤에 있는 직장 내 실질적 어려움을 더 들어보지 못했다."
+    },
+    "lastScene": "이정민 씨가 처방전을 받아들고 일어선다. 가방을 어깨에 걸치며 핸드폰을 꺼낸다. 알림이 여러 개 쌓여 있다."
+  }
+}

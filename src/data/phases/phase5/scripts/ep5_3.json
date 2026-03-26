@@ -1,0 +1,153 @@
+{
+  "opening": { "speaker": "patient", "text": "기침이 좀 심해져서요. 약 받으러 왔어요." },
+  "nurseInfo": { "available": true, "text": "72세 여성분이에요. COPD로 만성 관리 중이세요. 오늘 혼자 버스 타고 오셨대요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "기침 변화", "text": "기침이 어떻게 심해졌나요?", "intent": "cough_change" },
+        { "tag": "생활", "family": "life", "label": "오늘 오심", "text": "혼자 오시기 힘드셨을 텐데, 오늘 어떻게 오셨어요?", "intent": "how_came" },
+        { "tag": "공감", "family": "emotional", "label": "고생 공감", "text": "먼 길 오시느라 힘드셨겠어요.", "intent": "empathy_opening" }
+      ],
+      "responses": {
+        "cough_change": { "text": "전에는 아침에만 했는데, 요즘은 하루 종일 나와요. 가래도 많아지고요.", "emotion": "neutral", "innerVoice": "기침 빈도 증가와 가래 증가는 COPD 악화 신호다." },
+        "how_came": { "text": "버스 타고 왔어요. 환승 한 번 했는데, 뭐 괜찮아요.", "emotion": "neutral", "innerVoice": "거동이 불편해 보이지만 내색하지 않는다." },
+        "empathy_opening": { "text": "이 정도는 괜찮아요. 전에도 이렇게 왔으니까요.", "emotion": "neutral", "innerVoice": "불편함을 최소화하는 경향이다. 오래된 습관이다." }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "호흡 곤란", "text": "숨이 차거나 답답한 느낌이 더 심해졌나요?", "intent": "dyspnea" },
+        { "tag": "생활", "family": "life", "label": "흡연 여부", "text": "지금도 담배를 피우시나요?", "intent": "smoking" },
+        { "tag": "공감", "family": "emotional", "label": "요즘 어떠심", "text": "요즘 생활하시기 많이 불편하지 않으세요?", "intent": "daily_difficulty" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "가래 색", "text": "가래 색이 어떤가요?", "intent": "sputum_color" },
+        "after_life": { "family": "life", "tag": "생활", "label": "약 복용", "text": "드시던 흡입기는 잘 쓰고 계세요?", "intent": "inhaler_use" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "거동 불편", "text": "오고 가시는 게 쉽지 않으실 것 같아요.", "intent": "mobility_empathy" }
+      },
+      "responses": {
+        "dyspnea": { "text": "조금 계단 오를 때 숨이 차요. 근데 이 정도는 늘 있었으니까요.", "emotion": "neutral", "innerVoice": "증상을 습관적으로 정상화하고 있다. 실제 기능 저하가 진행 중일 수 있다." },
+        "smoking": { "text": "끊었어요. 오래됐어요, 한 십 년은 됐나. 그 전엔 많이 피웠지요.", "emotion": "neutral" },
+        "daily_difficulty": { "text": "뭐, 나이 들면 다 그런 거지요. 이 정도면 괜찮아요.", "emotion": "neutral", "innerVoice": "불편함을 노화로 돌리고 있다." },
+        "sputum_color": { "text": "노르스름한 게 섞여 나와요. 전에는 그냥 하얬는데.", "emotion": "neutral", "innerVoice": "가래 색 변화는 감염 가능성을 시사한다. COPD 악화 원인이 될 수 있다." },
+        "inhaler_use": { "text": "네, 아침에 쓰고 있어요. 근데 요즘은 한 번으로는 좀 부족한 것 같아요.", "emotion": "neutral" },
+        "mobility_empathy": { "text": "뭐, 버스 타면 되니까요. 지하철보다는 낫더라고요. 저한테는.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "열·감기", "text": "열이나 감기 증상은 없으셨나요?", "intent": "fever_check" },
+        { "tag": "생활", "family": "life", "label": "실내 공기", "text": "집 환기는 잘 되고 있나요?", "intent": "ventilation" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 오심", "text": "오늘 같이 오실 분은 없으셨어요?", "intent": "alone_check" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "수면 중 증상", "text": "밤에 기침이나 숨 찬 느낌 때문에 잠을 못 주무시진 않나요?", "intent": "night_symptom" },
+        "after_life": { "family": "life", "tag": "생활", "label": "독감 예방접종", "text": "이번 계절에 독감 예방접종은 하셨나요?", "intent": "flu_vaccine" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "요즘 지내심", "text": "요즘 어떻게 지내고 계세요?", "intent": "life_check" }
+      },
+      "responses": {
+        "fever_check": { "text": "몸이 좀 무거운 것 같긴 한데, 열은 없었어요.", "emotion": "neutral" },
+        "ventilation": { "text": "날이 추워서 창문을 잘 못 열었어요. 연탄 때지는 않는데, 보일러가 좀 낡아서요.", "emotion": "neutral", "innerVoice": "밀폐된 공간에서 생활하면 COPD 증상이 더 악화될 수 있다." },
+        "alone_check": { "text": "뭐... 혼자 오면 되니까요. 멀지도 않아요.", "emotion": "neutral", "innerVoice": "함께 올 사람이 없다는 뜻이다. 직접 묻는 건 아직 이르다.", "gatedResponse": { "text": "자식들은 다 나가 살아서요. 연락은 하는데... 자주는 아니에요.", "emotion": "neutral" } },
+        "night_symptom": { "text": "새벽에 기침 때문에 한두 번 깨요. 그냥 물 마시고 다시 자요.", "emotion": "neutral" },
+        "flu_vaccine": { "text": "작년에는 맞았는데, 올해는 아직이에요. 나가기가 좀 귀찮아서요.", "emotion": "neutral" },
+        "life_check": { "text": "그냥 그렇게 지내죠. 뭐 별거 있나요.", "emotion": "neutral", "innerVoice": "말 뒤에 많은 것이 있어 보인다. 아직 열리지 않았다.", "gatedResponse": { "text": "사실 요즘은 좀 힘들어요. 집에 있으면 조용해서요. 아이들한테 연락하기도 좀 그렇고...", "emotion": "neutral" } }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "폐 청진", "text": "잠깐 청진 좀 해볼게요.", "intent": "auscultation" },
+        { "tag": "생활", "family": "life", "label": "식사 챙김", "text": "식사는 잘 챙겨 드시고 있나요?", "intent": "meals" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 감당", "text": "이런 것들을 혼자 다 챙기고 계신 거잖아요.", "intent": "alone_burden" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "산소포화도", "text": "산소포화도도 한번 재볼게요.", "intent": "oxygen_sat" },
+        "after_life": { "family": "life", "tag": "생활", "label": "운동·활동", "text": "집 밖에 자주 나오시나요?", "intent": "outdoor_activity" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "자녀 연락", "text": "자녀분들이랑은 자주 연락하시나요?", "intent": "children_contact" }
+      },
+      "responses": {
+        "auscultation": { "text": "네, 해보세요.", "emotion": "neutral" },
+        "meals": { "text": "뭐, 간단히 먹어요. 많이 해먹기도 좀 그렇고, 혼자 먹으니까 대충이요.", "emotion": "neutral", "innerVoice": "혼자 사는 것이 식사에도 영향을 주고 있다.", "gatedResponse": { "text": "솔직히 제대로 안 먹어요. 만들기도 귀찮고... 입맛도 없고요. 라면으로 때울 때가 많아요.", "emotion": "neutral" } },
+        "alone_burden": { "text": "뭐, 다 그렇게 사는 거 아닌가요. 나이 들면.", "emotion": "neutral", "innerVoice": "현실을 당연화하고 있다. 라포가 충분히 쌓이면 더 열릴 것 같다.", "gatedResponse": { "text": "말은 그렇게 하는데... 가끔은 좀 힘들어요. 아무도 모르니까, 내가 아픈 것도.", "emotion": "anxious" } },
+        "oxygen_sat": { "text": "이거 손에 끼우는 거죠? 해봤어요.", "emotion": "neutral" },
+        "outdoor_activity": { "text": "마트 갈 때, 병원 올 때 정도요. 날이 추우면 잘 안 나가게 되더라고요.", "emotion": "neutral" },
+        "children_contact": { "text": "딸이 한 달에 한 번쯤 전화해요. 아들은... 바쁜가봐요.", "emotion": "neutral", "innerVoice": "자녀와의 접촉이 매우 제한적이다. 더 탐색할 여지가 있다.", "gatedResponse": { "text": "딸이 멀리 살아서요. 아들은... 뭐 잘 모르겠어요. 연락을 안 하니까. 서운하긴 한데, 뭐 어쩌겠어요.", "emotion": "anxious" } }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "검사 결과", "text": "폐에서 좀 더 세게 움직이는 소리가 들려요. 이번엔 항생제 처방이 필요할 것 같아요.", "intent": "exam_result" },
+        { "tag": "생활", "family": "life", "label": "추위 노출", "text": "날이 추울 때 외출이 COPD에 영향을 줄 수 있어요.", "intent": "cold_exposure" },
+        { "tag": "공감", "family": "emotional", "label": "혼자 감당 인정", "text": "많은 걸 혼자 감당하고 계신 것 같아요.", "intent": "acknowledge_burden" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "폐활량 검사", "text": "다음에 오실 때 폐기능 검사를 다시 해보면 좋겠어요.", "intent": "pulmonary_test" },
+        "after_life": { "family": "life", "tag": "생활", "label": "독감 접종 권고", "text": "독감 예방접종 꼭 맞으셔야 해요.", "intent": "vaccine_urge" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "주변 도움", "text": "혹시 도움받을 수 있는 분이 계세요?", "intent": "support_check" }
+      },
+      "responses": {
+        "exam_result": { "text": "항생제요? 그거 먹으면 나을 수 있나요?", "emotion": "neutral" },
+        "cold_exposure": { "text": "그래도 나가야 할 일이 있으니까요. 마스크는 하고 다녀요.", "emotion": "neutral" },
+        "acknowledge_burden": { "text": "뭐, 어쩌겠어요. 그렇게 사는 거죠.", "emotion": "neutral", "innerVoice": "체념이 단단하다. 하지만 그 뒤에 감정이 있다.", "gatedResponse": { "text": "솔직히... 힘들어요. 아픈 것도 혼자 감당하고, 병원도 혼자 오고. 이게 언제까지 될 수 있을지 모르겠어요.", "emotion": "anxious" } },
+        "pulmonary_test": { "text": "그거요? 몇 년 전에 한번 했는데. 알겠어요.", "emotion": "neutral" },
+        "vaccine_urge": { "text": "이번엔 꼭 맞으러 가야겠네요.", "emotion": "neutral" },
+        "support_check": { "text": "글쎄요... 딱히요. 뭐, 이 정도면 혼자 할 수 있어요.", "emotion": "neutral", "innerVoice": "지원망이 거의 없다. 이 정도를 최소화하는 것은 다른 선택지가 없기 때문일 수 있다.", "gatedResponse": { "text": "주변에 아는 사람이 없어요. 이 동네 이사 온 지 몇 년 됐는데 아직 잘 모르고요. 아이들도 멀리 있고... 뭐 어쩔 수 없죠.", "emotion": "anxious" } }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방 설명", "text": "항생제 포함해서 처방 드릴게요. 설명해드릴게요.", "intent": "prescription_explain" },
+        { "tag": "생활", "family": "life", "label": "노인 돌봄 서비스", "text": "복지관이나 방문 요양 서비스 아시나요?", "intent": "welfare_service" },
+        { "tag": "공감", "family": "emotional", "label": "힘든 것 인정", "text": "혼자 다 하시는 게 정말 대단하신 거예요.", "intent": "strength_acknowledge" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "악화 징후", "text": "숨이 더 차거나 가래 색이 더 짙어지면 빨리 오셔야 해요.", "intent": "red_flag" },
+        "after_life": { "family": "life", "tag": "생활", "label": "방문 진료", "text": "다음엔 방문 진료로 연결해드릴 수도 있어요.", "intent": "home_visit" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "자녀 연락 권유", "text": "자녀분들한테 요즘 상태 알리시는 게 좋을 것 같아요.", "intent": "tell_children" }
+      },
+      "responses": {
+        "prescription_explain": { "text": "네, 약은 꼬박꼬박 먹을게요.", "emotion": "neutral" },
+        "welfare_service": { "text": "그런 게 있어요? 잘 모르겠는데. 신청하면 돼요?", "emotion": "neutral", "innerVoice": "정보 접근성이 낮다. 복지 서비스가 연결될 수 있다." },
+        "strength_acknowledge": { "text": "그런가요... 뭐, 다들 이렇게 사는 거 아닌가요.", "emotion": "warming", "innerVoice": "잠깐 흔들렸다. 인정받은 것에 반응했다.", "gatedResponse": { "text": "사실... 요즘은 좀 무서울 때가 있어요. 쓰러지면 아무도 모를 것 같아서요. 그런 생각 하다 보면 잠을 못 자요.", "emotion": "distressed" } },
+        "red_flag": { "text": "알겠어요. 좀 더 심해지면 오겠습니다.", "emotion": "neutral" },
+        "home_visit": { "text": "그런 것도 돼요? 그러면 좀 나을 것 같긴 한데요.", "emotion": "warming" },
+        "tell_children": { "text": "뭘 굳이... 걱정만 시키지요.", "emotion": "neutral", "innerVoice": "자녀에게 부담 주지 않으려는 마음이 자신을 고립시키고 있다.", "gatedResponse": { "text": "연락을 하고 싶어도... 뭐라고 말해야 할지 모르겠어요. 그냥 힘들다고 하면 어떻게 할 것도 아니고.", "emotion": "anxious" } }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "다음 방문", "text": "2주 후에 다시 한번 오세요. 회복 상태 확인해드릴게요.", "intent": "next_visit" },
+        { "tag": "생활", "family": "life", "label": "연락처 남기기", "text": "복지관 전화번호 드릴게요. 한번 문의해보세요.", "intent": "welfare_number" },
+        { "tag": "공감", "family": "emotional", "label": "마무리 위로", "text": "오늘 오신 게 잘 하신 거예요. 이런 게 쌓이면 더 힘들어지거든요.", "intent": "closing_comfort" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "흡입기 사용", "text": "증상 심할 때 흡입기 추가로 사용하는 방법 알려드릴게요.", "intent": "inhaler_guide" },
+        "after_life": { "family": "life", "tag": "생활", "label": "보건소 연계", "text": "보건소에서 방문 간호도 연결해줄 수 있어요.", "intent": "health_center" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "다음 번에도", "text": "다음에 오실 때도 어떻게 지내셨는지 말씀해주세요.", "intent": "ongoing_care" }
+      },
+      "responses": {
+        "next_visit": { "text": "2주 후에요? 알겠어요. 버스 타면 되니까요.", "emotion": "neutral" },
+        "welfare_number": { "text": "고맙네요. 한번 전화해봐야겠어요.", "emotion": "warming" },
+        "closing_comfort": { "text": "그렇군요. 더 참다가 왔어야 했나 했는데.", "emotion": "warming" },
+        "inhaler_guide": { "text": "다시 한번 알려주시면 좋겠어요. 맞게 쓰는 건지 모르겠어서요.", "emotion": "neutral" },
+        "health_center": { "text": "보건소가 멀진 않은데. 한번 가봐야겠네요.", "emotion": "warming" },
+        "ongoing_care": { "text": "네, 다음에도 올게요. 감사해요.", "emotion": "warming", "gatedResponse": { "text": "선생님이 이렇게 물어봐 주시니까... 고맙네요. 다음에도 오겠습니다.", "emotion": "opened" } }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "약 받아서 갈게요. 감사합니다." },
+  "closingGated": { "speaker": "patient", "text": "말하기 좀 부끄러웠는데... 들어주셔서 감사해요. 다음에 또 올게요." },
+  "forceClose": {
+    "nurse": "김순례 환자분, 다음 환자 들어오실 시간입니다.",
+    "patient": "네, 알겠어요. 이제 가야지요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "산소포화도와 폐기능 검사 결과를 더 자세히 설명하고 향후 치료 계획을 논의하지 못했다.",
+      "life": "식사 영양 상태와 독거 상황에서의 위험 요인을 더 구체적으로 파악하지 못했다.",
+      "emotional": "혼자 감당하는 삶의 무게와 자녀와의 단절에 대한 감정을 충분히 탐색하지 못했다."
+    },
+    "lastScene": "김순례 씨가 천천히 일어나 처방전을 받아든다. 지팡이를 짚고 진료실 문을 나선다. 복도에서 잠깐 걸음을 멈추고 전화번호 메모를 지갑에 넣는다.",
+    "lastSceneGated": "김순례 씨가 문을 나서다 잠깐 돌아본다. 뭔가 말하려다 그냥 고개를 숙인다. 복도를 걸어가는 뒷모습이 조금 가볍다."
+  }
+}
