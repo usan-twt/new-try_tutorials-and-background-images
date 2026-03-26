@@ -1,0 +1,211 @@
+{
+  "opening": { "speaker": "patient", "text": "(소매를 잡아당기며) 배가 좀 아파서요. 속도 안 좋고요." },
+  "nurseInfo": { "available": true, "text": "41세 여성분이에요. 복통·구역감 2주라고 하세요. 좀 긴장된 모습이에요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "복통 양상을 확인하자", "text": "배가 어떻게 아프세요? 어느 부위가 아프신지 말씀해 주실 수 있어요?", "intent": "pain_location" },
+        { "tag": "생활", "family": "life", "label": "언제부터인지 물어보자", "text": "언제부터 이런 증상이 시작됐어요?", "intent": "onset_timing" },
+        { "tag": "공감", "family": "emotional", "label": "오기가 쉽지 않으셨을 것 같다", "text": "불편하신 상황에서 오셨군요. 편하게 말씀해 주세요.", "intent": "empathy_welcome" },
+        { "tag": "용모", "family": "appearance", "label": "팔목에 멍이 보여요", "text": "혹시 어디 부딪히신 건가요?", "intent": "appearance_bruise" }
+      ],
+      "responses": {
+        "pain_location": { "text": "명치 쪽이요. 누르면 아프고, 가끔 밑으로 내려오기도 해요.", "emotion": "guarded" },
+        "onset_timing": { "text": "한 2주 됐어요. 갑자기 시작됐어요.", "emotion": "guarded" },
+        "empathy_welcome": { "text": "...네. 감사해요.", "emotion": "guarded" },
+        "appearance_bruise": { "text": "(소매를 당기며) 그냥 어디 부딪혔어요. 배 때문에 왔어요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "구역감이 얼마나 심한지", "text": "속이 안 좋다고 하셨는데, 구토를 하신 적도 있으세요?", "intent": "nausea_severity" },
+        { "tag": "생활", "family": "life", "label": "식사를 잘 하고 계신지", "text": "밥은 잘 드시고 계세요?", "intent": "appetite_check" },
+        { "tag": "공감", "family": "emotional", "label": "2주간 많이 힘드셨을 것이다", "text": "2주 동안 계속 이러셨으면 많이 힘드셨겠어요.", "intent": "empathy_twoweeks" },
+        { "tag": "용모", "family": "appearance", "label": "멍이 여러 곳에 보인다", "text": "목 쪽에도 멍이 있는 것 같아서요. 혹시 다치신 데가 있으세요?", "intent": "appearance_neck" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "속쓰림 여부 확인", "text": "위가 쓰린 느낌이나 타는 느낌도 있으세요?", "intent": "heartburn" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면 상태가 어떤지", "text": "요즘 잠은 잘 자고 계세요?", "intent": "sleep_check" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "집에서 쉬기가 어려웠는지", "text": "몸이 안 좋으실 때 집에서 편히 쉬실 수 있었어요?", "intent": "empathy_rest_home" }
+      },
+      "responses": {
+        "nausea_severity": { "text": "구토까진 아닌데, 항상 울렁거려요. 밥 먹고 나면 더 심해요.", "emotion": "guarded" },
+        "appetite_check": { "text": "잘 못 먹어요. 먹으면 더 아파서요.", "emotion": "guarded" },
+        "empathy_twoweeks": { "text": "...그냥 참으면 나을 줄 알았어요.", "emotion": "guarded" },
+        "appearance_neck": { "text": "(고개를 돌리며) 이건 그냥... 옷에 쓸렸어요.", "emotion": "guarded" },
+        "heartburn": { "text": "쓰리기도 해요. 특히 아침에요.", "emotion": "guarded" },
+        "sleep_check": { "text": "(잠시 침묵) 그냥 자요.", "emotion": "guarded" },
+        "empathy_rest_home": { "text": "(눈을 피하며) 뭐... 그냥 있었어요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "통증이 스트레스와 관련 있는지", "text": "스트레스를 많이 받을 때 배가 더 아프거나 하진 않아요?", "intent": "stress_gastro" },
+        { "tag": "생활", "family": "life", "label": "요즘 생활이 어떤지", "text": "요즘 일이나 집에서 힘든 일이 있으세요?", "intent": "life_context" },
+        { "tag": "공감", "family": "emotional", "label": "많이 지쳐 보이신다", "text": "표정이 많이 힘들어 보이세요. 혹시 요즘 많이 지치셨어요?", "intent": "empathy_tired" },
+        { "tag": "용모", "family": "appearance", "label": "멍에 대해 직접적으로 물어보자", "text": "여러 곳에 멍이 보여서 걱정이 돼서요. 혹시 누가 다치게 한 건 아닌가요?", "intent": "appearance_direct" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "약을 드셔봤는지", "text": "소화제나 위장약 드셔보셨어요?", "intent": "self_meds" },
+        "after_life": { "family": "life", "tag": "생활", "label": "가족 상황이 어떤지", "text": "가족 분들이랑 함께 사세요?", "intent": "family_situation" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "쉬고 싶은 마음이 있을 것이다", "text": "잠깐 쉬고 싶다는 생각도 드시지 않으세요?", "intent": "empathy_want_rest" }
+      },
+      "responses": {
+        "stress_gastro": { "text": "...그런 것 같기도 해요.", "emotion": "guarded" },
+        "life_context": { "text": "(잠시 멈추다가) 별로 특별한 건 없어요.", "emotion": "guarded" },
+        "empathy_tired": { "text": "...조금요.", "emotion": "guarded" },
+        "appearance_direct": { "text": "(소매를 꽉 잡으며) 그냥 제가 덜렁거려서요. 배만 좀 봐주세요.", "emotion": "guarded" },
+        "self_meds": { "text": "약국에서 산 거 먹어봤는데 별로 안 들었어요.", "emotion": "guarded" },
+        "family_situation": { "text": "남편이랑 둘이 살아요.", "emotion": "guarded" },
+        "empathy_want_rest": { "text": "(시선을 내리깔며) 그런 말씀을 왜 하세요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "복통 외 다른 신체 증상", "text": "복통 말고 두통이나 어지럼증, 다른 불편한 데는 없으세요?", "intent": "other_symptoms" },
+        { "tag": "생활", "family": "life", "label": "남편과의 관계가 어떤지", "text": "남편분이랑 요즘 어떠세요?", "intent": "husband_relation" },
+        { "tag": "공감", "family": "emotional", "label": "여기서만큼은 안전하다는 것", "text": "진료실에서 하시는 말씀은 비밀이 보장돼요. 편하게 말씀하셔도 돼요.", "intent": "empathy_safe_space" },
+        { "tag": "용모", "family": "appearance", "label": "가정 내 안전을 걱정하고 있다", "text": "혹시 집에서 안전하신가요? 걱정이 돼서 여쭤보는 거예요.", "intent": "appearance_safety" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "증상이 악화되는 시기", "text": "증상이 더 심해지는 때가 따로 있어요? 아침인지 저녁인지요.", "intent": "symptom_timing" },
+        "after_life": { "family": "life", "tag": "생활", "label": "집에서 어떻게 지내는지", "text": "집에서 주로 어떻게 시간을 보내세요?", "intent": "home_daily" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "말하기 어려운 게 있는 것 같다", "text": "뭔가 말씀하시기 어려운 게 있으신 것 같아요. 억지로 말씀 안 하셔도 되는데, 걱정이 되어서요.", "intent": "empathy_hesitation" }
+      },
+      "responses": {
+        "other_symptoms": { "text": "머리도 자주 아프고, 어깨도 좀 뭉쳐있어요.", "emotion": "guarded" },
+        "husband_relation": { "text": "(손을 무릎 위에 올리며) ...그냥 같이 살아요.", "emotion": "guarded" },
+        "empathy_safe_space": { "text": "...", "emotion": "guarded", "innerVoice": "뭔가 말하려다 다시 닫았다." },
+        "appearance_safety": {
+          "text": "집에서 안전하냐고요? (손을 꼭 쥐며) ...왜요?",
+          "emotion": "guarded",
+          "gatedResponse": { "text": "...사실 좀 무서운 때가 있어요. (낮은 목소리로) 집에 가기 싫어요.", "emotion": "distressed" }
+        },
+        "symptom_timing": { "text": "아침이 특히 심해요. 일어나기가 싫어요.", "emotion": "guarded" },
+        "home_daily": { "text": "그냥 집안일 하고요... 특별한 건 없어요.", "emotion": "guarded" },
+        "empathy_hesitation": {
+          "text": "(고개를 숙이다가 천천히) ...집에 가기 싫다는 생각이 자꾸 들어서요.",
+          "emotion": "distressed",
+          "gatedResponse": { "text": "사실... 남편이 가끔 손을 써요. 자주는 아닌데.", "emotion": "distressed" }
+        }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "소화기 증상 원인 탐색", "text": "스트레스성 위염이 소화기 증상으로 나타날 수 있어요. 지금 상황이랑 연결될 수 있어요.", "intent": "explain_stress_gastro" },
+        { "tag": "생활", "family": "life", "label": "지금 당장 안전한 상황인지", "text": "지금 당장 집에 돌아가는 게 괜찮으세요?", "intent": "current_safety" },
+        { "tag": "공감", "family": "emotional", "label": "말해줘서 고맙다", "text": "말씀해 주셔서 고마워요. 쉽지 않으셨을 텐데.", "intent": "empathy_gratitude" },
+        { "tag": "용모", "family": "appearance", "label": "도움을 받을 수 있다는 것", "text": "몸의 멍도 그렇고, 상황을 함께 봐드릴 수 있어요. 혼자 감당하지 않으셔도 돼요.", "intent": "appearance_support" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "위내시경 필요성", "text": "위내시경 검사를 해보시는 게 좋겠어요. 2주가 됐으니까요.", "intent": "endoscopy_plan" },
+        "after_life": { "family": "life", "tag": "생활", "label": "도움받을 수 있는 사람이 있는지", "text": "가까운 가족이나 친구 중에 연락할 수 있는 분이 계세요?", "intent": "support_network" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "오늘 여기 온 게 잘 된 것이다", "text": "오늘 이렇게 오신 거, 잘 하셨어요.", "intent": "empathy_good_came" }
+      },
+      "responses": {
+        "explain_stress_gastro": { "text": "(조용히 듣다가) 그렇군요.", "emotion": "guarded" },
+        "current_safety": {
+          "text": "(잠시 침묵) ...오늘은 괜찮을 것 같아요.",
+          "emotion": "guarded",
+          "gatedResponse": { "text": "(눈물이 맺히며) 모르겠어요. 요즘은 무서울 때가 있어요.", "emotion": "distressed" }
+        },
+        "empathy_gratitude": {
+          "text": "아무한테도 말을 못 했어요.",
+          "emotion": "warming",
+          "gatedResponse": { "text": "처음으로 말해봤어요. 부끄럽기도 하고... 근데 좀 다행이기도 해요.", "emotion": "warming" }
+        },
+        "appearance_support": {
+          "text": "(멍하니 듣다가) 혼자 감당하지 않아도 된다고요?",
+          "emotion": "guarded",
+          "gatedResponse": { "text": "...그런 말을 들어본 적이 없어서요.", "emotion": "warming" }
+        },
+        "endoscopy_plan": { "text": "검사요... 네, 할게요.", "emotion": "neutral" },
+        "support_network": { "text": "언니가 있긴 한데, 걱정 끼치고 싶지 않아서요.", "emotion": "guarded" },
+        "empathy_good_came": { "text": "(고개를 끄덕이며) 네.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "위장약 처방하겠다", "text": "위염 증상에 맞는 약 처방해 드릴게요. 위내시경 날짜도 잡아드릴게요.", "intent": "treatment_plan" },
+        { "tag": "생활", "family": "life", "label": "안전한 연락처를 알려드리겠다", "text": "가정폭력 피해자 지원 연락처를 드릴게요. 필요하실 때 쓰실 수 있어요.", "intent": "resources_info" },
+        { "tag": "공감", "family": "emotional", "label": "소화기 증상이 나빠진 데는 이유가 있다", "text": "몸이 이렇게 반응하는 데는 이유가 있어요. 지금 상황이 많이 힘드신 거예요.", "intent": "empathy_body_response" },
+        { "tag": "용모", "family": "appearance", "label": "상처 기록을 남겨드릴 수 있다", "text": "원하시면 지금 멍 자국을 의무기록으로 남겨드릴 수 있어요. 나중에 필요하실 수도 있거든요.", "intent": "appearance_document" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "증상 경과 관찰 필요", "text": "일주일 후에 다시 오세요. 증상이 나아지는지 확인해 볼게요.", "intent": "followup" },
+        "after_life": { "family": "life", "tag": "생활", "label": "언니한테 연락하는 것도 방법이다", "text": "언니분께 말씀하시는 것도 좋은 방법이에요. 걱정을 끼치는 게 아니라, 언니도 알아야 도울 수 있거든요.", "intent": "sister_contact" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "혼자 버텨온 시간이 대단하다", "text": "이렇게 오랫동안 혼자 버텨오신 거잖아요.", "intent": "empathy_endured" }
+      },
+      "responses": {
+        "treatment_plan": { "text": "네, 고맙습니다.", "emotion": "neutral" },
+        "resources_info": {
+          "text": "(종이를 받으며) ...이런 게 있군요.",
+          "emotion": "neutral",
+          "gatedResponse": { "text": "(종이를 접어 넣으며) 고맙습니다. 잘 간직할게요.", "emotion": "warming" }
+        },
+        "empathy_body_response": {
+          "text": "(눈을 들어 처음으로 시선을 맞추며) ...네.",
+          "emotion": "warming",
+          "gatedResponse": { "text": "몸이 먼저 반응하는 거군요. 제 몸이 이상한 게 아니었네요.", "emotion": "warming" }
+        },
+        "appearance_document": {
+          "text": "(한참 있다가) ...해주세요.",
+          "emotion": "neutral",
+          "gatedResponse": { "text": "감사해요. (조용히) 처음으로 누군가한테 도움받는 것 같아요.", "emotion": "warming" }
+        },
+        "followup": { "text": "일주일 후요. 올게요.", "emotion": "neutral" },
+        "sister_contact": { "text": "(생각하며) 언니는... 생각해볼게요.", "emotion": "neutral" },
+        "empathy_endured": { "text": "...뭐, 어쩔 수 없어서요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방 설명", "text": "위장약이랑 진경제 처방해 드릴게요. 식후에 드세요.", "intent": "prescription_explain" },
+        { "tag": "생활", "family": "life", "label": "다음 방문 시 같이 이야기하자", "text": "다음에 오실 때 소화기 증상이랑 다른 상황도 같이 이야기 나눠봐요.", "intent": "next_talk" },
+        { "tag": "공감", "family": "emotional", "label": "오늘 용기 내셔서 오신 거다", "text": "오늘 이렇게 말씀해 주신 것만으로도 충분해요. 오신 게 용기 있는 거예요.", "intent": "empathy_courage" },
+        { "tag": "용모", "family": "appearance", "label": "언제든 다시 올 수 있다", "text": "언제든 다시 오세요. 소화기 증상이든, 다른 어려움이든요.", "intent": "appearance_open_door" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "약 먹으면서 주의사항", "text": "공복에는 피하시고, 음주는 삼가세요.", "intent": "med_caution" },
+        "after_life": { "family": "life", "tag": "생활", "label": "몸 챙기는 게 먼저다", "text": "지금 일단 몸부터 챙기세요. 그게 먼저예요.", "intent": "body_first" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "혼자가 아니다", "text": "여기는 안전한 곳이에요. 혼자가 아니에요.", "intent": "empathy_not_alone" }
+      },
+      "responses": {
+        "prescription_explain": { "text": "네. 감사합니다.", "emotion": "neutral" },
+        "next_talk": { "text": "(고개를 끄덕이며) 네.", "emotion": "warming" },
+        "empathy_courage": {
+          "text": "...그런가요.",
+          "emotion": "warming",
+          "gatedResponse": { "text": "(조용히) 오길 잘했다는 생각이 들어요.", "emotion": "warming" }
+        },
+        "appearance_open_door": {
+          "text": "네.",
+          "emotion": "neutral",
+          "gatedResponse": { "text": "...다시 올게요. 꼭요.", "emotion": "warming" }
+        },
+        "med_caution": { "text": "알겠어요.", "emotion": "neutral" },
+        "body_first": { "text": "네... 그렇게 할게요.", "emotion": "warming" },
+        "empathy_not_alone": {
+          "text": "(눈물이 고인 채) ...감사해요.",
+          "emotion": "warming",
+          "gatedResponse": { "text": "처음으로 그 말이 맞는 것 같아요.", "emotion": "opened" }
+        }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "(소매를 내리며 일어서서) 처방전 받고 갈게요." },
+  "closingGated": { "speaker": "patient", "text": "(문 앞에서 잠깐 멈추다가) 또 올게요." },
+  "forceClose": {
+    "nurse": "다음 환자분 준비되셨어요, 선생님.",
+    "patient": "(고개를 숙이며) 네, 감사합니다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "2주간의 복통이 스트레스와 얼마나 직접적으로 연결되어 있는지, 위내시경 전에 더 구체적으로 파악하지 못했다.",
+      "life": "집에서 얼마나 자주, 어떤 상황에서 위험에 처하는지 더 탐색하지 못했다.",
+      "emotional": "아무에게도 말 못 했던 시간이 얼마나 됐는지, 그 외로움을 더 들어주지 못했다."
+    },
+    "lastScene": "이수현 씨가 처방전을 받아 들고 소매를 다시 한번 내린다. 고개를 숙인 채 진료실을 나선다.",
+    "lastSceneGated": "이수현 씨가 문을 나서다 잠깐 뒤를 돌아본다. 짧게 눈을 마주치고는, 처음으로 작은 미소를 짓는다."
+  }
+}

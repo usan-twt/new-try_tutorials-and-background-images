@@ -1,0 +1,153 @@
+{
+  "opening": { "speaker": "patient", "text": "열이 3일 됐어요. 사실 좀 버텼는데, 오늘 좀 심한 것 같아서요." },
+  "nurseInfo": { "available": true, "text": "44세 남성분이에요. 발열·인후통·기침 3일이에요. 공장에서 일하시는데 빨리 끝내려 하세요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "증상 양상 확인", "text": "열이 얼마나 돼요? 다른 증상도 있으세요?", "intent": "symptom_check" },
+        { "tag": "생활", "family": "life", "label": "공장 일은 계속 하셨나요", "text": "열이 있으신 동안에도 일 나가셨어요?", "intent": "work_during_illness" },
+        { "tag": "공감", "family": "emotional", "label": "버티다 오신 것이다", "text": "3일을 버티시다가 오신 거잖아요. 많이 힘드셨겠어요.", "intent": "empathy_endured" }
+      ],
+      "responses": {
+        "symptom_check": { "text": "38.2도 나왔어요. 목도 아프고 기침도 나요. 어제는 좀 괜찮은 것 같았는데 오늘 다시 올랐어요.", "emotion": "neutral" },
+        "work_during_illness": { "text": "마스크 쓰고 나갔죠. 라인이 멈추면 안 되니까요. 오늘은 진짜 못 버티겠어서요.", "emotion": "neutral" },
+        "empathy_endured": { "text": "뭐, 버틸 만했는데 오늘은 좀 심하네요. 빨리 낫고 복귀해야 해서요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "인후통 정도 확인", "text": "목 아픈 게 침 삼킬 때도 많이 아프신 편이에요?", "intent": "throat_pain" },
+        { "tag": "생활", "family": "life", "label": "라인 사정이 어떤 건지", "text": "라인이 멈추면 안 된다고 하셨는데, 반장님 자리가 그렇게 중요한 건가요?", "intent": "line_importance" },
+        { "tag": "공감", "family": "emotional", "label": "쉬기 어려운 구조가 있을 것이다", "text": "쉬고 싶어도 쉬기 어려운 상황이신 거죠?", "intent": "empathy_no_rest" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "콧물·몸살 동반 여부", "text": "콧물이나 몸살 기운은 있으세요?", "intent": "associated_symptoms" },
+        "after_life": { "family": "life", "tag": "생활", "label": "공장 내 비슷한 증상 동료", "text": "공장에 비슷하게 아픈 분들이 있으세요?", "intent": "coworker_symptoms" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "오늘 못 버티겠다는 것이 포인트다", "text": "오늘은 못 버티겠다고 느끼신 게 어느 정도였어요?", "intent": "empathy_limit_reached" }
+      },
+      "responses": {
+        "throat_pain": { "text": "많이 아프죠. 뭔가 걸리는 것 같고. 어제는 밥도 좀 넘기기 힘들었어요.", "emotion": "neutral" },
+        "line_importance": { "text": "제가 반장이니까요. 제 공정에 저 말고 혼자 할 수 있는 사람이 없어요.", "emotion": "neutral" },
+        "empathy_no_rest": { "text": "그렇죠. 내가 빠지면 그 라인이 서거든요. 오늘 오전에 대리한테 말하고 왔어요.", "emotion": "neutral" },
+        "associated_symptoms": { "text": "몸이 좀 쑤시긴 해요. 콧물은 없어요.", "emotion": "neutral" },
+        "coworker_symptoms": { "text": "어제 다른 반에서 두 명이 조퇴했다고 하더라고요. 옮은 건가 싶기도 하고요.", "emotion": "neutral", "innerVoice": "직장 내 감염 전파 가능성이 있다." },
+        "empathy_limit_reached": { "text": "서 있다가 좀 어지럽더라고요. 그래서 대리한테 넘기고 나왔죠.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "발열 경과 파악", "text": "3일 동안 열이 계속 비슷한 수준이었나요, 아니면 올랐다 내렸다 했나요?", "intent": "fever_pattern" },
+        { "tag": "생활", "family": "life", "label": "공장 환경이 어떤지", "text": "공장 안이 환기가 잘 되는 편인가요? 좀 밀폐된 환경인가요?", "intent": "factory_environment" },
+        { "tag": "공감", "family": "emotional", "label": "어지러움까지 왔으면 상당한 상태다", "text": "어지러울 때까지 버티신 거네요.", "intent": "empathy_dizziness" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "해열제 복용 여부", "text": "이 3일 동안 해열제나 약을 드신 적 있어요?", "intent": "self_medication" },
+        "after_life": { "family": "life", "tag": "생활", "label": "복귀 시점이 중요할 것이다", "text": "언제쯤 복귀하실 수 있는지 궁금하신 거죠?", "intent": "return_timing" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "몸보다 라인이 먼저인 상황", "text": "라인이 서는 게 몸보다 더 걱정되셨던 거죠.", "intent": "empathy_priority" }
+      },
+      "responses": {
+        "fever_pattern": { "text": "어제 좀 내린 것 같았는데 오늘 다시 올랐어요. 오늘 아침에 38.2 나왔거든요.", "emotion": "neutral" },
+        "factory_environment": { "text": "좀 밀폐되죠. 겨울에는 환기 거의 안 해요. 먼지도 좀 있고요.", "emotion": "neutral" },
+        "empathy_dizziness": { "text": "서 있는 게 좀 흔들리더라고요. 그건 좀 무서웠어요.", "emotion": "neutral" },
+        "self_medication": { "text": "어제 편의점에서 타이레놀 사서 먹었어요. 그때는 좀 내렸는데.", "emotion": "neutral" },
+        "return_timing": { "text": "그게 제일 궁금하죠. 언제쯤 나올 수 있어요?", "emotion": "neutral", "innerVoice": "이게 핵심 질문이다. 치료보다 복귀 시점이 우선인 사람이다." },
+        "empathy_priority": { "text": "...뭐, 그게 제 일이니까요. 그 라인은 제 책임이에요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "인플루엔자 검사 필요성 설명", "text": "지금 증상이 독감 패턴이에요. 검사를 한 번 해봐야 할 것 같아요.", "intent": "flu_test_suggest" },
+        { "tag": "생활", "family": "life", "label": "마스크 쓰고 출근한 것이 전파를 막았을까", "text": "마스크 쓰고 출근하셨는데, 공장에서 다른 분들한테 혹시 전파됐을 수도 있어요.", "intent": "workplace_transmission" },
+        { "tag": "공감", "family": "emotional", "label": "빨리 낫고 싶은 마음은 이해한다", "text": "빨리 낫고 복귀하고 싶으신 마음은 충분히 이해해요.", "intent": "empathy_urgency" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "독감 항바이러스제 설명", "text": "독감이면 항바이러스제가 효과 있어요. 빨리 쓸수록 회복이 빠를 수 있어요.", "intent": "antiviral_explain" },
+        "after_life": { "family": "life", "tag": "생활", "label": "격리가 필요한 상황임을 설명", "text": "독감이면 최소 이틀은 직장에 나가시면 안 돼요.", "intent": "isolation_explain" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "제대로 쉬어야 더 빨리 낫는다", "text": "오히려 지금 제대로 쉬셔야 더 빨리 복귀하실 수 있어요.", "intent": "empathy_rest_faster" }
+      },
+      "responses": {
+        "flu_test_suggest": { "text": "독감이요? 그럼 얼마나 쉬어야 해요?", "emotion": "anxious" },
+        "workplace_transmission": { "text": "...그게 걱정이에요. 내가 옮긴 건지도 모르겠고.", "emotion": "neutral" },
+        "empathy_urgency": { "text": "빨리 낫고 싶죠. 근데 빨리 낫는 방법이 있어요?", "emotion": "neutral" },
+        "antiviral_explain": { "text": "그 약 주면 빨리 나을 수 있어요?", "emotion": "neutral" },
+        "isolation_explain": { "text": "이틀이요. 이틀이면 괜찮겠네요. 그 이상은 좀 힘들어서요.", "emotion": "neutral", "innerVoice": "이틀이 한계선인 것이다." },
+        "empathy_rest_faster": { "text": "그 말은 맞네요. 어제도 나갔다가 오늘 더 심해진 것 같긴 했으니까.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "검사 결과 설명", "text": "검사 결과에 따라서 처방이 달라질 수 있어요. 일단 검사 먼저 해봐요.", "intent": "test_result_plan" },
+        { "tag": "생활", "family": "life", "label": "직장에 연락할 필요성 안내", "text": "직장에는 독감 의심이라고 미리 알려두시는 게 좋겠어요.", "intent": "notify_work" },
+        { "tag": "공감", "family": "emotional", "label": "지금 몸 상태가 정상이 아니다", "text": "어지럽고 열이 있는 상태에서 서 계신 것 자체가 무리예요.", "intent": "empathy_severity" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "기저질환 여부 확인", "text": "평소에 만성 질환 있으세요? 당뇨나 혈압 같은 거요.", "intent": "comorbidity" },
+        "after_life": { "family": "life", "tag": "생활", "label": "이틀 이후 복귀 가능성", "text": "이틀 쉬고 나서 열이 없으면 복귀하실 수 있어요.", "intent": "return_plan" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "몸 상태를 무시해온 것이 여기까지 이어진 것이다", "text": "3일을 버티신 게 지금 이 상태를 더 만든 것 같아요.", "intent": "empathy_3days" }
+      },
+      "responses": {
+        "test_result_plan": { "text": "네, 빨리 해주세요.", "emotion": "neutral" },
+        "notify_work": { "text": "대리한테 문자 넣어야겠네요. 독감이면 공장 쪽도 조치를 취해야 할 것 같고.", "emotion": "neutral" },
+        "empathy_severity": { "text": "그렇죠. 아까 라인 서 있을 때 좀 아찔했어요.", "emotion": "neutral" },
+        "comorbidity": { "text": "고혈압 약 먹고 있어요. 5년 됐어요.", "emotion": "neutral", "innerVoice": "고혈압. 독감 합병증 위험이 더 있다." },
+        "return_plan": { "text": "이틀 후에 열이 없으면 나올 수 있는 거죠? 그게 언제가 될까요.", "emotion": "neutral" },
+        "empathy_3days": { "text": "...뭐, 그럴 수도 있겠네요. 어제 나간 게 좀 무리였나요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "처방 설명", "text": "독감이면 항바이러스제 처방해 드릴게요. 해열진통제, 인후통 약도 같이 드릴게요.", "intent": "prescription" },
+        { "tag": "생활", "family": "life", "label": "복귀 기준 안내", "text": "발열이 없어지고 24시간 지난 다음부터 복귀 가능해요. 보통 3~5일 정도 봐야 해요.", "intent": "return_criteria" },
+        { "tag": "공감", "family": "emotional", "label": "빨리 낫는 것이 결국 라인을 지키는 것이다", "text": "지금 제대로 쉬시는 게 결국 라인을 제일 빨리 회복하는 방법이에요.", "intent": "empathy_best_strategy" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "악화 증상 안내", "text": "호흡 곤란이나 흉통이 생기면 바로 응급실 가셔야 해요.", "intent": "warning_signs" },
+        "after_life": { "family": "life", "tag": "생활", "label": "공장 측 독감 대응 안내", "text": "공장 측에서 집단 감염 여부 확인도 해봐야 할 것 같아요.", "intent": "factory_response" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "반장님의 자리는 건강해야 지킬 수 있다", "text": "반장님이 건강하게 복귀하셔야 그 라인도 제대로 돌아가죠.", "intent": "empathy_leader_health" }
+      },
+      "responses": {
+        "prescription": { "text": "그게 빨리 낫는 데 도움이 돼요?", "emotion": "neutral" },
+        "return_criteria": { "text": "3~5일이요. 그 정도는 어쩔 수 없겠네요. 대리한테 잘 부탁해야겠어요.", "emotion": "neutral" },
+        "empathy_best_strategy": { "text": "...그 말이 맞긴 하네요. 제가 반 병신이 돼서 나가봤자 도움이 안 되니까.", "emotion": "warming" },
+        "warning_signs": { "text": "숨 막히면 바로 가겠습니다. 그 정도는 아직 없어요.", "emotion": "neutral" },
+        "factory_response": { "text": "맞아요. 다른 반도 몇 명 아프다고 했는데 공장 보건실에 말해야겠네요.", "emotion": "neutral" },
+        "empathy_leader_health": { "text": "그렇죠. 내가 제대로 못 하면서 나가면 방해만 되는 거니까.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "수분 섭취와 휴식 강조", "text": "약 드시면서 물 많이 마시고 충분히 쉬셔야 해요.", "intent": "recovery_instruction" },
+        { "tag": "생활", "family": "life", "label": "쉬는 동안 컨디션 체크 권유", "text": "하루에 한 번 체온 재보시고, 38.5도 이상 오르면 다시 오세요.", "intent": "monitoring" },
+        { "tag": "공감", "family": "emotional", "label": "오늘 오신 게 잘하신 것이다", "text": "오늘 오신 거 잘 하셨어요. 더 버티셨으면 더 길어졌을 수 있어요.", "intent": "empathy_good_decision" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "고혈압약 복용 안내", "text": "고혈압 약은 독감 약이랑 같이 드셔도 돼요. 계속 드세요.", "intent": "bp_medication_check" },
+        "after_life": { "family": "life", "tag": "생활", "label": "가족 감염 주의", "text": "집에 가족 계세요? 마스크 쓰시고 거리 좀 두시는 게 좋겠어요.", "intent": "family_protection" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "이번에 쉬면서 몸 좀 챙기시길", "text": "이번 기회에 좀 쉬시면서 몸 챙기시기를 바라요.", "intent": "empathy_rest_wish" }
+      },
+      "responses": {
+        "recovery_instruction": { "text": "알겠어요. 집 가서 좀 눕겠습니다.", "emotion": "neutral" },
+        "monitoring": { "text": "네, 재보겠습니다. 38.5 이상이면 바로 오면 되죠?", "emotion": "neutral" },
+        "empathy_good_decision": { "text": "...뭐, 혼자 오는 거 좀 망설였는데, 오길 잘했네요.", "emotion": "warming" },
+        "bp_medication_check": { "text": "고혈압 약도 계속 먹어도 되는 거요? 네, 알겠어요.", "emotion": "neutral" },
+        "family_protection": { "text": "마누라한테 말해야겠네요. 애들도 있고요.", "emotion": "neutral" },
+        "empathy_rest_wish": { "text": "일 끝나고도 쉬지 못하는 편이긴 한데... 이번엔 좀 쉬겠습니다.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "처방전 받아가면 되죠? 언제쯤 나올 수 있을지는 봐가면서 결정해야겠네요." },
+  "closingGated": null,
+  "forceClose": {
+    "nurse": "다음 환자분 준비됐어요, 선생님.",
+    "patient": "네, 나갈게요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "고혈압이 있는 상태에서 독감이 어떤 위험을 더할 수 있는지 충분히 설명하지 못했다.",
+      "life": "3일 동안 마스크 쓰고 출근하면서 라인을 어떻게 버텼는지, 그 구체적인 상황을 묻지 못했다.",
+      "emotional": "반장이라는 자리에서 느끼는 무게가 어느 정도인지, 그 사람의 책임감이 어디서 나오는지 들어보지 못했다."
+    },
+    "lastScene": "류성진 씨가 처방전을 접어 작업복 주머니에 넣는다. 복도를 나서며 대리에게 문자를 보내는 모습이 보인다.",
+    "lastSceneGated": null
+  }
+}

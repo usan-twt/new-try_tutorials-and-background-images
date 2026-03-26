@@ -1,0 +1,153 @@
+{
+  "opening": { "speaker": "patient", "text": "시험 볼 때마다 손이 떨리고 심장이 너무 빨리 뛰어요. 이번엔 시험장에서 쓰러질 것 같았어요." },
+  "nurseInfo": { "available": true, "text": "19세 여성분이에요. 시험 불안·두근거림·손 떨림이 반복된다고 하세요. 재수생이세요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "구체적인 증상 확인", "text": "시험장에서 어떤 증상이 나타났어요? 조금 더 자세히 말해줄 수 있어요?", "intent": "symptom_detail" },
+        { "tag": "생활", "family": "life", "label": "이번 시험이 어떤 시험인지", "text": "이번에 어떤 시험이었어요?", "intent": "exam_context" },
+        { "tag": "공감", "family": "emotional", "label": "시험장에서 쓰러질 것 같다는 건 많이 무서웠을 것이다", "text": "쓰러질 것 같았다는 게 많이 무서우셨겠어요.", "intent": "empathy_scared" }
+      ],
+      "responses": {
+        "symptom_detail": { "text": "심장이 너무 빨리 뛰고, 손이 막 떨렸어요. 눈앞이 하얘지는 것 같고, 답이 하나도 생각이 안 났어요.", "emotion": "anxious" },
+        "exam_context": { "text": "수능 모의고사예요. 재수하고 있어요.", "emotion": "anxious" },
+        "empathy_scared": { "text": "진짜 무서웠어요. 그냥 도망치고 싶었어요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "이런 증상이 처음인지", "text": "이런 증상이 이번이 처음이에요?", "intent": "first_time" },
+        { "tag": "생활", "family": "life", "label": "재수를 하게 된 상황이 궁금하다", "text": "재수를 하시게 된 거, 어떻게 된 건지 물어봐도 될까요?", "intent": "retake_story" },
+        { "tag": "공감", "family": "emotional", "label": "시험을 많이 준비해왔을 것이다", "text": "많이 준비해오셨을 텐데, 그 자리에서 그러니까 얼마나 황당하고 속상했을까요.", "intent": "empathy_preparation_waste" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "증상이 나타나는 시점", "text": "시험 전날부터 불안하거나, 시험장에 들어서는 순간부터 그래요?", "intent": "symptom_onset_trigger" },
+        "after_life": { "family": "life", "tag": "생활", "label": "공부 환경이 어떤지", "text": "지금 어디서 공부하고 있어요? 독서실인지 집인지요.", "intent": "study_environment" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "그 자리에서 어떻게 하셨어요", "text": "그 때 시험은 어떻게 하셨어요? 그냥 앉아서 버티셨어요?", "intent": "empathy_how_managed" }
+      },
+      "responses": {
+        "first_time": { "text": "아니요. 고3 때부터 그랬어요. 근데 이번이 제일 심했어요.", "emotion": "anxious" },
+        "retake_story": { "text": "작년에 수능을 망쳤어요. 원하는 학교를 못 가서요. 올해 다시 하고 있는데...", "emotion": "anxious" },
+        "empathy_preparation_waste": { "text": "(입술을 깨물며) 그게 제일 화가 나요. 열심히 했는데, 몸이 말을 안 들으니까요.", "emotion": "anxious" },
+        "symptom_onset_trigger": { "text": "시험장에 들어가는 순간부터요. 책상에 앉으면 심장이 갑자기 빨라져요.", "emotion": "anxious" },
+        "study_environment": { "text": "독서실이요. 거의 매일 거기 있어요.", "emotion": "anxious" },
+        "empathy_how_managed": { "text": "그냥 앉아있었어요. 포기하고 싶었는데, 그것도 못 하고.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "불안이 신체 증상으로 나타나는 것이다", "text": "이게 예민한 게 아니라, 불안이 몸으로 나타나는 증상이에요. 실제로 심장이 빨라지는 거예요.", "intent": "explain_anxiety_physical" },
+        { "tag": "생활", "family": "life", "label": "시험 외에 불안을 느끼는 순간이 있는지", "text": "시험 말고 다른 상황에서도 이런 증상이 나타난 적 있어요?", "intent": "other_anxiety_situations" },
+        { "tag": "공감", "family": "emotional", "label": "스스로 예민하다고 생각하는 것 같다", "text": "혹시 본인이 그냥 예민한 거라고 생각하세요?", "intent": "empathy_self_label" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "증상이 일상에도 영향을 주는지", "text": "시험 말고 일상적인 날에도 이런 증상이 있어요?", "intent": "daily_anxiety" },
+        "after_life": { "family": "life", "tag": "생활", "label": "잠을 잘 자고 있는지", "text": "잠은 잘 자요?", "intent": "sleep_check" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "축소하고 싶은 마음이 이해된다", "text": "그냥 예민한 거라고 생각하면 스스로한테 덜 힘드니까요.", "intent": "empathy_minimize_coping" }
+      },
+      "responses": {
+        "explain_anxiety_physical": { "text": "그냥 예민한 거잖아요. 제가 약해서 그런 거 아닌가요?", "emotion": "anxious", "innerVoice": "약하다는 말이 나왔다. 자기 자신을 탓하고 있다." },
+        "other_anxiety_situations": { "text": "발표할 때도 그래요. 선생님 앞에서 뭔가 보여줘야 할 때마다요.", "emotion": "anxious" },
+        "empathy_self_label": { "text": "그냥 예민한 거잖아요. 다들 긴장하는데 저만 이러니까.", "emotion": "anxious" },
+        "daily_anxiety": { "text": "시험 전날은 항상 잠을 못 자요. 공부 중에도 '이거 못 하면 어떡하지' 하는 생각이 계속 들어요.", "emotion": "anxious" },
+        "sleep_check": { "text": "시험 기간엔 못 자요. 새벽에 깨고, 다시 잠들면 꿈도 시험 꿈이에요.", "emotion": "anxious" },
+        "empathy_minimize_coping": { "text": "(잠시 멈추며) ...그런 건가요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "수행불안의 특징", "text": "시험 볼 때만 증상이 심해지는 건 수행불안이라고 해요. 예민함이나 의지 문제가 아니에요.", "intent": "performance_anxiety_explain" },
+        { "tag": "생활", "family": "life", "label": "주변에서 어떤 말을 듣고 있는지", "text": "부모님이나 주변에서는 뭐라고 해요?", "intent": "family_pressure" },
+        { "tag": "공감", "family": "emotional", "label": "다들 긴장하는데 혼자 이러는 것 같은 느낌", "text": "다들 긴장하는데 혼자 유독 이러는 것 같아서 더 힘드셨겠어요.", "intent": "empathy_alone_symptom" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "증상이 점점 심해지고 있는지", "text": "고3 때랑 비교하면 지금이 더 심해진 것 같아요?", "intent": "symptom_worsening" },
+        "after_life": { "family": "life", "tag": "생활", "label": "기대가 얼마나 큰지", "text": "올해 꼭 어딘가 가야 한다는 압박이 얼마나 커요?", "intent": "pressure_level" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "이런 말 처음 해보는 거지 않나요", "text": "이런 얘기, 어디다 말하기 어려웠을 것 같아요.", "intent": "empathy_firsttalk" }
+      },
+      "responses": {
+        "performance_anxiety_explain": { "text": "수행불안이요. 그게 뭔지 몰랐어요.", "emotion": "anxious" },
+        "family_pressure": { "text": "부모님은 그냥 긴장 좀 덜 하면 된다고 하세요. 열심히 했으니까 잘 될 거라고요.", "emotion": "anxious", "innerVoice": "격려였지만, 문제를 작게 보이게 하는 말이었다." },
+        "empathy_alone_symptom": { "text": "제 옆 친구는 괜찮아 보였어요. 저만 이러는 것 같아서 더 창피했어요.", "emotion": "anxious" },
+        "symptom_worsening": { "text": "심해진 것 같아요. 작년엔 덜했던 것 같은데, 이번 해에 갈수록 더 심해지는 것 같아요.", "emotion": "anxious" },
+        "pressure_level": { "text": "꼭 가야 해요. 한 번 더 못 가면... 생각하기 싫어요.", "emotion": "anxious" },
+        "empathy_firsttalk": { "text": "네. 부모님한테는 못 하겠고, 친구들한테도 그냥 긴장했다고만 했어요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "불안 증상에 대한 치료 방법", "text": "수행불안은 치료가 되는 상태예요. 인지행동치료나 필요하면 약물 치료도 도움이 돼요.", "intent": "treatment_option" },
+        { "tag": "생활", "family": "life", "label": "지금 얼마나 자신을 몰아붙이고 있는지", "text": "공부하면서 쉬는 날이 있어요? 아니면 거의 매일 공부해요?", "intent": "rest_days" },
+        { "tag": "공감", "family": "emotional", "label": "한 번 더 못 가면이라는 말이 마음에 걸린다", "text": "한 번 더 못 가면이라는 생각, 그게 얼마나 무거운 짐인지요.", "intent": "empathy_pressure_weight" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "증상을 느낄 때 쓸 수 있는 방법", "text": "시험장에서 심장이 빨라질 때, 호흡을 조절하는 게 도움이 돼요. 연습하면 쓸 수 있어요.", "intent": "breathing_technique" },
+        "after_life": { "family": "life", "tag": "생활", "label": "쉬는 게 결국 더 좋은 결과를 낸다", "text": "쉬는 게 효율을 높여요. 지금 자신을 몰아붙이는 방식이 오히려 시험에 영향을 줄 수 있어요.", "intent": "rest_efficiency" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "그 무게를 혼자 들고 있었다", "text": "그걸 혼자 들고 매일 독서실에 앉아 있었던 거잖아요.", "intent": "empathy_alone_burden" }
+      },
+      "responses": {
+        "treatment_option": { "text": "치료를 받을 수 있는 거예요? 저 이상한 거 아니고요?", "emotion": "anxious" },
+        "rest_days": { "text": "거의 안 쉬어요. 쉬면 뒤처지는 것 같아서요.", "emotion": "anxious" },
+        "empathy_pressure_weight": { "text": "(눈물이 그렁그렁해지며) 너무 무거워요. 근데 약해 보이기 싫어서 말을 못 했어요.", "emotion": "anxious" },
+        "breathing_technique": { "text": "그게 되면 좋겠어요. 그때는 아무것도 안 되는 것 같은데.", "emotion": "anxious" },
+        "rest_efficiency": { "text": "그런 말 듣는 게 좀 신기해요. 쉬어도 된다는 말을 처음 들어보는 것 같아서요.", "emotion": "anxious" },
+        "empathy_alone_burden": { "text": "(조용히) ...네. 혼자 들고 있었어요.", "emotion": "anxious" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "불안 약 처방 여부 논의", "text": "지금 당장 약을 드리기보다는, 인지행동치료를 먼저 해보는 게 좋을 것 같아요.", "intent": "treatment_decision" },
+        { "tag": "생활", "family": "life", "label": "지금 상태가 수능에 영향을 줄 수 있다", "text": "지금 이 상태로 가면 수능에서도 같은 일이 반복될 수 있어요. 미리 다루는 게 필요해요.", "intent": "exam_impact_warning" },
+        { "tag": "공감", "family": "emotional", "label": "약하지 않다, 너무 오래 혼자였던 것이다", "text": "약한 게 아니에요. 너무 오래 혼자 감당해온 거예요.", "intent": "empathy_not_weak" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "다음 진료 예약", "text": "다음 주에 한 번 더 오세요. 심리 치료 연계도 알아봐 드릴게요.", "intent": "followup_plan" },
+        "after_life": { "family": "life", "tag": "생활", "label": "지금부터라도 달라질 수 있다", "text": "지금 도움을 받으면 수능 전까지 바꿀 수 있어요. 포기하지 않아도 돼요.", "intent": "hope_message" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "오늘 온 게 잘 된 것이다", "text": "오늘 이렇게 오신 게 잘 된 거예요.", "intent": "empathy_good_decision" }
+      },
+      "responses": {
+        "treatment_decision": { "text": "인지행동치료요. 그게 도움이 되나요?", "emotion": "anxious" },
+        "exam_impact_warning": { "text": "알아요. 그래서 왔어요. 이대로면 안 될 것 같아서요.", "emotion": "anxious" },
+        "empathy_not_weak": { "text": "(입술을 꽉 물다가) ...그 말이 좀 위로가 돼요.", "emotion": "warming" },
+        "followup_plan": { "text": "네. 다음 주에 올게요.", "emotion": "neutral" },
+        "hope_message": { "text": "(조금 표정이 밝아지며) 정말요?", "emotion": "warming" },
+        "empathy_good_decision": { "text": "오길 잘했다는 생각이 드네요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "자율신경 안정에 도움 되는 생활습관", "text": "규칙적인 수면과 적당한 운동이 불안 증상을 낮춰줘요. 공부만 하는 것보다 이게 더 도움돼요.", "intent": "lifestyle_advice" },
+        { "tag": "생활", "family": "life", "label": "지금 당장 해볼 수 있는 것", "text": "오늘부터 딱 한 가지만 해보면 좋겠어요. 밤에 자기 전에 10분 산책이라도요.", "intent": "small_action" },
+        { "tag": "공감", "family": "emotional", "label": "오늘 여기 온 것 자체가 시작이다", "text": "오늘 여기 온 게 시작이에요. 혼자 감당하지 않는 첫 번째 날이에요.", "intent": "empathy_first_step" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "증상 악화 시 다시 오라", "text": "만약 시험장에서 증상이 더 심해지거나, 일상에서도 계속 힘들면 바로 와요.", "intent": "when_to_return" },
+        "after_life": { "family": "life", "tag": "생활", "label": "스스로한테 너무 가혹하지 않았으면", "text": "공부도 중요하지만, 자신한테 너무 가혹하게 굴지 않아도 돼요.", "intent": "self_compassion" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "다음엔 더 빨리 와도 된다", "text": "힘들면 더 빨리 와요. 이렇게까지 참지 않아도 돼요.", "intent": "empathy_come_sooner" }
+      },
+      "responses": {
+        "lifestyle_advice": { "text": "공부 말고 뭔가 해도 되는 거군요.", "emotion": "warming" },
+        "small_action": { "text": "10분 산책이요. ...해볼게요.", "emotion": "warming" },
+        "empathy_first_step": { "text": "(조용히) ...네. 혼자 안 해도 되는 거군요.", "emotion": "warming" },
+        "when_to_return": { "text": "알겠어요. 이번엔 참고 있지 않을게요.", "emotion": "neutral" },
+        "self_compassion": { "text": "(살짝 웃으며) 그 말이 제일 어려운 것 같아요.", "emotion": "warming" },
+        "empathy_come_sooner": { "text": "네. 이번엔 너무 오래 참았어요.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사해요. 다음 주에 올게요." },
+  "closingGated": null,
+  "forceClose": {
+    "nurse": "다음 환자분 기다리고 계세요.",
+    "patient": "아, 네. 일어날게요. 감사합니다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "수능 이전 상황에서 공황에 가까운 증상이 나타난 적이 있는지 더 확인하지 못했다.",
+      "life": "재수를 결심하게 된 구체적인 이유나 가족의 기대가 얼마나 큰 영향을 주는지 더 탐색하지 못했다.",
+      "emotional": "자신을 '약하다'고 생각해온 시간이 얼마나 됐는지, 그 아래에 뭐가 있는지 더 들어주지 못했다."
+    },
+    "lastScene": "정다은 씨가 문을 나서며 한 번 뒤를 돌아본다. '다음 주에 올게요'라고 작게 중얼거리며 나간다.",
+    "lastSceneGated": null
+  }
+}
