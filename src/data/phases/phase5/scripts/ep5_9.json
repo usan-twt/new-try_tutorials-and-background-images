@@ -1,0 +1,379 @@
+{
+  "nurseInfo": {
+    "speaker": "nurse",
+    "text": "38세 남성분이에요. 발열 39.1도, 오한, 전신 근육통 2일이에요. 영업직이시고, 진단서가 필요하신 것 같아요.",
+    "available": true
+  },
+  "opening": {
+    "speaker": "patient",
+    "text": "이틀 됐어요. 열이 39도가 넘어서요. 이번 주에 중요한 약속이 있는데..."
+  },
+  "turns": [
+    {
+      "firstChoices": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "증상부터 확인하자",
+          "text": "언제부터 이러셨어요? 열 외에 또 불편한 곳이 있으세요?",
+          "intent": "symptom_onset"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "중요한 약속이 걸린 것 같다",
+          "text": "이번 주에 일정이 있으신가 봐요.",
+          "intent": "schedule_concern"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "몸 상태가 걱정될 것이다",
+          "text": "많이 힘드셨겠어요. 이틀이나 버티신 거잖아요.",
+          "intent": "rapport_opening"
+        }
+      ],
+      "responses": {
+        "symptom_onset": {
+          "text": "이틀 전부터요. 열 나고, 오한 있고, 온몸이 쑤셔요. 독감인 것 같아서요.",
+          "emotion": "anxious"
+        },
+        "schedule_concern": {
+          "text": "네, 목요일에 계약 미팅이 있어요. 6개월 준비한 건데... 그래서 좀 빨리 나아야 해서요.",
+          "emotion": "anxious"
+        },
+        "rapport_opening": {
+          "text": "어제 하루 쉬어야 하나 말아야 하나 계속 고민했어요. 결국 오늘 왔네요.",
+          "emotion": "anxious"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "독감 증상을 더 확인하자",
+          "text": "기침이나 콧물, 목 아픔도 있으세요?",
+          "intent": "flu_detail"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "어떤 일을 하시는지",
+          "text": "영업 일 하신다고 하셨죠? 외부 일정이 많으신 편인가요?",
+          "intent": "work_type"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "계약이 많이 중요한 모양이다",
+          "text": "6개월 준비하신 거면 쉽게 미루기 어려우시겠네요.",
+          "intent": "empathy_contract"
+        }
+      ],
+      "responses": {
+        "flu_detail": {
+          "text": "목도 좀 칼칼하고, 기침도 가끔 나요. 콧물은 별로 없어요.",
+          "emotion": "anxious"
+        },
+        "work_type": {
+          "text": "B2B 솔루션 영업이에요. 고객사 미팅이 주 업무라서, 컨디션이 안 좋으면 바로 티가 나요.",
+          "emotion": "anxious"
+        },
+        "empathy_contract": {
+          "text": "네, 상대방 일정 맞추는 게 쉽지 않아서요. 미루면 또 한 달은 밀릴 것 같고.",
+          "emotion": "anxious",
+          "innerVoice": "미팅을 미루는 것 자체가 두려운 것이다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "독감 검사를 제안하자",
+          "text": "독감 신속 검사를 해보는 게 좋을 것 같아요. 결과에 따라 치료가 달라지거든요.",
+          "intent": "flu_test"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "미팅을 어떻게 할지 현실적으로 생각해봐야 한다",
+          "text": "솔직히, 목요일 미팅을 강행하실 수 있을지 걱정이 되네요.",
+          "intent": "meeting_feasibility"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "쉬고 싶어도 못 쉬는 상황인 것 같다",
+          "text": "쉬고 싶으셔도 쉽게 결정을 못 하시겠어요.",
+          "intent": "empathy_cant_rest"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "해열제를 이미 드셨는지",
+          "text": "지금까지 해열제나 약을 드신 게 있으세요?",
+          "intent": "self_treatment"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "팀에서 대신할 수 있는 사람이 있는지",
+          "text": "미팅을 대신 나가줄 수 있는 분이 없으신가요?",
+          "intent": "colleague_backup"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "오늘 병원에 온 것도 결심이 필요했을 것이다",
+          "text": "오늘 여기 오시는 것도 쉽지 않으셨겠어요.",
+          "intent": "empathy_coming_here"
+        }
+      },
+      "responses": {
+        "flu_test": {
+          "text": "네, 해주세요. 독감이면 진단서도 받을 수 있는 거죠?",
+          "emotion": "anxious"
+        },
+        "meeting_feasibility": {
+          "text": "그게... 그래서 왔어요. 의사 선생님이 '쉬어야 한다'고 하시면 회사에도 말할 수 있으니까요.",
+          "emotion": "anxious",
+          "innerVoice": "의사의 판단을 면죄부로 쓰려는 것이다. 본인도 쉬고 싶은 것을 알면서."
+        },
+        "empathy_cant_rest": {
+          "text": "혼자 이렇게 결정하기가 좀 그래서요. 제가 쉰다고 하면 팀에서 어떻게 볼지도 있고.",
+          "emotion": "anxious"
+        },
+        "self_treatment": {
+          "text": "타이레놀 먹었는데 그때뿐이에요. 열이 다시 올라요.",
+          "emotion": "anxious"
+        },
+        "colleague_backup": {
+          "text": "팀장님이 같이 가실 수는 있어요. 근데 제가 6개월을 준비한 거라... 저 없으면 반쪽짜리예요.",
+          "emotion": "anxious"
+        },
+        "empathy_coming_here": {
+          "text": "어제 하루 종일 '그냥 버텨볼까' 했거든요. 근데 열이 안 내려가서.",
+          "emotion": "anxious"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "몸 상태로 보면 안정이 필요하다",
+          "text": "39도 넘는 고열에 전신 근육통이면 몸이 많이 힘든 상태예요.",
+          "intent": "clinical_assessment"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "진단서가 어디에 필요하신지",
+          "text": "진단서가 회사에 제출하시려는 건가요?",
+          "intent": "certificate_purpose"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "쉬는 것에 허락이 필요한 상황인 것이다",
+          "text": "누군가 '쉬어도 된다'고 말해줬으면 하는 마음이 있으신 것 같아요.",
+          "intent": "empathy_permission"
+        }
+      ],
+      "responses": {
+        "clinical_assessment": {
+          "text": "그렇죠... 몸이 많이 힘들긴 해요. 일어서면 좀 어지럽기도 하고.",
+          "emotion": "anxious"
+        },
+        "certificate_purpose": {
+          "text": "네, 회사 결근 처리 때 필요해요. 그리고 고객사에도 상황 설명할 때 쓸 수 있고요.",
+          "emotion": "anxious"
+        },
+        "empathy_permission": {
+          "text": "...맞아요. 제가 결정하면 '왜 못 왔냐'고 하는데, 의사 선생님이 '못 간다'고 하시면 다르거든요.",
+          "emotion": "warming",
+          "innerVoice": "쉬는 것이 개인의 선택이 아닌 의학적 지시여야 인정받는 구조다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "독감 치료 방향을 설명하자",
+          "text": "독감으로 확인되면 항바이러스제를 쓰는 게 좋아요. 빨리 쓸수록 효과가 있어요.",
+          "intent": "treatment_plan"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "이틀 정도 쉬면 회복이 어떨지",
+          "text": "목요일까지 이틀이 있으니까, 충분히 쉬시면 어느 정도 회복되실 수 있어요.",
+          "intent": "recovery_timeline"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "고객사에 연락하는 것 자체가 부담일 것이다",
+          "text": "고객사에 연락해야 하는 게 마음에 걸리실 것 같아요.",
+          "intent": "empathy_client_contact"
+        }
+      ],
+      "continue": {
+        "after_medical": {
+          "tag": "증상",
+          "family": "medical",
+          "label": "전파 위험도 있다",
+          "text": "독감은 전파력이 강해서, 미팅 참석 자체가 상대방한테도 부담이 될 수 있어요.",
+          "intent": "contagion_risk"
+        },
+        "after_life": {
+          "tag": "생활",
+          "family": "life",
+          "label": "억지로 나가면 오히려 더 길어질 수 있다",
+          "text": "무리하시면 회복이 더 길어질 수도 있어요.",
+          "intent": "overexertion_risk"
+        },
+        "after_emotional": {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "진단서가 그 부담을 줄여줄 수 있다",
+          "text": "진단서가 있으면 상황 설명이 좀 쉬워지실 거예요.",
+          "intent": "empathy_certificate_relief"
+        }
+      },
+      "responses": {
+        "treatment_plan": {
+          "text": "빨리 써주세요. 지금 시작하면 목요일에 좀 나아질 수 있을까요?",
+          "emotion": "anxious"
+        },
+        "recovery_timeline": {
+          "text": "그렇군요. 진짜로 쉬면요? 푹 쉬면 이틀 안에 좀 나아질 수 있어요?",
+          "emotion": "anxious"
+        },
+        "empathy_client_contact": {
+          "text": "상대방 담당자 분이 되게 바빠서요. 일정 바꾸면 미안하기도 하고.",
+          "emotion": "anxious"
+        },
+        "contagion_risk": {
+          "text": "아, 그건 생각 못 했네요. 상대방한테 옮길 수도 있겠네요.",
+          "emotion": "anxious",
+          "innerVoice": "전파 위험이라는 말이 쉬어야 할 근거를 하나 더 준 것이다."
+        },
+        "overexertion_risk": {
+          "text": "그게 더 무서운 거네요. 억지로 나갔다가 다음 주도 망칠 수 있는 거잖아요.",
+          "emotion": "anxious"
+        },
+        "empathy_certificate_relief": {
+          "text": "네, 그게 있으면 좀 말하기 편하죠. 발부해 주실 수 있죠?",
+          "emotion": "anxious"
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "검사 결과를 보고 다음을 결정하자",
+          "text": "검사 결과 확인 후 처방 드릴게요. 양성이면 격리 권고도 드려야 해요.",
+          "intent": "test_result_action"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "쉬는 동안 컨디션을 어떻게 관리할지",
+          "text": "이틀 동안 수분 충분히 드시고, 해열제 규칙적으로 드셔야 해요.",
+          "intent": "rest_instructions"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "독감이 확인되면 오히려 마음이 편해질 것이다",
+          "text": "독감 확진 나오면 오히려 결정이 명확해지실 것 같아요.",
+          "intent": "empathy_clarity"
+        }
+      ],
+      "responses": {
+        "test_result_action": {
+          "text": "격리요? 며칠이나요?",
+          "emotion": "anxious"
+        },
+        "rest_instructions": {
+          "text": "알겠어요. 그렇게 할게요. 식사는 조금씩이라도 해야 하죠?",
+          "emotion": "neutral"
+        },
+        "empathy_clarity": {
+          "text": "...솔직히 그렇네요. 독감이라고 나오면 미팅 미루는 게 당연한 거니까. 오히려 깔끔하겠네요.",
+          "emotion": "warming",
+          "innerVoice": "확진이 그를 쉬게 해줄 것이다. 그것을 기다리고 있었다."
+        }
+      }
+    },
+    {
+      "pivots": [
+        {
+          "tag": "증상",
+          "family": "medical",
+          "label": "회복 후 추적 관리도 중요하다",
+          "text": "항바이러스제 5일치 드릴게요. 열이 이틀 이상 안 내려가면 다시 오세요.",
+          "intent": "followup_plan"
+        },
+        {
+          "tag": "생활",
+          "family": "life",
+          "label": "진단서 발급을 안내하자",
+          "text": "진단서는 오늘 발급해 드릴 수 있어요.",
+          "intent": "certificate_issue"
+        },
+        {
+          "tag": "공감",
+          "family": "emotional",
+          "label": "이번에 제대로 쉬는 게 중요하다",
+          "text": "이번에 한 번 제대로 쉬시고 나면, 다음 일정은 더 잘 하실 수 있을 거예요.",
+          "intent": "empathy_rest_value"
+        }
+      ],
+      "responses": {
+        "followup_plan": {
+          "text": "네, 알겠어요. 약 잘 먹고 쉴게요.",
+          "emotion": "neutral"
+        },
+        "certificate_issue": {
+          "text": "감사합니다. 회사에 오늘 바로 낼게요. 고객사에도 연락해야겠네요.",
+          "emotion": "warming"
+        },
+        "empathy_rest_value": {
+          "text": "그러면 좋겠어요. 사실 오면서도 '그냥 버티자' 생각했거든요. 근데 맞게 왔네요.",
+          "emotion": "warming"
+        }
+      }
+    }
+  ],
+  "closing": {
+    "speaker": "patient",
+    "text": "진단서 감사합니다. 처방전도요. 이번엔 진짜 쉬어볼게요."
+  },
+  "closingGated": null,
+  "forceClose": {
+    "nurse": "선생님, 다음 환자분 들어오셔야 해요.",
+    "patient": "아, 네. 진단서만 받으면 되니까요. 감사합니다."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "열이 이틀 동안 얼마나 올랐다 내렸는지, 패턴을 다 확인하지 못했다.",
+      "life": "6개월 준비한 계약이 어떤 내용인지, 묻지 못했다.",
+      "emotional": "쉬는 것을 결정하지 못하고 혼자 이틀을 보낸 시간이 어땠는지, 묻지 못했다."
+    },
+    "lastScene": "진단서를 받아들고 핸드폰을 꺼낸다. 고객사에 연락할 준비를 하는 것 같다.",
+    "lastSceneGated": null
+  }
+}

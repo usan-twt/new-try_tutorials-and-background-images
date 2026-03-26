@@ -32,8 +32,8 @@
         "meal_time": { "text": "일 있는 날은 현장에서 대충 때우고, 없는 날은... 좀 늦게 먹거나 그냥 넘어갈 때도 있어요.", "emotion": "neutral" },
         "empathy_wait": { "text": "뭐, 참을 만하면 참게 되죠.", "emotion": "neutral" },
         "nausea": { "text": "가끔 신물은 올라와요. 구역감은 심하진 않고요.", "emotion": "neutral" },
-        "skip_meals": { "text": "그게... 일이 없는 날은 나가기도 뭐하고, 그냥 넘길 때가 있어요.", "emotion": "neutral", "innerVoice": "결식이 있다. 경제적 이유일 수 있다." },
-        "hospital_barrier": { "text": "바빠서요. 일 끊기면 안 되니까... 오늘은 일이 없어서 왔어요.", "emotion": "neutral" }
+        "skip_meals": { "text": "그게... 일이 없는 날은 나가기도 뭐하고, 그냥 넘길 때가 있어요.", "emotion": "neutral", "innerVoice": "결식이 있다. 경제적 이유일 수 있다.", "gatedResponse": { "text": "요즘 일이 좀 뜸해서... 밥 사 먹기도 그렇고, 그냥 굶을 때가 많아요.", "emotion": "neutral" } },
+        "hospital_barrier": { "text": "바빠서요. 일 끊기면 안 되니까... 오늘은 일이 없어서 왔어요.", "emotion": "neutral", "gatedResponse": { "text": "사실 병원비가 얼마 나올지 몰라서 못 왔어요. 오늘 일이 없으니까 겸사겸사.", "emotion": "neutral" } }
       }
     },
     {
@@ -52,7 +52,7 @@
         "alcohol": { "text": "술은 가끔 마시고, 담배는 피워요.", "emotion": "neutral" },
         "work_hard": { "text": "이 나이에 일용직이 달리 할 수도 없고요.", "emotion": "neutral" },
         "blood": { "text": "그런 건 없었어요.", "emotion": "neutral" },
-        "yesterday": { "text": "어제는... 아침은 넘기고, 저녁에 라면 하나 먹었어요.", "emotion": "neutral", "innerVoice": "결식과 자극적 식사. 위염이 악화될 수밖에 없는 패턴이다." },
+        "yesterday": { "text": "어제는... 아침은 넘기고, 저녁에 라면 하나 먹었어요.", "emotion": "neutral", "innerVoice": "결식과 자극적 식사. 위염이 악화될 수밖에 없는 패턴이다.", "gatedResponse": { "text": "밥을 제때 못 먹을 때가 많아요. 살 것도 없고, 그냥 라면 하나로 넘기거나 굶는 날도 있고요.", "emotion": "anxious" } },
         "body_first": { "text": "맞는 말이긴 한데...", "emotion": "neutral" }
       }
     },
@@ -73,7 +73,7 @@
         "meal_situation": { "text": "일 있는 날은 그나마 낫고, 없는 날은... 뭐, 그래요.", "emotion": "neutral" },
         "hpylori": { "text": "그런 검사는 안 받았어요.", "emotion": "neutral" },
         "job_type": { "text": "건설 현장 잡일이요. 있으면 나가고 없으면 쉬고요.", "emotion": "neutral" },
-        "cost_worry": { "text": "...그게 좀 그렇죠. 오늘도 많이 나오면 어떡하나 했어요.", "emotion": "neutral" }
+        "cost_worry": { "text": "...그게 좀 그렇죠. 오늘도 많이 나오면 어떡하나 했어요.", "emotion": "neutral", "gatedResponse": { "text": "병원비가 걱정돼서요. 요즘 형편이 좀 안 좋아서... 검사까지 하면 얼마나 나올지 몰라서요.", "emotion": "anxious" } }
       }
     },
     {
@@ -148,7 +148,7 @@
       "life": "일용직 환경과 경제적 상황을 더 파악하지 못했다. 국가검진과 복지 정보 연결이 더 필요했다.",
       "emotional": "병원비 걱정과 오래 참아온 상황에 대해 충분히 이야기 나누지 못했다."
     },
-    "lastScene": "환자가 처방전을 받아들고 조용히 나간다. 다시 현장으로 돌아가는 하루의 일부처럼 보인다.",
-    "lastSceneGated": null
+    "lastScene": "최영철 씨가 처방전을 받아들고 조용히 나간다. 다시 현장으로 돌아가는 하루의 일부처럼 보인다.",
+    "lastSceneGated": "최영철 씨가 메모지를 조심스럽게 접어 주머니에 넣는다. '이런 거 챙겨주셔서 감사합니다.' 문을 나서는 뒷모습이 올 때보다 조금 펴져 있다."
   }
 }
