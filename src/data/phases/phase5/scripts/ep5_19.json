@@ -1,0 +1,153 @@
+{
+  "opening": { "speaker": "patient", "text": "속이 울렁거리고 명치가 불편해요. 바쁠 때만 그런 것 같은데, 요즘 계속 바쁘다 보니까요." },
+  "nurseInfo": { "available": true, "text": "38세 여성분이에요. 구역·명치 불편감이 수개월째라고 하세요. 프리랜서 디자이너이신 것 같아요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "불편감 양상 확인", "text": "명치 불편감이 어떤 느낌이에요? 쓰리거나 타는 느낌인가요, 아니면 눌리는 느낌인가요?", "intent": "discomfort_type" },
+        { "tag": "생활", "family": "life", "label": "바쁠 때만 그렇다고 하셨다", "text": "바쁠 때만 그렇다고 하셨는데, 어떤 때가 특히 심한가요?", "intent": "trigger_context" },
+        { "tag": "공감", "family": "emotional", "label": "스스로 원인을 알고 계신다", "text": "바쁠 때 그렇다는 걸 스스로 느끼고 계신 거네요.", "intent": "empathy_self_aware" }
+      ],
+      "responses": {
+        "discomfort_type": { "text": "눌리는 것 같기도 하고, 속이 꽉 찬 느낌이에요. 쓰린 건 가끔이고요.", "emotion": "neutral" },
+        "trigger_context": { "text": "마감 전날이나 여러 프로젝트가 겹칠 때요. 그럴 때 밥을 제대로 못 먹기도 하고요.", "emotion": "neutral" },
+        "empathy_self_aware": { "text": "네, 바빠지면 그렇더라고요. 근데 요즘 계속 바쁜 게 문제예요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "지속 기간과 빈도 확인", "text": "수개월째라고 하셨는데, 처음 시작한 게 언제였어요? 얼마나 자주 그러세요?", "intent": "duration_frequency" },
+        { "tag": "생활", "family": "life", "label": "마감 때 식사 패턴", "text": "마감 때 밥을 못 드신다고 하셨는데, 어느 정도로 못 드시는 편이에요?", "intent": "meal_pattern" },
+        { "tag": "공감", "family": "emotional", "label": "요즘 계속 바쁘다는 것이 포인트다", "text": "요즘 계속 바쁘다고 하셨는데, 그게 얼마나 지속된 거예요?", "intent": "empathy_busy_duration" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "식후 증상 여부", "text": "식사 후에 특히 더 불편하시거나, 공복일 때 더 심한 편이에요?", "intent": "meal_timing" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면 상태 확인", "text": "마감 기간에 수면은 어떠세요?", "intent": "sleep_pattern" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "몸이 버텨주기를 바라는 마음이 있을 것이다", "text": "바쁜 상황에서 몸이 버텨줬으면 하는 마음이 있으셨겠어요.", "intent": "empathy_body_endurance" }
+      },
+      "responses": {
+        "duration_frequency": { "text": "한 6개월 된 것 같아요. 처음엔 가끔이었는데 요즘은 거의 매일이에요.", "emotion": "neutral" },
+        "meal_pattern": { "text": "마감 때는 밥을 하루 한 번 먹기도 해요.", "emotion": "neutral", "innerVoice": "하루 한 끼. 수개월째 반복되는 패턴이다." },
+        "empathy_busy_duration": { "text": "한 1년 정도 됐어요. 작년부터 프로젝트가 많아지면서요.", "emotion": "neutral" },
+        "meal_timing": { "text": "공복일 때 더 심한 것 같아요. 뭔가 먹으면 좀 나아지는데 그게 잠깐이에요.", "emotion": "neutral" },
+        "sleep_pattern": { "text": "사실 자는 시간이 몇 시인지 모를 때가 있어요.", "emotion": "neutral", "innerVoice": "수면과 식사가 모두 무너져 있다." },
+        "empathy_body_endurance": { "text": "그렇죠. 바쁠 때는 몸이 버텨줬으면 하는데, 요즘은 신호를 보내는 것 같아서요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "동반 증상 확인", "text": "속 쓰림이나 역류 느낌, 구토까지 간 적이 있어요?", "intent": "associated_gi" },
+        { "tag": "생활", "family": "life", "label": "프리랜서 일의 구조적 특성", "text": "프리랜서라서 일이 들어오면 거절하기 어려운 면이 있죠?", "intent": "freelance_structure" },
+        { "tag": "공감", "family": "emotional", "label": "신호를 알면서도 계속 간 것이다", "text": "신호를 느끼면서도 계속 하셔야 하는 상황이었던 거네요.", "intent": "empathy_continued_anyway" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "체중 변화 여부", "text": "최근에 체중이 많이 빠지거나 하지는 않으셨어요?", "intent": "weight_change" },
+        "after_life": { "family": "life", "tag": "생활", "label": "일과 생활의 경계", "text": "퇴근이라는 개념이 없는 것 같으신 것 같아요.", "intent": "work_life_boundary" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "언제부터 몸이 알아챘을까", "text": "몸이 이렇게 반응하기 시작한 게 정확히 어느 순간부터인 것 같으세요?", "intent": "empathy_body_response_start" }
+      },
+      "responses": {
+        "associated_gi": { "text": "역류 느낌은 가끔 있어요. 구토까지 간 적은 없어요.", "emotion": "neutral" },
+        "freelance_structure": { "text": "맞아요. 안 받으면 다음에 안 불러줄까 봐서요. 거절이 쉽지 않아요.", "emotion": "neutral" },
+        "empathy_continued_anyway": { "text": "어쩔 수가 없었죠. 근데 이제는 좀 고쳐야 할 것 같아서요.", "emotion": "neutral" },
+        "weight_change": { "text": "3킬로 정도 빠진 것 같아요. 밥을 못 먹으니까요.", "emotion": "neutral", "innerVoice": "6개월에 3kg 감소. 의미 있는 체중 감소다." },
+        "work_life_boundary": { "text": "거의 없죠. 집이 작업실이기도 하니까요. 자다가 일어나서 수정하기도 해요.", "emotion": "neutral" },
+        "empathy_body_response_start": { "text": "마감이 두 개 겹쳤을 때요. 3일을 거의 못 잔 적이 있었거든요. 그때부터인 것 같아요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "내시경 필요성 판단", "text": "6개월에 체중 감소도 있으면 내시경을 한 번 봐야 할 것 같아요.", "intent": "endoscopy_suggest" },
+        { "tag": "생활", "family": "life", "label": "지금 일 상황이 유지될 것인지", "text": "지금 이 상황이 당분간 계속될 것 같으세요?", "intent": "workload_forecast" },
+        { "tag": "공감", "family": "emotional", "label": "3일을 못 잔 것이 시작점이었다", "text": "3일을 못 주무신 적이 있었군요. 그게 상당히 힘드셨겠어요.", "intent": "empathy_3day_no_sleep" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "헬리코박터 가능성", "text": "과거에 위 관련 진단 받으신 적 있어요? 헬리코박터 검사해본 적은요?", "intent": "h_pylori" },
+        "after_life": { "family": "life", "tag": "생활", "label": "쉬는 것이 가능한 구조인지", "text": "잠깐이라도 프로젝트 없이 쉬어본 게 언제예요?", "intent": "last_rest" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "그때 이후로 몸이 달라진 것이다", "text": "그 3일 이후로 몸이 예전과 달라졌다고 느끼세요?", "intent": "empathy_body_changed" }
+      },
+      "responses": {
+        "endoscopy_suggest": { "text": "내시경이요. 해봐야 할까 싶긴 했어요. 무서워서 미뤘는데.", "emotion": "anxious" },
+        "workload_forecast": { "text": "다음 달까지는 비슷할 것 같아요. 프로젝트가 두 개 더 있거든요.", "emotion": "neutral" },
+        "empathy_3day_no_sleep": { "text": "그때가 좀 극단적이긴 했어요. 마감이 하루 차이로 두 개가 겹쳐서요.", "emotion": "neutral" },
+        "h_pylori": { "text": "진단받은 건 없어요. 그냥 소화가 좀 안 된다는 느낌만 있었고요.", "emotion": "neutral" },
+        "last_rest": { "text": "...6개월 전이요. 그때 일주일 쉬었어요. 그게 마지막이네요.", "emotion": "neutral", "innerVoice": "6개월 동안 단 한 번도 쉬지 못한 것이다." },
+        "empathy_body_changed": { "text": "맞아요. 그 전에는 이런 증상이 없었거든요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "위산 억제제 처방 설명", "text": "일단 위산 억제제 처방해 드릴게요. 내시경 검사 전에 증상 완화에 도움이 돼요.", "intent": "ppi_prescription" },
+        { "tag": "생활", "family": "life", "label": "식사 시간 확보 권유", "text": "마감 중이더라도 하루 두 번 이상은 드셔야 해요. 공복이 길면 증상이 더 심해질 수 있어요.", "intent": "meal_advice" },
+        { "tag": "공감", "family": "emotional", "label": "일과 생활의 경계가 무너진 상황", "text": "집이 작업실이고, 일과 생활이 분리가 안 되는 상황이신 거죠?", "intent": "empathy_blurred_boundary" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "내시경 예약 안내", "text": "증상이 계속되면 내시경 예약해보세요. 소화기내과에서 할 수 있어요.", "intent": "endoscopy_referral" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면 최소 확보 권유", "text": "하루 4~5시간이라도 연속으로 주무시는 게 위 회복에 도움이 돼요.", "intent": "sleep_advice" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "이 구조가 몸에 무리를 주고 있다", "text": "그 구조가 지금 위에 직접적인 영향을 주고 있어요.", "intent": "empathy_structure_impact" }
+      },
+      "responses": {
+        "ppi_prescription": { "text": "먹으면 바로 좀 나아질까요?", "emotion": "neutral" },
+        "meal_advice": { "text": "바쁠 때 챙겨 먹는 게 쉽지가 않아요. 배가 고프다는 걸 모를 때도 있어요.", "emotion": "neutral", "innerVoice": "배가 고픈 것도 느끼지 못할 정도의 상태다." },
+        "empathy_blurred_boundary": { "text": "네, 자다가 일어나는 일도 있고요. 알림 소리에 반응이 돼버려서요.", "emotion": "warming" },
+        "endoscopy_referral": { "text": "내시경은 좀 무서운데... 6개월 됐으면 해야겠죠.", "emotion": "anxious" },
+        "sleep_advice": { "text": "4~5시간... 그것도 못 잘 때가 있어요.", "emotion": "neutral" },
+        "empathy_structure_impact": { "text": "그게 문제인 건 알아요. 근데 구조를 바꾸기가 쉽지 않아요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "증상 악화 징후 안내", "text": "혈변이나 극심한 통증, 황달 같은 게 생기면 바로 오세요.", "intent": "warning_signs" },
+        { "tag": "생활", "family": "life", "label": "작은 변화부터 시작하도록", "text": "한 번에 다 바꾸기 어려우면, 밥 먹는 시간만 하루 두 번 지켜보시는 것부터 해봐요.", "intent": "small_change" },
+        { "tag": "공감", "family": "emotional", "label": "구조를 바꾸기 어렵다는 것을 안다", "text": "구조를 바꾸기 어렵다는 거 알아요. 근데 몸이 더 버텨주려면 조금씩은 바뀌어야 해요.", "intent": "empathy_change_needed" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "약 복용 방법 안내", "text": "처방 약은 식전에 드시면 가장 잘 들어요.", "intent": "medication_timing" },
+        "after_life": { "family": "life", "tag": "생활", "label": "앞으로의 프로젝트 조율 가능성", "text": "다음 프로젝트가 두 개 겹친다고 하셨는데, 시작 시점을 조금 조율할 수 있나요?", "intent": "project_timing" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "오늘 여기 오신 것이 작은 시작이다", "text": "오늘 여기 오신 것 자체가 몸에 관심을 두기 시작한 거예요.", "intent": "empathy_first_step" }
+      },
+      "responses": {
+        "warning_signs": { "text": "혈변은 없어요. 그런 게 생기면 바로 오면 되는 거죠?", "emotion": "neutral" },
+        "small_change": { "text": "그 정도는 해볼게요. 아무것도 안 먹는 날이 있긴 했으니까요.", "emotion": "neutral" },
+        "empathy_change_needed": { "text": "...네, 알아요. 이대로는 안 되겠다는 생각은 있어요.", "emotion": "warming" },
+        "medication_timing": { "text": "식전이요. 아침 공복에 먹으면 되겠네요.", "emotion": "neutral" },
+        "project_timing": { "text": "하나는 클라이언트한테 미루자고 해볼 수도 있어요. 그 옵션은 있어요.", "emotion": "neutral", "innerVoice": "선택지가 아예 없지는 않은 것이다." },
+        "empathy_first_step": { "text": "맞아요. 이렇게 나온 것도 좀 오래 걸렸어요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "재진 기준 안내", "text": "약 2주 드셔보시고, 증상이 나아지지 않으면 다시 오세요.", "intent": "followup_plan" },
+        { "tag": "생활", "family": "life", "label": "프리랜서 건강 관리의 어려움", "text": "프리랜서이면 아파도 쉬기 어려운 구조인 게 있죠. 본인이 의식적으로 챙겨야 하는 부분이 있어요.", "intent": "freelance_health" },
+        { "tag": "공감", "family": "emotional", "label": "오늘 이야기 나눈 것이 도움이 됐으면 한다", "text": "오늘 이야기 나눠보니까, 몸 문제만이 아닌 것 같아서 마음이 쓰이네요.", "intent": "empathy_holistic" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "내시경 권유 재강조", "text": "6개월에 체중도 빠졌으니까 내시경은 이번 달 안에 해보시는 걸 권해요.", "intent": "endoscopy_urge" },
+        "after_life": { "family": "life", "tag": "생활", "label": "정기 검진 권유", "text": "프리랜서라도 건강검진 일정을 잡아두시면 도움이 돼요.", "intent": "checkup_habit" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "자기 자신에게 더 관대해지셔도 된다", "text": "일도 중요하지만 본인을 좀 더 챙기셔도 돼요.", "intent": "empathy_self_care" }
+      },
+      "responses": {
+        "followup_plan": { "text": "네, 2주 드셔보고 안 나아지면 다시 올게요.", "emotion": "neutral" },
+        "freelance_health": { "text": "맞아요. 쉰다고 해줄 사람이 없거든요. 다 제 몫이에요.", "emotion": "neutral" },
+        "empathy_holistic": { "text": "...그렇죠. 사실 위만 문제가 아닌 것 같다는 건 저도 알아요.", "emotion": "warming" },
+        "endoscopy_urge": { "text": "이번 달이요. 일정 확인해보고 잡아볼게요.", "emotion": "neutral" },
+        "checkup_habit": { "text": "검진을 건너뛴 게 2년이에요. 올해는 해야겠네요.", "emotion": "neutral" },
+        "empathy_self_care": { "text": "...그게 잘 안 되는 것 같아요. 연습이 필요한 것 같은데.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "약 받아가면 되죠? 내시경도 생각해볼게요. 오늘 이야기하면서 좀 정리가 됐어요." },
+  "closingGated": { "speaker": "patient", "text": "사실... 일이 많은 게 문제인 건 알아요. 근데 지금 줄이면 수입이 줄고, 그게 또 걱정이 돼서요. 빠져나오기가 쉽지 않아요." },
+  "forceClose": {
+    "nurse": "다음 분 기다리고 계세요, 선생님.",
+    "patient": "아, 네. 나갈게요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "체중 감소와 역류 증상이 동반된 상황에서 내시경 검사를 더 강하게 권유했어야 했는지 생각해봤다.",
+      "life": "6개월 동안 쉬지 못한 구조가 어떻게 형성됐는지, 클라이언트와의 관계가 어떻게 되는지 더 들어보지 못했다.",
+      "emotional": "일을 줄이면 수입이 줄어든다는 경제적 불안이 깔려 있다는 것을 더 물어보지 못했다."
+    },
+    "lastScene": "한보람 씨가 처방전을 가방에 넣으며 나간다. 문 앞에서 잠깐 멈추더니, 핸드폰을 꺼내 일정표를 확인한다.",
+    "lastSceneGated": "한보람 씨가 나가다 멈춰 서서 돌아본다. '내시경 예약... 이번 달 안에 해볼게요.' 그 말이 단순한 인사말처럼 들리지 않는다."
+  }
+}

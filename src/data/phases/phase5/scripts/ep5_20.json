@@ -1,0 +1,153 @@
+{
+  "opening": { "speaker": "patient", "text": "(자녀가 옆에 앉아 있음) 자식들이 가보라고 해서요. 나는 괜찮은데." },
+  "nurseInfo": { "available": true, "text": "70세 남성분이에요. 만성 기침·가래가 수년째 악화 중이에요. 자녀분이 모시고 오셨어요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "기침 양상 확인", "text": "기침이 언제부터 있으셨어요? 가래도 같이 나오시나요?", "intent": "cough_history" },
+        { "tag": "생활", "family": "life", "label": "자녀분이 모시고 오셨군요", "text": "자녀분들이 걱정이 되셨나 봐요.", "intent": "family_concern" },
+        { "tag": "공감", "family": "emotional", "label": "괜찮다고 하시지만 오셨으니 다행이다", "text": "괜찮다고 하셔도 이렇게 와주셔서 좋네요.", "intent": "empathy_came_anyway" }
+      ],
+      "responses": {
+        "cough_history": { "text": "몇 년 됐소. 나이 먹으면 다 이렇지 않소.", "emotion": "guarded" },
+        "family_concern": { "text": "얘들이 자꾸 병원 가라고 해서. 나는 이 정도면 사는 데 지장 없소.", "emotion": "guarded" },
+        "empathy_came_anyway": { "text": "뭐, 왔으면 된 거지요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "기침 악화 시점", "text": "몇 년 되셨다고 하셨는데, 최근에 더 심해지신 것 같으세요?", "intent": "worsening_pattern" },
+        { "tag": "생활", "family": "life", "label": "이전에 어떤 일을 하셨는지", "text": "어떤 일 하셨어요? 예전에요.", "intent": "occupation" },
+        { "tag": "공감", "family": "emotional", "label": "나이 탓으로 돌리는 것이 이해된다", "text": "나이 드시면 그렇게 생각하기 쉬우시죠.", "intent": "empathy_age_excuse" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "가래 양상 확인", "text": "가래가 어떤 색이에요? 맑은 편이에요, 아니면 탁한 편이에요?", "intent": "sputum_color" },
+        "after_life": { "family": "life", "tag": "생활", "label": "직업적 분진 노출 확인", "text": "용접 일은 오래 하셨어요?", "intent": "welding_duration" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "자녀들이 걱정하는 것을 어떻게 받아들이시는지", "text": "자녀분들이 걱정한다는 거 아시잖아요.", "intent": "empathy_family_worry" }
+      },
+      "responses": {
+        "worsening_pattern": { "text": "요즘 좀 더 한 것 같기도 하고. 겨울이 되면 원래 더 하오.", "emotion": "neutral" },
+        "occupation": { "text": "용접이오. 삼십 년 넘게 했지.", "emotion": "neutral", "innerVoice": "30년 용접. 직업성 폐질환의 가능성을 봐야 한다." },
+        "empathy_age_excuse": { "text": "아닌 게 아니오. 주변 친구들도 다 기침 정도는 하거든.", "emotion": "neutral" },
+        "sputum_color": { "text": "좀 노랗기도 하고 탁하기도 하오. 가끔은 검은 것도 나오고.", "emotion": "neutral", "innerVoice": "검은 가래. 분진 흡입의 가능성." },
+        "welding_duration": { "text": "삼십 몇 년 됐소. 퇴직한 지는 5년이고.", "emotion": "neutral" },
+        "empathy_family_worry": { "text": "...아이들이 유별나게 구는 거지. 뭐. 그래도 왔잖소.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "호흡 곤란 여부 확인", "text": "숨이 차거나 계단 오르기 힘들다는 느낌 있으세요?", "intent": "dyspnea" },
+        { "tag": "생활", "family": "life", "label": "용접 작업 환경 확인", "text": "용접 하실 때 마스크나 보호 장비는 쓰셨어요?", "intent": "ppe_history" },
+        { "tag": "공감", "family": "emotional", "label": "삼십 년을 일해온 것이다", "text": "삼십 년 넘게 일하셨으면 정말 고된 세월이셨겠어요.", "intent": "empathy_long_career" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "운동 능력 변화 파악", "text": "예전에는 할 수 있었는데 지금은 숨이 차서 못 하게 된 것들이 있으세요?", "intent": "functional_change" },
+        "after_life": { "family": "life", "tag": "생활", "label": "퇴직 후 생활 확인", "text": "퇴직하시고 5년이면 요즘 어떻게 지내세요?", "intent": "retirement_life" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "그 세월이 지금 몸에 남아 있는 것이다", "text": "그 세월이 지금 몸에 쌓여 있는 거예요.", "intent": "empathy_accumulated" }
+      },
+      "responses": {
+        "dyspnea": { "text": "계단 오르면 좀 헉헉하긴 하오. 근데 그게 나이 탓 아니오?", "emotion": "neutral" },
+        "ppe_history": { "text": "그때는 그런 거 잘 안 했소. 마스크 쓰면 답답하고, 안 쓰는 게 일이 더 잘 됐거든.", "emotion": "neutral", "innerVoice": "30년간 무보호 분진 노출. 진폐증 가능성이 높다." },
+        "empathy_long_career": { "text": "그게 뭐 고된 거요. 다 하는 거지.", "emotion": "neutral" },
+        "functional_change": { "text": "작년까지는 텃밭에서 일했는데, 올해는 좀 무리오. 금방 숨이 차거든.", "emotion": "neutral" },
+        "retirement_life": { "text": "마당에서 텃밭 가꾸고, 동네 친구들이랑 시간 보내고. 그냥 사는 거지.", "emotion": "neutral" },
+        "empathy_accumulated": { "text": "...젊을 때 몸을 좀 아낄 걸 그랬나. 그때는 몰랐지.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "흡연 여부 확인", "text": "담배는 피우세요, 아니면 끊으셨어요?", "intent": "smoking_history" },
+        { "tag": "생활", "family": "life", "label": "기침이 일상에 미치는 영향", "text": "기침이 심할 때 일상생활에 어떤 불편이 있으세요?", "intent": "daily_impact" },
+        { "tag": "공감", "family": "emotional", "label": "병원을 불신하는 이유가 있을 것이다", "text": "병원에 대해 썩 내키지 않으신 편이신가요?", "intent": "empathy_hospital_distrust" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "흉통 여부 확인", "text": "가슴이 아프거나 조이는 느낌이 있으신 적은요?", "intent": "chest_pain" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면 중 기침 여부", "text": "밤에 자다가 기침 때문에 깨신 적도 있으세요?", "intent": "nocturnal_cough" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "예전에 병원에서 안 좋은 경험이 있었을 수 있다", "text": "예전에 병원에서 안 좋은 경험이 있으셨어요?", "intent": "empathy_bad_experience" }
+      },
+      "responses": {
+        "smoking_history": { "text": "퇴직하고 끊었소. 그 전에는 하루 한 갑씩 했지.", "emotion": "neutral", "innerVoice": "30년 이상 흡연 + 용접 분진. 복합 노출이다." },
+        "daily_impact": { "text": "대화하다가 기침이 나면 좀 민망하지. 밥 먹다가도 가끔 사래들려서.", "emotion": "neutral" },
+        "empathy_hospital_distrust": { "text": "병원에 오면 뭐든 나온다고 하잖소. 괜히 약만 늘어나고.", "emotion": "guarded" },
+        "chest_pain": { "text": "가끔 좀 답답하긴 하오. 통증까지는 아니고.", "emotion": "neutral" },
+        "nocturnal_cough": { "text": "새벽에 가끔 하오. 마누라가 잠 못 잔다고 잔소리를 해서.", "emotion": "neutral" },
+        "empathy_bad_experience": { "text": "몇 년 전에 다른 데서 검사했더니 이것저것 하라고 해서 한참 다녔는데, 나아진 건 없었거든.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "폐 기능 검사 필요성 설명", "text": "용접 오래 하시고 흡연도 하셨으면, 폐 기능 검사를 한 번 해봐야 할 것 같아요.", "intent": "pft_suggest" },
+        { "tag": "생활", "family": "life", "label": "자녀들이 얼마나 걱정하는지", "text": "오늘 자녀분이 직접 모시고 오신 거잖아요. 많이 걱정하시는 것 같아요.", "intent": "family_worry_context" },
+        { "tag": "공감", "family": "emotional", "label": "검사 많아지는 것이 걱정일 것이다", "text": "검사만 잔뜩 하고 뭔가 더 복잡해질 것 같은 느낌이 드시는 거죠?", "intent": "empathy_fear_findings" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "흉부 엑스레이도 필요하다", "text": "흉부 엑스레이도 찍어봐야 할 것 같아요. 폐 상태를 봐야 하거든요.", "intent": "cxr_suggest" },
+        "after_life": { "family": "life", "tag": "생활", "label": "자녀가 걱정하는 것에 마음이 쓰이는지", "text": "자녀분들이 걱정한다는 게 마음에 걸리시지는 않으세요?", "intent": "family_touch" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "알아야 대처할 수 있다", "text": "지금 어떤 상태인지 확인해야 그에 맞게 관리할 수 있어요.", "intent": "empathy_know_to_manage" }
+      },
+      "responses": {
+        "pft_suggest": { "text": "검사를 해야 한다고... 얼마나 걸려요?", "emotion": "neutral" },
+        "family_worry_context": { "text": "얘들이 오버하는 거요. 나는 이 정도는 괜찮은데.", "emotion": "guarded" },
+        "empathy_fear_findings": { "text": "그렇소. 검사하다 보면 이것저것 나온다고 하고, 그럼 약이 또 늘어나고.", "emotion": "guarded" },
+        "cxr_suggest": { "text": "엑스레이요. 뭐, 찍으라면 찍어야지.", "emotion": "neutral" },
+        "family_touch": { "text": "...뭐, 걱정하는 건 알지. 그래서 온 거 아니오.", "emotion": "warming" },
+        "empathy_know_to_manage": { "text": "뭔가 나오면 더 힘든 거 아닌가. 모르고 사는 게 나은 것도 있소.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "진폐증 가능성 설명", "text": "용접하면서 금속 분진을 오래 흡입하면 폐에 누적되는 경우가 있어요. 지금 기침이 그 영향일 수 있어요.", "intent": "pneumoconiosis_explain" },
+        { "tag": "생활", "family": "life", "label": "지금 할 수 있는 것부터 시작하자", "text": "지금 당장 큰 치료를 드리는 게 아니라, 상태를 파악하는 것부터 시작하는 거예요.", "intent": "start_small" },
+        { "tag": "공감", "family": "emotional", "label": "모르고 사는 것이 더 나을 수도 있다는 마음을 이해한다", "text": "모르고 사는 게 낫다는 마음도 이해해요. 근데 지금 상태가 나빠지고 있어서요.", "intent": "empathy_denial_understandable" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "산업재해 가능성 안내", "text": "직업성 폐질환이면 산업재해 신청 대상이 될 수도 있어요.", "intent": "occupational_disease" },
+        "after_life": { "family": "life", "tag": "생활", "label": "자녀들도 같이 설명 들어야 할 수 있다", "text": "오늘 자녀분이 같이 오셨으니까, 검사 결과 나오면 같이 설명 드릴게요.", "intent": "family_included" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "악화되는 건 나이 탓만이 아닐 수 있다", "text": "나이 탓이 전혀 없는 건 아니지만, 나이만의 문제는 아닐 수 있거든요.", "intent": "empathy_not_just_age" }
+      },
+      "responses": {
+        "pneumoconiosis_explain": { "text": "분진이 쌓인다고... 그게 빠지진 않겠지.", "emotion": "neutral", "innerVoice": "무거운 사실을 조용히 받아들이고 있다." },
+        "start_small": { "text": "검사만 하면 되는 거요? 그 이후에 뭔가 더 하라는 건 아니고요?", "emotion": "guarded" },
+        "empathy_denial_understandable": { "text": "나빠지고 있소? 작년보다 올해가 좀 더 한 것 같긴 했소.", "emotion": "neutral" },
+        "occupational_disease": { "text": "산업재해요? 그런 게 되나. 퇴직한 지 5년이나 됐는데.", "emotion": "neutral", "innerVoice": "산재 가능성에 처음으로 관심을 보인다." },
+        "family_included": { "text": "그렇게 하면 얘들도 좀 안심이 되겠소.", "emotion": "warming" },
+        "empathy_not_just_age": { "text": "...그 말은 좀 걸리는 말이오. 그럼 나이 말고 다른 원인이 있다는 거요?", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "검사 순서 안내", "text": "오늘 흉부 엑스레이 찍고, 폐 기능 검사도 예약할게요. 결과 보면서 같이 얘기해봐요.", "intent": "test_plan" },
+        { "tag": "생활", "family": "life", "label": "자녀들이 걱정하는 것이 이유가 있다", "text": "오늘 검사 결과가 나오면 자녀분들이 왜 걱정했는지 더 잘 이해되실 수도 있어요.", "intent": "family_validation" },
+        { "tag": "공감", "family": "emotional", "label": "여기까지 오신 것이 쉬운 결정이 아니셨을 것이다", "text": "병원이 내키지 않으셨을 텐데 오셔서 감사해요.", "intent": "empathy_effort_to_come" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "흡연 재개 금지 당부", "text": "담배는 끊으신 거 잘 하셨어요. 절대 다시 피우시면 안 돼요.", "intent": "no_smoking" },
+        "after_life": { "family": "life", "tag": "생활", "label": "텃밭 활동이 지금 좋은 활동이다", "text": "텃밭 가꾸시는 게 폐에도 나쁘지 않아요. 무리하지 않는 범위에서요.", "intent": "gardening_ok" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "자녀들도 옆에 있다", "text": "자녀분들이 옆에 있으니까 도움받을 수 있는 게 있어요.", "intent": "empathy_family_support" }
+      },
+      "responses": {
+        "test_plan": { "text": "알겠소. 찍으라는 거 다 찍겠소.", "emotion": "neutral" },
+        "family_validation": { "text": "...뭐, 얘들이 걱정하는 게 이유가 있을 수도 있겠지.", "emotion": "warming" },
+        "empathy_effort_to_come": { "text": "뭐, 자식들이 이러니 안 올 수도 없지 않소.", "emotion": "warming" },
+        "no_smoking": { "text": "다시 피울 생각은 없소. 끊을 때 힘들게 끊었는데.", "emotion": "neutral" },
+        "gardening_ok": { "text": "그거라도 할 수 있으면 다행이오. 올해 텃밭을 못 할까 봐 걱정했는데.", "emotion": "warming" },
+        "empathy_family_support": { "text": "...그렇지. 자식들한테 미안한 것도 있소. 걱정을 끼치는 게.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "검사 어디서 하면 되오? 얘들이 기다리고 있을 텐데." },
+  "closingGated": null,
+  "forceClose": {
+    "nurse": "선생님, 다음 분 오셨어요.",
+    "patient": "가야겠소. 검사 있다더니 가서 하겠소."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "흉통 증상이 더 자세히 물어봤어야 했다. 심혈관 질환 동반 가능성도 배제하지 못했다.",
+      "life": "퇴직 후 5년 동안 어떻게 지내셨는지, 자녀들과 어떤 관계를 맺고 살아오셨는지 더 들어보지 못했다.",
+      "emotional": "병원을 불신하게 된 구체적인 경험이 무엇이었는지, 그 배경을 더 물어보지 못했다."
+    },
+    "lastScene": "임기택 씨가 천천히 일어난다. 아들이 팔꿈치를 잡아주려 하자 손을 살짝 뿌리치고는, 혼자 걷는다. 그 뒷모습이 조금 뻣뻣해 보인다.",
+    "lastSceneGated": null
+  }
+}
