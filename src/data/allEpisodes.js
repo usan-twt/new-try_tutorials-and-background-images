@@ -23,6 +23,30 @@ import ep4_12 from './phases/phase4/scripts/ep4_12.json'
 import ep4_13 from './phases/phase4/scripts/ep4_13.json'
 import ep4_14 from './phases/phase4/scripts/ep4_14.json'
 import ep4_15 from './phases/phase4/scripts/ep4_15.json'
+import ep5_1 from './phases/phase5/scripts/ep5_1.json'
+import ep5_2 from './phases/phase5/scripts/ep5_2.json'
+import ep5_3 from './phases/phase5/scripts/ep5_3.json'
+import ep5_4 from './phases/phase5/scripts/ep5_4.json'
+import ep5_5 from './phases/phase5/scripts/ep5_5.json'
+import ep5_6 from './phases/phase5/scripts/ep5_6.json'
+import ep5_7 from './phases/phase5/scripts/ep5_7.json'
+import ep5_8 from './phases/phase5/scripts/ep5_8.json'
+import ep5_9 from './phases/phase5/scripts/ep5_9.json'
+import ep5_10 from './phases/phase5/scripts/ep5_10.json'
+import ep5_11 from './phases/phase5/scripts/ep5_11.json'
+import ep5_12 from './phases/phase5/scripts/ep5_12.json'
+import ep5_13 from './phases/phase5/scripts/ep5_13.json'
+import ep5_14 from './phases/phase5/scripts/ep5_14.json'
+import ep5_15 from './phases/phase5/scripts/ep5_15.json'
+import ep5_16 from './phases/phase5/scripts/ep5_16.json'
+import ep5_17 from './phases/phase5/scripts/ep5_17.json'
+import ep5_18 from './phases/phase5/scripts/ep5_18.json'
+import ep5_19 from './phases/phase5/scripts/ep5_19.json'
+import ep5_20 from './phases/phase5/scripts/ep5_20.json'
+import ep5_21 from './phases/phase5/scripts/ep5_21.json'
+import ep5_22 from './phases/phase5/scripts/ep5_22.json'
+import ep5_23 from './phases/phase5/scripts/ep5_23.json'
+import ep5_24 from './phases/phase5/scripts/ep5_24.json'
 
 export const dayBudgets = {
   4: { totalTurns: 10, episodes: ['phase3_ep1', 'phase3_ep2'] },
@@ -30,6 +54,10 @@ export const dayBudgets = {
   6: { totalTurns: 35 },
   7: { totalTurns: 35 },
   8: { totalTurns: 35 },
+  // Phase 5 — 하루 총 60턴
+  9: { totalTurns: 60 },
+  10: { totalTurns: 60 },
+  11: { totalTurns: 60 },
 }
 
 export const dayConfig = {
@@ -42,6 +70,10 @@ export const dayConfig = {
   6: { showApartment: false },
   7: { showApartment: true },
   8: { showApartment: false },
+  // Phase 5
+  9: { showApartment: false },
+  10: { showApartment: true },
+  11: { showApartment: false },
 }
 
 export const interludes = {
@@ -50,6 +82,9 @@ export const interludes = {
   meal_day6: { type: 'meal' },
   meal_day7: { type: 'meal' },
   meal_day8: { type: 'meal' },
+  meal_day9: { type: 'meal' },
+  meal_day10: { type: 'meal' },
+  meal_day11: { type: 'meal' },
   // 사회화 채널: Phase 3 시작 전 선배 조언 (corporateHospitalEvents.js)
   senior_advice: SENIOR_ADVICE,
 
@@ -329,6 +364,190 @@ const allEpisodes = [
     rapportGating: { threshold: 2, families: ['medical', 'emotional'] },
     script: ep4_15,
     notebook: { chart: '강명훈 / 58세 / 남 / 주증상: 상복부 불쾌감·소화불량 1개월 (아버지 위암력)' },
+  },
+  // ── Phase 5 ── (독감 유행 이벤트, Day 9–11)
+  // Day 9: 독감 유행 첫날 — 일반 외래 + 독감 환자 혼재 (8명)
+  {
+    id: 'phase5_ep1', phase: 5, day: 9,
+    patient: { name: '이정민', age: 35, chiefComplaint: '과민성 대장 증후군 재진', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_1,
+    notebook: { chart: '이정민 / 35세 / 여 / 과민성 대장 증후군 재진 (회사원)' },
+  },
+  {
+    id: 'phase5_ep2', phase: 5, day: 9,
+    patient: { name: '박상우', age: 41, chiefComplaint: '발열·근육통·기침 (독감 의심)', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: 'flu',
+    script: ep5_2,
+    notebook: { chart: '박상우 / 41세 / 남 / 발열 38.9도·근육통·기침 2일 (직장 내 독감 유행)' },
+  },
+  {
+    id: 'phase5_ep3', phase: 5, day: 9,
+    patient: { name: '김순례', age: 72, chiefComplaint: 'COPD 증상 악화', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    rapportGating: { threshold: 2, families: ['life', 'emotional'] },
+    script: ep5_3,
+    notebook: { chart: '김순례 / 72세 / 여 / COPD 만성 관리 중 — 기침 심화 (혼자 내원)' },
+  },
+  {
+    id: 'phase5_ep4', phase: 5, day: 9,
+    patient: { name: '최영철', age: 48, chiefComplaint: '속쓰림 (1개월)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    rapportGating: { threshold: 2, families: ['life', 'appearance'] },
+    script: ep5_4,
+    notebook: { chart: '최영철 / 48세 / 남 / 주증상: 속쓰림 1개월 (많이 참고 내원)' },
+  },
+  {
+    id: 'phase5_ep5', phase: 5, day: 9,
+    patient: { name: '이나라', age: 26, chiefComplaint: '목쉼·인후통 (2주)', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_5,
+    interludeBefore: 'meal_day9',
+    notebook: { chart: '이나라 / 26세 / 여 / 목쉼·인후통 2주 (카페 알바 중)' },
+  },
+  {
+    id: 'phase5_ep6', phase: 5, day: 9,
+    patient: { name: '정현우', age: 55, chiefComplaint: '변비·복부 팽만 (수개월)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    rapportGating: { threshold: 2, families: ['life', 'emotional'] },
+    script: ep5_6,
+    notebook: { chart: '정현우 / 55세 / 남 / 주증상: 변비·복부 팽만 수개월' },
+  },
+  {
+    id: 'phase5_ep7', phase: 5, day: 9,
+    patient: { name: '한지영', age: 44, chiefComplaint: '기침·흉부 압박감 (3주)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_7,
+    notebook: { chart: '한지영 / 44세 / 여 / 기침·흉부 압박감 3주 (지하철 원인 확신)' },
+  },
+  {
+    id: 'phase5_ep8', phase: 5, day: 9,
+    patient: { name: '노민호', age: 31, chiefComplaint: '무기력·의욕 저하 (3개월)', initialEmotion: 'guarded' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_8,
+    notebook: { chart: '노민호 / 31세 / 남 / 무기력·의욕 저하 3개월 (개발자, 데이터 기술형)' },
+  },
+  // Day 10: 독감 유행 이틀째 — 독감 진단서 요구 + 다양한 외래 (8명)
+  {
+    id: 'phase5_ep9', phase: 5, day: 10,
+    patient: { name: '이동현', age: 38, chiefComplaint: '발열·오한·근육통 (독감·진단서 요청)', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: 'flu',
+    script: ep5_9,
+    notebook: { chart: '이동현 / 38세 / 남 / 발열 39.1도·오한·근육통 2일 (영업직, 진단서 요청)' },
+  },
+  {
+    id: 'phase5_ep10', phase: 5, day: 10,
+    patient: { name: '문영숙', age: 61, chiefComplaint: '소화불량·식욕 부진 (수개월)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    rapportGating: { threshold: 2, families: ['emotional', 'life'] },
+    script: ep5_10,
+    notebook: { chart: '문영숙 / 61세 / 여 / 소화불량·식욕 부진 수개월 (남편 병간호 중)' },
+  },
+  {
+    id: 'phase5_ep11', phase: 5, day: 10,
+    patient: { name: '이태민', age: 22, chiefComplaint: '이명 (1개월)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_11,
+    notebook: { chart: '이태민 / 22세 / 남 / 이명 1개월 (이어폰 과사용)' },
+  },
+  {
+    id: 'phase5_ep12', phase: 5, day: 10,
+    patient: { name: '강철수', age: 63, chiefComplaint: '발열·기침·탈수', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    rapportGating: { threshold: 2, families: ['emotional', 'appearance'] },
+    script: ep5_12,
+    notebook: { chart: '강철수 / 63세 / 남 / 발열·기침·탈수 수일 (노숙 상태)' },
+  },
+  {
+    id: 'phase5_ep13', phase: 5, day: 10,
+    patient: { name: '조은미', age: 32, chiefComplaint: '자녀(7세) 기침·발열 (보호자 내원)', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_13,
+    interludeBefore: 'meal_day10',
+    notebook: { chart: '조은미 / 32세 / 여 / 보호자 내원 — 7세 자녀 기침·발열' },
+  },
+  {
+    id: 'phase5_ep14', phase: 5, day: 10,
+    patient: { name: '최석훈', age: 47, chiefComplaint: '불안장애 재진 (단약 후 재발)', initialEmotion: 'guarded' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_14,
+    notebook: { chart: '최석훈 / 47세 / 남 / 불안장애 재진 — 자의로 단약 후 재발' },
+  },
+  {
+    id: 'phase5_ep15', phase: 5, day: 10,
+    patient: { name: '윤미선', age: 54, chiefComplaint: '반복 복통·설사 (IBS 의심)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    rapportGating: { threshold: 2, families: ['emotional', 'life'] },
+    script: ep5_15,
+    notebook: { chart: '윤미선 / 54세 / 여 / 반복 복통·설사 (IBS 의심, 원인 모름)' },
+  },
+  {
+    id: 'phase5_ep16', phase: 5, day: 10,
+    patient: { name: '박준영', age: 29, chiefComplaint: '기침·가래·미열 (1주)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_16,
+    notebook: { chart: '박준영 / 29세 / 남 / 기침·가래·미열 1주 (헬스장 시작 직후)' },
+  },
+  // Day 11: 독감 피크 + 다양한 외래 마무리 (8명)
+  {
+    id: 'phase5_ep17', phase: 5, day: 11,
+    patient: { name: '류성진', age: 44, chiefComplaint: '발열·인후통·기침 (3일)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: 'flu',
+    script: ep5_17,
+    notebook: { chart: '류성진 / 44세 / 남 / 발열·인후통·기침 3일 (공장 근무, 빨리 끝내려 함)' },
+  },
+  {
+    id: 'phase5_ep18', phase: 5, day: 11,
+    patient: { name: '송하은', age: 29, chiefComplaint: '발열·근육통·두통 (1일, 급성)', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: 'flu',
+    script: ep5_18,
+    notebook: { chart: '송하은 / 29세 / 여 / 발열·근육통·두통 1일 급성 발현 (콜센터)' },
+  },
+  {
+    id: 'phase5_ep19', phase: 5, day: 11,
+    patient: { name: '한보람', age: 38, chiefComplaint: '구역·명치 불편감 (수개월)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    rapportGating: { threshold: 2, families: ['emotional', 'life'] },
+    script: ep5_19,
+    notebook: { chart: '한보람 / 38세 / 여 / 구역·명치 불편감 수개월 (프리랜서 디자이너)' },
+  },
+  {
+    id: 'phase5_ep20', phase: 5, day: 11,
+    patient: { name: '임기택', age: 70, chiefComplaint: '만성 기침·가래 (수년 악화)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_20,
+    notebook: { chart: '임기택 / 70세 / 남 / 만성 기침·가래 수년 악화 (자녀 동반)' },
+  },
+  {
+    id: 'phase5_ep21', phase: 5, day: 11,
+    patient: { name: '이수현', age: 41, chiefComplaint: '복통·구역감 (2주)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    rapportGating: { threshold: 2, families: ['emotional', 'appearance'] },
+    script: ep5_21,
+    interludeBefore: 'meal_day11',
+    notebook: { chart: '이수현 / 41세 / 여 / 복통·구역감 2주 (긴장된 모습)' },
+  },
+  {
+    id: 'phase5_ep22', phase: 5, day: 11,
+    patient: { name: '정다은', age: 19, chiefComplaint: '시험 불안·손떨림·두근거림 (반복)', initialEmotion: 'anxious' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_22,
+    notebook: { chart: '정다은 / 19세 / 여 / 시험 불안·손떨림·두근거림 반복 (재수생)' },
+  },
+  {
+    id: 'phase5_ep23', phase: 5, day: 11,
+    patient: { name: '오상철', age: 52, chiefComplaint: '목 이물감·삼킴 불편 (3주)', initialEmotion: 'guarded' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    script: ep5_23,
+    notebook: { chart: '오상철 / 52세 / 남 / 목 이물감·삼킴 불편 3주 (인터넷 암 의심)' },
+  },
+  {
+    id: 'phase5_ep24', phase: 5, day: 11,
+    patient: { name: '백지현', age: 46, chiefComplaint: '집중력 저하·기억력 감퇴 (수개월)', initialEmotion: 'neutral' },
+    directionTags: true, minTurns: 7, maxTurns: 10, eventContext: null,
+    rapportGating: { threshold: 2, families: ['emotional', 'life'] },
+    script: ep5_24,
+    notebook: { chart: '백지현 / 46세 / 여 / 집중력 저하·기억력 감퇴 수개월 (중학교 교사, 학폭 처리 후)' },
   },
 ]
 

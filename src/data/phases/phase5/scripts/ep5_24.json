@@ -1,0 +1,201 @@
+{
+  "opening": { "speaker": "patient", "text": "요즘 자꾸 깜빡하고 집중이 안 돼서요. 갱년기인가 싶어서요." },
+  "nurseInfo": { "available": true, "text": "46세 여성분이에요. 집중력 저하·기억력 감퇴 수개월이에요. 중학교 교사이신데, 갱년기로 자기 진단 하셨어요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "기억력 저하가 어떻게 나타나는지", "text": "깜빡하는 게 어떤 상황에서 나타나요? 구체적으로 말씀해 주실 수 있어요?", "intent": "memory_detail" },
+        { "tag": "생활", "family": "life", "label": "언제부터 이런 증상이 시작됐는지", "text": "언제부터 이런 증상이 시작됐어요?", "intent": "onset_timing" },
+        { "tag": "공감", "family": "emotional", "label": "갱년기라고 스스로 생각하셨군요", "text": "갱년기인가 싶으셨군요. 어떤 점에서 그렇게 생각하셨어요?", "intent": "empathy_selfdiagnosis" }
+      ],
+      "responses": {
+        "memory_detail": { "text": "수업 중에 학생 이름이 갑자기 생각이 안 나고, 방금 하려던 말을 잊어버리는 일이 자주 있어요. 수첩에 적어놓지 않으면 까먹어요.", "emotion": "neutral" },
+        "onset_timing": { "text": "한 3, 4개월 된 것 같아요. 처음엔 그냥 피곤해서 그런가 했는데, 계속되니까.", "emotion": "neutral" },
+        "empathy_selfdiagnosis": { "text": "나이도 있고, 여기저기 몸도 좀 그렇고. 그냥 그 시기인가 싶었어요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "집중력 저하가 어떻게 나타나는지", "text": "집중이 안 된다고 하셨는데, 어떤 상황에서 더 심해요?", "intent": "concentration_detail" },
+        { "tag": "생활", "family": "life", "label": "수업 중에 어떤 영향이 있는지", "text": "학교 수업에는 어떤 영향이 있어요?", "intent": "work_impact" },
+        { "tag": "공감", "family": "emotional", "label": "3, 4개월이 꽤 된 것이다", "text": "3, 4개월 동안 이런 상태였으면 많이 힘드셨겠어요.", "intent": "empathy_duration" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "수면 상태를 확인하자", "text": "잠은 잘 자세요?", "intent": "sleep_check" },
+        "after_life": { "family": "life", "tag": "생활", "label": "학교에서 어떤 일이 있는지", "text": "학교 일이 많으신 편이에요?", "intent": "school_workload" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "괜찮은 척 하고 계신 건 아닌지", "text": "주변에서 힘드신 게 보이진 않나요? 티를 많이 안 내시는 편이에요?", "intent": "empathy_masking" }
+      },
+      "responses": {
+        "concentration_detail": { "text": "뭘 시작하려고 하면 머릿속이 안 모이는 느낌이에요. 멍하게 앉아있다가 시간이 가있어요.", "emotion": "neutral" },
+        "work_impact": { "text": "수업 준비를 하는데 시간이 훨씬 오래 걸려요. 예전엔 금방 했는데. 학생들 앞에서 말 잃어버리면 민망하고요.", "emotion": "neutral" },
+        "empathy_duration": { "text": "뭐, 그냥 버텼죠. 교사가 아파서 힘들다고 하면 안 되잖아요.", "emotion": "neutral" },
+        "sleep_check": { "text": "잠이 좀 이상해요. 자다 깨고, 새벽에 깨면 다시 잠들기가 힘들어요.", "emotion": "neutral" },
+        "school_workload": { "text": "뭐, 보통은 있는 편이에요. 요즘은 특히 좀 많긴 한데.", "emotion": "neutral" },
+        "empathy_masking": { "text": "그런 편이죠. 티 내면 별로 안 좋으니까요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "갱년기 증상인지 다른 가능성 탐색", "text": "갱년기일 수도 있지만, 수면 문제가 있으면 집중력 저하가 생길 수 있어요. 두 가지가 연결될 수 있거든요.", "intent": "differential_explain" },
+        { "tag": "생활", "family": "life", "label": "요즘 학교에서 힘든 일이 있는지", "text": "요즘 학교에서 힘든 일이 따로 있으신 건 아닌가요?", "intent": "school_stress" },
+        { "tag": "공감", "family": "emotional", "label": "교사가 아파서 힘들다고 하면 안 된다는 말이 마음에 걸린다", "text": "교사가 힘들다고 하면 안 된다는 생각, 어디서 나온 건가요?", "intent": "empathy_teacher_burden" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "호르몬 검사 필요성 설명", "text": "갱년기 여부를 확인하려면 호르몬 검사를 해볼 수 있어요.", "intent": "hormone_test" },
+        "after_life": { "family": "life", "tag": "생활", "label": "요즘 들어 특별히 무거웠던 일이 있는지", "text": "3, 4개월 전, 증상 시작될 때 뭔가 힘든 일이 있었나요?", "intent": "trigger_event" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "버티는 데 많이 써버린 것 같다", "text": "그 생각을 하면서 오래 버텨오셨겠어요.", "intent": "empathy_endured_quietly" }
+      },
+      "responses": {
+        "differential_explain": { "text": "수면 때문에 집중이 안 될 수도 있다는 거군요. 그럴 수 있겠네요.", "emotion": "neutral" },
+        "school_stress": {
+          "text": "뭐... 학교 일이야 늘 있죠.",
+          "emotion": "neutral",
+          "gatedResponse": { "text": "...사실 올 초에 학교폭력 사건이 있었어요. 담당 교사라서 처리를 제가 다 했는데, 그게 좀 힘들었어요.", "emotion": "neutral" }
+        },
+        "empathy_teacher_burden": { "text": "그냥... 그게 맞는 것 같아서요. 내 일인데.", "emotion": "neutral" },
+        "hormone_test": { "text": "검사를 해봐야 알겠네요. 그렇게 해봐요.", "emotion": "neutral" },
+        "trigger_event": {
+          "text": "(잠시 생각하다가) ...그때쯤 학교에서 좀 있었어요.",
+          "emotion": "neutral",
+          "gatedResponse": { "text": "학교폭력 사건 처리를 제가 맡았는데, 몇 달이 걸렸어요. 끝나고 나서도 계속 머릿속에 남아있는 것 같아요.", "emotion": "neutral" }
+        },
+        "empathy_endured_quietly": { "text": "뭐, 다들 그렇게 사는 거 아닌가요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "수면 문제의 양상을 더 파악하자", "text": "자다가 깨는 게 언제부터예요? 학교 일이랑 겹치는 시기인가요?", "intent": "sleep_onset" },
+        { "tag": "생활", "family": "life", "label": "학교폭력 사건 처리가 어땠는지", "text": "학교폭력 사건을 처리하는 게 많이 힘드셨겠어요.", "intent": "school_violence_handling" },
+        { "tag": "공감", "family": "emotional", "label": "끝나고도 머릿속에 남아있다는 게 중요하다", "text": "사건이 끝났는데 머릿속에 계속 남아있다는 게 힘드시겠어요.", "intent": "empathy_still_present" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "수면 중 각성 양상 확인", "text": "새벽에 깰 때 어떤 생각이나 느낌이 드세요? 그냥 깨지는 건지요.", "intent": "nocturnal_waking" },
+        "after_life": { "family": "life", "tag": "생활", "label": "사건 후 달라진 것들", "text": "사건 처리가 끝나고 나서 달라진 게 있어요?", "intent": "after_event_change" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "무력감이 있는 건 아닌지", "text": "혹시 요즘 뭔가를 해도 소용없다는 느낌이 드실 때가 있어요?", "intent": "empathy_helplessness" }
+      },
+      "responses": {
+        "sleep_onset": { "text": "비슷한 시기예요. 사건 처리하면서부터 잠이 안 좋아진 것 같아요.", "emotion": "neutral" },
+        "school_violence_handling": {
+          "text": "힘들었죠. 피해 학생 부모님, 가해 학생 부모님, 학교 관리자... 다 사이에서 제가 조율을 했으니까요.",
+          "emotion": "neutral",
+          "gatedResponse": { "text": "제대로 한 건지 모르겠어요. 피해 학생이 전학을 가게 됐는데, 그게 최선이었는지 지금도 잘 모르겠어요.", "emotion": "neutral" }
+        },
+        "empathy_still_present": {
+          "text": "(잠시 침묵) ...끝난 게 아닌 것 같은 느낌이에요.",
+          "emotion": "neutral",
+          "gatedResponse": { "text": "해결이 된 것 같은데도 뭔가 계속 마음에 걸려요. 내가 더 잘 할 수 있었을 텐데 싶기도 하고요.", "emotion": "neutral" }
+        },
+        "nocturnal_waking": { "text": "그냥 깨요. 깨면 학교 생각이 나요. 학생 얼굴이 떠오르기도 하고.", "emotion": "neutral" },
+        "after_event_change": {
+          "text": "수업이 예전만큼 안 되는 것 같아요. 학생들 앞에서 활기차게 하고 싶은데, 잘 안 되고.",
+          "emotion": "neutral",
+          "gatedResponse": { "text": "사실 학교 가기가 좀 무거워요. 이런 말 처음 해보네요.", "emotion": "warming" }
+        },
+        "empathy_helplessness": {
+          "text": "그런 것 같아요. 열심히 했는데 결과가 이건지 싶고.",
+          "emotion": "neutral",
+          "gatedResponse": { "text": "예전엔 수업이 재미있었는데, 요즘은 그냥 버티는 것 같아요.", "emotion": "neutral" }
+        }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "우울 증상을 포함해서 평가해야 한다", "text": "수면 문제, 집중력 저하, 무기력감이 같이 있으면 갱년기만으로는 설명이 안 될 수 있어요.", "intent": "beyond_menopause" },
+        { "tag": "생활", "family": "life", "label": "학교 가기가 무겁다는 말이 중요하다", "text": "학교 가는 게 무겁다는 게 언제부터예요?", "intent": "school_aversion_onset" },
+        { "tag": "공감", "family": "emotional", "label": "버티는 것만으로 충분히 힘든 것이다", "text": "버티는 것만으로도 이미 많이 힘든 거예요.", "intent": "empathy_just_surviving" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "우울증 가능성을 함께 살펴보자", "text": "이런 증상들이 우울증의 신호일 수 있어요. 갱년기와 함께 오는 경우도 있거든요.", "intent": "depression_possibility" },
+        "after_life": { "family": "life", "tag": "생활", "label": "지금 학교에서 지지받는 환경인지", "text": "학교에서 이런 걸 털어놓을 수 있는 동료나 선생님이 있어요?", "intent": "colleague_support" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "누가 이걸 알아줬으면 하는 마음이 있었을 것이다", "text": "이걸 알아줬으면 하는 마음이 없었어요?", "intent": "empathy_wanting_recognition" }
+      },
+      "responses": {
+        "beyond_menopause": { "text": "갱년기가 아닐 수도 있다는 거예요?", "emotion": "neutral" },
+        "school_aversion_onset": { "text": "사건 이후인 것 같아요. 그때부터 뭔가 달라진 것 같아요.", "emotion": "neutral" },
+        "empathy_just_surviving": {
+          "text": "(눈을 살짝 내리깔며) 그 말이 좀... 이상하게 위로가 되네요.",
+          "emotion": "warming",
+          "gatedResponse": { "text": "아무도 힘들다는 말을 들어주지 않아서요. 다들 잘 하고 있는 줄 알고.", "emotion": "warming" }
+        },
+        "depression_possibility": { "text": "우울증이요. 그 정도까지라고는 생각 못 했는데.", "emotion": "neutral" },
+        "colleague_support": {
+          "text": "뭐, 힘들다는 말을 하기가 좀 그래서요. 다들 바쁘고.",
+          "emotion": "neutral",
+          "gatedResponse": { "text": "사실 이 일을 같이 맡았던 선생님이 계셨는데, 그분이 먼저 나가떨어지시기도 했어요. 저는 끝까지 해야 한다고 생각했고.", "emotion": "neutral" }
+        },
+        "empathy_wanting_recognition": {
+          "text": "(잠시 있다가) ...아마도요.",
+          "emotion": "warming",
+          "gatedResponse": { "text": "잘 했다는 말 한마디를 못 들었어요. 끝났으니까 됐다고만 했고.", "emotion": "warming" }
+        }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "우울증 평가 척도를 해보자", "text": "간단하게 우울 증상 평가를 해볼게요. 몇 가지 질문 드려도 될까요?", "intent": "depression_screening" },
+        { "tag": "생활", "family": "life", "label": "지금 상태가 일상에 어떤 영향을 주는지", "text": "이런 상태가 수업이나 일상에서 어디까지 영향을 주고 있어요?", "intent": "daily_function" },
+        { "tag": "공감", "family": "emotional", "label": "잘 했다는 말을 못 들었다는 것이 많이 아팠을 것이다", "text": "그렇게 힘든 일을 끝까지 해내셨는데, 잘 했다는 말도 못 들으셨군요.", "intent": "empathy_unrecognized" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "검사와 치료 방향 설명", "text": "호르몬 검사도 하고, 우울 증상 쪽도 같이 평가하는 게 좋겠어요.", "intent": "workup_plan" },
+        "after_life": { "family": "life", "tag": "생활", "label": "쉬는 시간이 있는지", "text": "주말이나 방학 때 쉬실 수 있는 시간이 있어요?", "intent": "rest_opportunities" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "자신한테도 수고했다는 말이 필요하다", "text": "스스로한테 수고했다는 말, 해보신 적 있어요?", "intent": "empathy_self_compassion" }
+      },
+      "responses": {
+        "depression_screening": { "text": "네, 해볼게요.", "emotion": "neutral" },
+        "daily_function": { "text": "수업은 어떻게든 하고 있는데, 퇴근하고 나면 아무것도 하기 싫어요. 그냥 누워있게 돼요.", "emotion": "neutral" },
+        "empathy_unrecognized": {
+          "text": "(잠시 침묵 후) 뭐 그게 당연한 거라고 생각했는데... 말씀하시니까 좀 억울한 것 같기도 하네요.",
+          "emotion": "warming",
+          "gatedResponse": { "text": "억울한 게 맞는 것 같아요. 처음 인정하네요.", "emotion": "warming" }
+        },
+        "workup_plan": { "text": "두 가지 다 하는 거군요. 그렇게 해요.", "emotion": "neutral" },
+        "rest_opportunities": { "text": "주말에 쉬어야 하는데, 학교 일이 주말에도 따라와요. 방학은... 연수가 있고요.", "emotion": "neutral" },
+        "empathy_self_compassion": { "text": "(멍하게) 그런 말을... 저한테 해본 적이 없네요.", "emotion": "warming" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "치료 방향 안내", "text": "호르몬 검사 결과 보고, 우울증 쪽으로는 상담 치료와 필요하면 약물도 고려할 수 있어요.", "intent": "treatment_direction" },
+        { "tag": "생활", "family": "life", "label": "당장 할 수 있는 작은 것들", "text": "당장 뭔가 크게 바꾸기보다, 퇴근 후에 딱 30분만 자기를 위한 시간을 만들어보는 건 어때요?", "intent": "small_self_care" },
+        { "tag": "공감", "family": "emotional", "label": "오늘 처음으로 말씀해 주신 게 중요하다", "text": "오늘 여기서 이런 말씀 해주신 게, 사실 처음이시죠?", "intent": "empathy_first_disclosure" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "다음 진료 예약", "text": "검사 결과 나오면 다시 오세요. 그때 방향 같이 정해봐요.", "intent": "followup" },
+        "after_life": { "family": "life", "tag": "생활", "label": "수면 개선이 집중력에도 도움 된다", "text": "수면이 나아지면 집중력도 많이 달라질 거예요. 수면부터 챙기는 게 먼저예요.", "intent": "sleep_priority" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "오늘 온 게 잘 된 것이다", "text": "오늘 이렇게 오신 거 잘 하셨어요.", "intent": "empathy_good_came" }
+      },
+      "responses": {
+        "treatment_direction": { "text": "상담 치료요. 그런 걸 받아야 할 줄 몰랐는데, 필요하면 해볼게요.", "emotion": "neutral" },
+        "small_self_care": { "text": "30분이요. 그것도 뭔가를 해야 한다고 생각하면 또 숙제 같은데... 그냥 누워있어도 되나요?", "emotion": "neutral" },
+        "empathy_first_disclosure": {
+          "text": "네. 이런 이야기를 어디다 해야 할지 몰라서요.",
+          "emotion": "warming",
+          "gatedResponse": { "text": "말하고 나니까 좀 다른 것 같아요. 뭔가 내려놓은 것 같기도 하고.", "emotion": "warming" }
+        },
+        "followup": { "text": "네, 그렇게 하겠습니다.", "emotion": "neutral" },
+        "sleep_priority": { "text": "수면부터요. 알겠어요. 뭔가 해볼 수 있을 것 같기도 하네요.", "emotion": "neutral" },
+        "empathy_good_came": {
+          "text": "네. 좀 늦었지만, 잘 왔다는 생각이 들어요.",
+          "emotion": "warming",
+          "gatedResponse": { "text": "이런 데 와도 되는 거라는 걸 몰랐어요. 갱년기 약이나 받으러 온다고 생각했는데, 다른 걸 받는 것 같아요.", "emotion": "opened" }
+        }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "감사해요. 검사 잡고 다시 올게요." },
+  "closingGated": { "speaker": "patient", "text": "(문 앞에서) ...오늘 말하길 잘 한 것 같아요. 감사해요." },
+  "forceClose": {
+    "nurse": "선생님, 다음 환자분 기다리고 계세요.",
+    "patient": "아, 네. 일어날게요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "우울 증상 척도 평가 결과가 어떤지, 실제 증상이 어느 정도인지 수치로 파악하지 못했다.",
+      "life": "학교폭력 사건이 구체적으로 어떻게 처리됐는지, 제도적 지원이 있었는지 더 탐색하지 못했다.",
+      "emotional": "억울함과 무력감이 어디까지 쌓여있는지, 그 아래에 뭐가 있는지 더 들어주지 못했다."
+    },
+    "lastScene": "백지현 씨가 처방전을 받아 들고 진료실을 나선다. 어깨가 들어올 때보다 조금 내려가 있다.",
+    "lastSceneGated": "백지현 씨가 문을 나서며 한번 뒤를 돌아본다. '다음에 또 올게요'라고 작게 말하고 나간다."
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "opening": { "speaker": "patient", "text": "목에 뭔가 걸린 것 같은 느낌이 3주 됐어요. 인터넷에서 찾아봤는데 좋지 않은 것들이 나와서요." },
+  "nurseInfo": { "available": true, "text": "52세 남성분이에요. 목 이물감·삼킴 불편 3주라고 하세요. 인터넷 검색으로 암을 의심하시는 것 같아요." },
+  "turns": [
+    {
+      "firstChoices": [
+        { "tag": "증상", "family": "medical", "label": "이물감이 어떤 느낌인지 확인", "text": "목에 뭔가 걸린 느낌이라고 하셨는데, 어떤 느낌인지 조금 더 말씀해 주실 수 있어요?", "intent": "sensation_detail" },
+        { "tag": "생활", "family": "life", "label": "인터넷에서 어떤 걸 찾아봤는지", "text": "인터넷에서 어떤 내용을 보셨어요?", "intent": "search_content" },
+        { "tag": "공감", "family": "emotional", "label": "걱정이 많이 되셨겠다", "text": "3주 동안 이러셨으면 걱정이 많이 되셨겠어요.", "intent": "empathy_worried" }
+      ],
+      "responses": {
+        "sensation_detail": { "text": "침 삼킬 때마다 뭔가 걸리는 것 같고, 음식도 좀 불편해요. 아프진 않은데 계속 신경 쓰여요.", "emotion": "guarded" },
+        "search_content": { "text": "인두암이나 식도암이 이렇게 시작된다고 나오더라고요. 증상이 비슷한 것 같아서요.", "emotion": "guarded" },
+        "empathy_worried": { "text": "걱정이 많이 되죠. 나쁜 게 있으면 어쩌나 싶고.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "음식 삼킬 때 통증 여부", "text": "음식이 넘어갈 때 통증이 있거나, 걸리는 느낌이 있어요?", "intent": "dysphagia_detail" },
+        { "tag": "생활", "family": "life", "label": "증상이 생긴 전후로 변화가 있었는지", "text": "3주 전에 특별히 뭔가 달라진 점이 있었어요? 스트레스가 심했다거나요.", "intent": "onset_context" },
+        { "tag": "공감", "family": "emotional", "label": "나쁜 거라는 생각이 들면 무섭지", "text": "검색해서 나쁜 결과가 나왔을 때 많이 무서우셨겠어요.", "intent": "empathy_fear_search" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "체중이나 식욕 변화가 있는지", "text": "최근에 체중이 빠지거나, 밥맛이 없어지신 건 없어요?", "intent": "weight_appetite" },
+        "after_life": { "family": "life", "tag": "생활", "label": "목소리 변화가 있는지", "text": "목소리가 쉬거나 변한 건 없어요?", "intent": "voice_change" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "검색이 오히려 더 불안하게 할 수 있다", "text": "검색하면 심한 것부터 나오는 경우가 많아서, 더 불안해지셨을 것 같아요.", "intent": "empathy_search_bias" }
+      },
+      "responses": {
+        "dysphagia_detail": { "text": "딱 막히는 느낌은 아니에요. 그냥 있는 것 같고, 삼키면 잠깐 불편한 거예요. 음식이 안 내려가진 않아요.", "emotion": "guarded" },
+        "onset_context": { "text": "딱히... 스트레스야 늘 있죠. 사업하니까. 근데 뭔가 특별히 달라진 건 없는 것 같아요.", "emotion": "guarded" },
+        "empathy_fear_search": { "text": "그러니까요. 찾을수록 더 안 좋은 게 나와서요.", "emotion": "guarded" },
+        "weight_appetite": { "text": "밥은 잘 먹어요. 체중은... 한 2킬로 빠진 것 같은데, 스트레스 때문인 것 같아요.", "emotion": "guarded" },
+        "voice_change": { "text": "목소리가 쉬거나 한 건 없어요. 그냥 이물감이 있는 거예요.", "emotion": "guarded" },
+        "empathy_search_bias": { "text": "그게 문제예요. 찾을 때마다 더 심한 것 같고. 근데 안 찾을 수가 없잖아요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "증상의 일관성 확인", "text": "이물감이 항상 있어요, 아니면 어떤 때 더 심하거나 덜하거나 해요?", "intent": "symptom_consistency" },
+        { "tag": "생활", "family": "life", "label": "사업 스트레스가 얼마나 되는지", "text": "사업 하신다고 하셨는데, 요즘 많이 힘드세요?", "intent": "business_stress" },
+        { "tag": "공감", "family": "emotional", "label": "가설을 가지고 확인받으러 온 것이다", "text": "어느 정도 자신의 판단이 맞는지 확인받고 싶어서 오신 것 같아요.", "intent": "empathy_confirmation_seeking" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "비슷한 증상이 이전에도 있었는지", "text": "예전에도 이런 증상이 있었던 적이 있어요?", "intent": "past_episode" },
+        "after_life": { "family": "life", "tag": "생활", "label": "흡연이나 음주 습관 확인", "text": "담배 피우세요? 술은 자주 드시는 편이에요?", "intent": "smoking_alcohol" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "검사를 받으면 확인이 된다", "text": "직접 검사로 확인하는 게 가장 정확해요. 그게 안심이 되는 방법이에요.", "intent": "empathy_exam_resolution" }
+      },
+      "responses": {
+        "symptom_consistency": { "text": "항상 있어요. 아침에 일어나서도 있고. 자다가 신경 쓰여서 깨기도 해요.", "emotion": "guarded" },
+        "business_stress": { "text": "뭐, 늘 있는 편이죠. 요즘 좀 더 심하긴 한데, 원래도 스트레스는 많아요.", "emotion": "guarded" },
+        "empathy_confirmation_seeking": { "text": "(잠시 침묵) 그렇죠. 이게 뭔지 확인이 되어야 할 것 같아서요.", "emotion": "guarded" },
+        "past_episode": { "text": "없었어요. 이런 건 처음이에요.", "emotion": "guarded" },
+        "smoking_alcohol": { "text": "담배는 하루 반 갑 정도요. 술은 일 때문에 좀 마시는 편이에요.", "emotion": "guarded" },
+        "empathy_exam_resolution": { "text": "맞아요. 검사해야 확실하겠죠. 검색해서는 결론이 안 나더라고요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "이물감이 인두 이상인지 확인", "text": "이물감이 실제로 뭔가 있는 건지, 아니면 근육이나 점막 상태 때문인지 확인을 해봐야 해요.", "intent": "exam_rationale" },
+        { "tag": "생활", "family": "life", "label": "역류성 식도염 가능성 탐색", "text": "식후에 속이 쓰리거나, 신물이 올라오는 느낌이 있을 때도 있어요?", "intent": "reflux_check" },
+        { "tag": "공감", "family": "emotional", "label": "검색으로 생긴 걱정이 이미 많이 쌓였을 것이다", "text": "검색을 반복하다 보면 걱정이 쌓이고 쌓이죠. 3주 동안 이러셨을 테니까요.", "intent": "empathy_accumulated_worry" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "후두내시경 필요성 설명", "text": "후두내시경으로 목 안을 직접 봐야 할 것 같아요. 그게 제일 정확해요.", "intent": "laryngoscopy_plan" },
+        "after_life": { "family": "life", "tag": "생활", "label": "스트레스성 인후 이상도 있다", "text": "스트레스가 심하면 목에 뭔가 걸린 느낌이 실제로 나타날 수 있어요. 히스테리구라고 해요.", "intent": "globus_explanation" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "확인이 되면 불안이 해소된다", "text": "검사 결과가 나오면 지금 가지고 계신 걱정이 훨씬 정리될 거예요.", "intent": "empathy_relief_ahead" }
+      },
+      "responses": {
+        "exam_rationale": { "text": "그렇죠. 뭔지 봐야죠.", "emotion": "guarded" },
+        "reflux_check": { "text": "아, 그게 있긴 있어요. 특히 저녁에 늦게 먹고 나서 쓰릴 때가 있어요.", "emotion": "guarded" },
+        "empathy_accumulated_worry": { "text": "3주를 이러니까 진짜 힘들었어요. 일도 손에 안 잡히고요.", "emotion": "guarded" },
+        "laryngoscopy_plan": { "text": "그게 제일 확실하겠네요. 빨리 해봅시다.", "emotion": "guarded" },
+        "globus_explanation": { "text": "히스테리구요? 그게 목에 이물감으로 나타나요?", "emotion": "guarded", "innerVoice": "처음 들어보는 정보에 잠시 가설이 흔들린다." },
+        "empathy_relief_ahead": { "text": "그게 빨리 됐으면 좋겠어요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "역류성 식도염도 이물감 원인이 된다", "text": "역류성 식도염이 목 이물감을 일으킬 수 있어요. 가능성 중 하나예요.", "intent": "reflux_as_cause" },
+        { "tag": "생활", "family": "life", "label": "늦은 식사와 음주 습관이 영향을 줄 수 있다", "text": "밤에 늦게 드시고 바로 누우시는 경우가 있어요?", "intent": "late_meal_habit" },
+        { "tag": "공감", "family": "emotional", "label": "암이 아닐 가능성이 높다는 말을 원하는 것 같다", "text": "지금 가장 듣고 싶으신 말이 '암이 아닐 수 있다'는 말일 것 같아요.", "intent": "empathy_desired_answer" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "검사 전 치료 시작 가능성", "text": "내시경 전에 역류성 위염 약을 먼저 써보는 것도 방법이에요. 증상이 좋아지면 원인이 좁혀지고요.", "intent": "empirical_treatment" },
+        "after_life": { "family": "life", "tag": "생활", "label": "생활습관 개선이 치료에 포함된다", "text": "늦은 식사를 줄이고, 식후에 바로 눕지 않는 것도 치료의 일부예요.", "intent": "lifestyle_mod" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "지금 당장 결론을 드릴 수는 없다", "text": "검사를 해봐야 알 수 있어요. 그냥 안심하세요라고 하는 건 제가 할 수 없어요. 하지만 가능성은 여러 개 있어요.", "intent": "empathy_honest_caution" }
+      },
+      "responses": {
+        "reflux_as_cause": { "text": "역류성 식도염이 이런 증상을 만들기도 해요?", "emotion": "guarded" },
+        "late_meal_habit": { "text": "자주요. 일이 늦게 끝나서 밥을 늦게 먹고 바로 자는 경우가 많아요.", "emotion": "guarded" },
+        "empathy_desired_answer": { "text": "(약간 멋쩍은 표정으로) ...맞아요. 그 말을 들으러 온 것 같기도 해요.", "emotion": "guarded", "innerVoice": "처음으로 본심을 드러낸다." },
+        "empirical_treatment": { "text": "약을 먼저 써보는 거요? 그래도 내시경은 해봐야 하지 않나요?", "emotion": "guarded" },
+        "lifestyle_mod": { "text": "식습관이 문제일 수 있다는 거군요.", "emotion": "guarded" },
+        "empathy_honest_caution": { "text": "솔직하게 말씀해 주시는 거 감사해요. 그 정도면 알겠어요.", "emotion": "guarded" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "내시경 및 검사 계획 확정", "text": "후두내시경이랑 위내시경, 두 가지 다 해볼게요. 스케줄 잡아드릴게요.", "intent": "full_workup" },
+        { "tag": "생활", "family": "life", "label": "검사 전까지 생활 지침", "text": "검사 전까지 늦게 드시는 거 줄이고, 술은 최대한 삼가 주세요.", "intent": "precautions" },
+        { "tag": "공감", "family": "emotional", "label": "결과가 나오면 다시 이야기하자", "text": "결과 나오면 같이 보면서 이야기해요. 혼자 검색하는 것보다 훨씬 정확하게 알 수 있어요.", "intent": "empathy_together_results" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "현재 증상 완화를 위한 처방", "text": "일단 증상 때문에 힘드실 테니까, 역류성 식도염 약이랑 인후 진정 약 처방해 드릴게요.", "intent": "symptom_relief_rx" },
+        "after_life": { "family": "life", "tag": "생활", "label": "금연도 고려해볼 시점이다", "text": "흡연이 인두 점막에 자극을 주거든요. 검사 결과 상관없이, 금연을 진지하게 고려해보실 타이밍이에요.", "intent": "smoking_cessation" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "3주의 걱정이 곧 끝날 것이다", "text": "검사 날짜 잡으면 이제 직접 확인하게 되는 거예요. 3주의 불안이 끝나는 시작이에요.", "intent": "empathy_end_of_worry" }
+      },
+      "responses": {
+        "full_workup": { "text": "둘 다요. 그게 낫겠네요. 빨리 잡아주세요.", "emotion": "neutral" },
+        "precautions": { "text": "술을 완전히 끊기는 어렵지만... 줄여볼게요.", "emotion": "neutral" },
+        "empathy_together_results": { "text": "그렇게 해주면 좋겠어요. 혼자 해석하는 게 더 무서운 것 같아요.", "emotion": "neutral" },
+        "symptom_relief_rx": { "text": "감사합니다. 약이라도 먹으면 좀 나아지겠죠.", "emotion": "neutral" },
+        "smoking_cessation": { "text": "(잠시 침묵) 그건... 생각해볼게요.", "emotion": "neutral" },
+        "empathy_end_of_worry": { "text": "빨리 검사 받고 싶어요. 이 상태로 있는 게 더 힘들어요.", "emotion": "neutral" }
+      }
+    },
+    {
+      "pivots": [
+        { "tag": "증상", "family": "medical", "label": "위험 신호 설명", "text": "만약 음식을 삼키기가 심하게 힘들어지거나, 목소리가 많이 쉬거나, 체중이 갑자기 5킬로 이상 빠지면 바로 오세요.", "intent": "red_flags" },
+        { "tag": "생활", "family": "life", "label": "검사 결과 후 다시 보자", "text": "검사 결과 나오면 같이 보고 그때 방향 정해요.", "intent": "result_followup" },
+        { "tag": "공감", "family": "emotional", "label": "오늘 오신 게 잘 된 것이다", "text": "3주를 혼자 검색하다 오신 거잖아요. 이제 직접 확인할 수 있으니까, 잘 오셨어요.", "intent": "empathy_right_choice" }
+      ],
+      "continue": {
+        "after_medical": { "family": "medical", "tag": "증상", "label": "검사 예약 안내", "text": "내시경 예약은 접수처에서 도와드릴 거예요. 오늘 잡고 가세요.", "intent": "booking_guide" },
+        "after_life": { "family": "life", "tag": "생활", "label": "그때까지 너무 검색하지 않는 게 좋다", "text": "검사 전까지 인터넷 검색은 좀 줄이시는 게 좋아요. 검색할수록 더 불안해지는 구조거든요.", "intent": "limit_searching" },
+        "after_emotional": { "family": "emotional", "tag": "공감", "label": "결과가 어떻든 같이 대응할 수 있다", "text": "결과가 어떻게 나와도, 그때 같이 방법을 찾을 수 있어요.", "intent": "empathy_no_matter_what" }
+      },
+      "responses": {
+        "red_flags": { "text": "그 정도면 확실히 나쁜 거군요. 그런 증상은 없는 상태예요.", "emotion": "neutral" },
+        "result_followup": { "text": "네. 결과 나오면 바로 올게요.", "emotion": "neutral" },
+        "empathy_right_choice": { "text": "(표정이 약간 풀리며) 맞아요. 왔어야 했는데 좀 늦었네요.", "emotion": "warming" },
+        "booking_guide": { "text": "알겠습니다. 접수처 가보겠습니다.", "emotion": "neutral" },
+        "limit_searching": { "text": "그게 쉽지 않긴 한데... 알겠어요. 줄여볼게요.", "emotion": "neutral" },
+        "empathy_no_matter_what": { "text": "그 말이 좀 안심이 되네요.", "emotion": "warming" }
+      }
+    }
+  ],
+  "closing": { "speaker": "patient", "text": "알겠어요. 검사 받고 결과 나오면 다시 올게요." },
+  "closingGated": null,
+  "forceClose": {
+    "nurse": "선생님, 다음 환자분 오셨어요.",
+    "patient": "아 네, 일어날게요."
+  },
+  "dayEndExtra": {
+    "unasked": {
+      "medical": "이물감 외 통증, 출혈, 이인증 같은 다른 이비인후과 증상이 있는지 더 확인하지 못했다.",
+      "life": "사업 스트레스가 구체적으로 어떤 상황인지, 수면 상태는 어떤지 탐색하지 못했다.",
+      "emotional": "3주 동안 혼자 검색하면서 느낀 불안과 두려움이 얼마나 됐는지 더 들어주지 못했다."
+    },
+    "lastScene": "오상철 씨가 처방전을 받아 들고, 접수처 쪽을 확인하며 진료실을 나선다.",
+    "lastSceneGated": null
+  }
+}
