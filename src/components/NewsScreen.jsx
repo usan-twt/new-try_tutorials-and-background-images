@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { NEWS_EVENTS } from '../data/newsEvents'
+import { FONTS, fadeStyle } from '../styles/theme'
 
-const serif = "'Noto Serif KR',Georgia,serif"
-const sans = 'system-ui,sans-serif'
+const serif = FONTS.serif
+const sans = FONTS.sans
 
 export default function NewsScreen({ event, onComplete }) {
   const news = NEWS_EVENTS[event] || NEWS_EVENTS.food_poisoning
@@ -19,11 +20,7 @@ export default function NewsScreen({ event, onComplete }) {
     return () => t.forEach(clearTimeout)
   }, [event])
 
-  const fade = (show) => ({
-    opacity: show ? 1 : 0,
-    transform: show ? 'translateY(0)' : 'translateY(6px)',
-    transition: 'opacity 0.7s ease, transform 0.7s ease',
-  })
+  const fade = (show) => fadeStyle(show)
 
   return (
     <div style={{

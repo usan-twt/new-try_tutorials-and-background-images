@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react'
+import { FONTS } from '../styles/theme'
+
+const serif = FONTS.serif
 
 const INTROS = {
   1: [{ text: '첫째 날', delay: 0 }, { text: '선배가 옆에 있다.', delay: 1000, style: 'sub' }],
@@ -38,7 +41,7 @@ export default function PhaseIntro({ phase, onComplete }) {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
         {lines.map((l, i) => (
           <p key={i} style={{
-            fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 18, fontWeight: 300, color: '#E8E0D0', letterSpacing: '0.08em',
+            fontFamily: serif, fontSize: 18, fontWeight: 300, color: '#E8E0D0', letterSpacing: '0.08em',
             opacity: i < visible ? 1 : 0, transform: i < visible ? 'translateY(0)' : 'translateY(4px)', transition: 'opacity 0.8s,transform 0.8s',
             ...(SUB_STYLES[l.style] || {}),
           }}>{l.text}</p>

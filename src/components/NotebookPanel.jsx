@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react'
+import { FONTS } from '../styles/theme'
+
+const sans = FONTS.sans
+const mono = FONTS.mono
 
 export default function NotebookPanel({ chart, isFirstAppearance }) {
   const [open, setOpen] = useState(false)
@@ -47,13 +51,13 @@ export default function NotebookPanel({ chart, isFirstAppearance }) {
       }}>
         <div style={{ padding: '60px 24px 40px', display: 'flex', flexDirection: 'column', gap: 28 }}>
           <div>
-            <p style={{ fontFamily: 'system-ui,sans-serif', fontSize: 10, color: 'rgba(58,53,48,0.4)', letterSpacing: '0.1em', marginBottom: 8 }}>CHART</p>
-            <p style={{ fontFamily: "'D2Coding',ui-monospace,monospace", fontSize: 12, lineHeight: 1.8, color: '#3A3530', whiteSpace: 'pre-wrap' }}>{chart}</p>
+            <p style={{ fontFamily: sans, fontSize: 10, color: 'rgba(58,53,48,0.4)', letterSpacing: '0.1em', marginBottom: 8 }}>CHART</p>
+            <p style={{ fontFamily: mono, fontSize: 12, lineHeight: 1.8, color: '#3A3530', whiteSpace: 'pre-wrap' }}>{chart}</p>
           </div>
           <div>
-            <p style={{ fontFamily: 'system-ui,sans-serif', fontSize: 10, color: 'rgba(58,53,48,0.4)', letterSpacing: '0.1em', marginBottom: 8 }}>MEMO</p>
+            <p style={{ fontFamily: sans, fontSize: 10, color: 'rgba(58,53,48,0.4)', letterSpacing: '0.1em', marginBottom: 8 }}>MEMO</p>
             <textarea value={memo} onChange={e => setMemo(e.target.value)} placeholder="여기에 메모..." rows={4} style={{
-              width: '100%', fontFamily: "'D2Coding',ui-monospace,monospace", fontSize: 12, lineHeight: 1.7, color: '#3A3530',
+              width: '100%', fontFamily: mono, fontSize: 12, lineHeight: 1.7, color: '#3A3530',
               background: 'transparent', border: 'none', borderBottom: '1px solid rgba(58,53,48,0.1)', outline: 'none', resize: 'none', padding: '8px 0',
             }} />
           </div>
