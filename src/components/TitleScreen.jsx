@@ -10,7 +10,16 @@ const AMBIENCE = [
   '먼 곳에서 전화벨이 울린다', '누군가 차트를 넘기는 소리',
 ]
 
-export default function TitleScreen({ onStart }) {
+// Day → Phase 매핑 (개발 모드용)
+const DAY_INFO = [
+  { day: 1, phase: 1 }, { day: 2, phase: 2 }, { day: 3, phase: 2 },
+  { day: 4, phase: 3 }, { day: 5, phase: 3 },
+  { day: 6, phase: 4 }, { day: 7, phase: 4 }, { day: 8, phase: 4 },
+  { day: 9, phase: 5 }, { day: 10, phase: 5 }, { day: 11, phase: 5 },
+]
+const PHASE_COLORS = { 1: '#6B8C6B', 2: '#7A8C6B', 3: '#8C7A5A', 4: '#8C5A5A', 5: '#5A6B8C' }
+
+export default function TitleScreen({ onStart, onJumpToDay }) {
   const [ready, setReady] = useState(false)
   const [title, setTitle] = useState(false)
   const [hint, setHint] = useState(false)
@@ -49,6 +58,26 @@ export default function TitleScreen({ onStart }) {
       </div>
       <p style={{ position: 'absolute', bottom: '6vh', left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontSize: 10, fontWeight: 300, color: '#C8C0B0', textShadow: '0 1px 3px rgba(0,0,0,0.5)', opacity: ambShow ? 1 : 0, transition: 'opacity 1.2s', pointerEvents: 'none', zIndex: 1 }}>{ambText}</p>
       <p style={{ position: 'absolute', bottom: '2.5vh', left: 0, right: 0, textAlign: 'center', fontFamily: sans, fontSize: 10, color: '#A8A098', textShadow: '0 1px 3px rgba(0,0,0,0.5)', opacity: hint && !out ? 0.5 : 0, transition: 'opacity 1.5s', pointerEvents: 'none', zIndex: 1 }}>아무 곳을 눌러 시작하기</p>
+
+      {import.meta.env.DEV && onJumpToDay && (
+        <div
+          style={{ position: 'absolute', top: 12, left: 12, zIndex: 10, background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, padding: '8px 10px', pointerEvents: 'auto' }}
+          onClick={e => e.stopPropagation()}
+        >
+          <p style={{ fontFamily: sans, fontSize: 9, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', marginBottom: 6 }}>DEV — DAY 선택</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, maxWidth: 220 }}>
+            {DAY_INFO.map(({ day, phase }) => (
+              <button
+                key={day}
+                onClick={() => onJumpToDay(day)}
+                style={{ fontFamily: sans, fontSize: 10, padding: '3px 7px', background: PHASE_COLORS[phase], border: 'none', borderRadius: 3, color: '#fff', cursor: 'pointer', opacity: 0.85 }}
+              >
+                D{day} P{phase}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

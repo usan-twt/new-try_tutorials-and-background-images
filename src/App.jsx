@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', background: '#1A1815' }}>
-      {screen === 'title' && <TitleScreen onStart={game.startGame} />}
+      {screen === 'title' && <TitleScreen onStart={game.startGame} onJumpToDay={game.jumpToDay} />}
       {screen === 'corridor' && <CorridorScene onComplete={game.finishCorridor} onNameSet={game.setPlayerName} />}
       {screen === 'morningNav' && (
         <NavigationScreen

@@ -218,6 +218,46 @@ export default function useGame() {
     setScreen('dayEnd')
   }, [])
 
+  // ── DEV: 원하는 Day로 바로 진입 (개발 모드 전용) ──
+  const jumpToDay = useCallback((day) => {
+    const idx = allEpisodes.findIndex(e => e.day === day)
+    if (idx === -1) return
+    const target = allEpisodes[idx]
+
+    setEpIndex(idx)
+    setCurrentPhase(target.phase)
+    setPlayerName('인턴')
+    setGuidedTourDone(true)
+    setEconomy(50)
+    setPendingMove(null)
+    setProfessorRelation(50)
+    setNurseRelation(50)
+    setLastEvalGrade(null)
+    setPendingRumor(null)
+    setPendingDocument(null)
+    setDayEndState({ patients: [], unasked: [], lastScene: [], overtime: [], isFinalEpisode: false, missedCount: 0 })
+    setDayTurnsUsed(0)
+    setDayPatientsSeen(0)
+    setDailyPatientCounts([])
+    if (target.phase === 4) setActiveEvent('food_poisoning')
+    else if (target.phase === 5) setActiveEvent('flu')
+    else setActiveEvent(null)
+    setPhase('opening')
+    setTurnIndex(0)
+    setMessages([])
+    setWaitingForChoice(false)
+    setShowSeniorGuide(false)
+    setLastFamily(null)
+    setUsedFamilies(new Set())
+    setInnerVoice(null)
+    setCurrentEmotion(target.patient.initialEmotion)
+    setExchangeCount(0)
+    setRapportCount(0)
+    setIsOvertime(false)
+    setOvertimeTurns(0)
+    setScreen('morningNav')
+  }, [])
+
   const startConsultation = useCallback(() => {
     const episode = allEpisodes[epIndex]
     resetScript(episode)
@@ -623,7 +663,7 @@ export default function useGame() {
   return {
     // 네비게이션
     screen, currentPhase, ep, dayEndState, currentInterlude,
-    playerName, setPlayerName, startGame, finishCorridor,
+    playerName, setPlayerName, startGame, jumpToDay, finishCorridor,
     finishMorningNav, finishEveningNav,
     startConsultation, nextEpisode, finishInterlude, finishApartment,
     // 경제 시스템
