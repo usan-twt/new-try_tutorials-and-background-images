@@ -1,4 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
+import { FONTS, KEYFRAMES } from '../styles/theme'
+
+const serif = FONTS.serif
+const sans = FONTS.sans
 
 const EMOTION_MAP = {
   neutral:    { color: '#A8B0A0', scale: 1.0 },
@@ -88,7 +92,7 @@ export default function ConsultationScreen({ game }) {
       {(maxTurns !== null || dayBudgetTotal !== null) && (
         <div style={{ flex: '0 0 auto', padding: '16px 28px 0', display: 'flex', justifyContent: 'center' }}>
           {isOvertime ? (
-            <span style={{ fontFamily: 'system-ui,sans-serif', fontSize: 11, fontStyle: 'italic', color: 'rgba(184,160,128,0.45)', letterSpacing: '0.03em' }}>
+            <span style={{ fontFamily: sans, fontSize: 11, fontStyle: 'italic', color: 'rgba(184,160,128,0.45)', letterSpacing: '0.03em' }}>
               추가 시간을 쓰고 있습니다
             </span>
           ) : (
@@ -118,8 +122,8 @@ export default function ConsultationScreen({ game }) {
             transition: 'all 1.2s cubic-bezier(0.4,0,0.2,1)',
           }} />
         </div>
-        <p style={{ fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 16, fontWeight: 400, color: '#E8E0D0', letterSpacing: '0.2em' }}>{patient.name}</p>
-        <p style={{ fontFamily: 'system-ui,sans-serif', fontSize: 11, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.03em' }}>{patient.age}세 · {patient.chiefComplaint}</p>
+        <p style={{ fontFamily: serif, fontSize: 16, fontWeight: 400, color: '#E8E0D0', letterSpacing: '0.2em' }}>{patient.name}</p>
+        <p style={{ fontFamily: sans, fontSize: 11, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.03em' }}>{patient.age}세 · {patient.chiefComplaint}</p>
       </div>
 
       {/* 대화 영역 */}
@@ -139,10 +143,10 @@ export default function ConsultationScreen({ game }) {
                 ...(isNurse ? { paddingLeft: 12, borderLeft: '1px solid rgba(184,168,144,0.2)' } : {}),
                 animation: 'fadeUp 0.4s ease forwards',
               }}>
-                {isSenior && <span style={{ display: 'block', fontFamily: 'system-ui,sans-serif', fontSize: 10, color: '#B0A070', letterSpacing: '0.05em', marginBottom: 3 }}>선배</span>}
-                {isNurse && <span style={{ display: 'block', fontFamily: 'system-ui,sans-serif', fontSize: 10, color: '#B8A890', letterSpacing: '0.05em', marginBottom: 3 }}>간호사</span>}
+                {isSenior && <span style={{ display: 'block', fontFamily: sans, fontSize: 10, color: '#B0A070', letterSpacing: '0.05em', marginBottom: 3 }}>선배</span>}
+                {isNurse && <span style={{ display: 'block', fontFamily: sans, fontSize: 10, color: '#B8A890', letterSpacing: '0.05em', marginBottom: 3 }}>간호사</span>}
                 <p style={{
-                  fontFamily: isSys || isDoc || isSenior || isNurse ? 'system-ui,sans-serif' : "'Noto Serif KR',Georgia,serif",
+                  fontFamily: isSys || isDoc || isSenior || isNurse ? sans : serif,
                   fontSize: isSys ? 11 : isSenior || isNurse ? 12 : 13,
                   fontStyle: isSys || isSenior || isNurse ? 'italic' : 'normal',
                   lineHeight: 1.8,
@@ -159,7 +163,7 @@ export default function ConsultationScreen({ game }) {
       {innerVoice && (
         <div style={{ flex: '0 0 auto', padding: '8px 28px' }}>
           <p style={{
-            fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 12, fontStyle: 'italic',
+            fontFamily: serif, fontSize: 12, fontStyle: 'italic',
             lineHeight: 1.7, color: '#B0A070', background: 'rgba(55,50,35,0.6)', padding: '10px 16px', borderRadius: 4,
           }}>{innerVoice}</p>
         </div>
@@ -179,11 +183,11 @@ export default function ConsultationScreen({ game }) {
                 animation: 'fadeUp 0.4s ease forwards',
               }}>
                 <span style={{
-                  display: 'block', fontFamily: 'system-ui,sans-serif', fontSize: 10, fontWeight: 500,
+                  display: 'block', fontFamily: sans, fontSize: 10, fontWeight: 500,
                   color: '#B0A070', letterSpacing: '0.06em', marginBottom: 6,
                 }}>선배</span>
                 <p style={{
-                  fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 13, fontStyle: 'italic',
+                  fontFamily: serif, fontSize: 13, fontStyle: 'italic',
                   lineHeight: 1.7, color: 'rgba(176,160,112,0.85)',
                 }}>{currentTurn.seniorGuide.text}</p>
               </div>
@@ -192,7 +196,7 @@ export default function ConsultationScreen({ game }) {
               <button onClick={() => send()} style={{
                 display: 'block', width: '100%', textAlign: 'left', padding: '14px 18px',
                 background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)',
-                borderRadius: 6, cursor: 'pointer', fontFamily: 'system-ui,sans-serif', fontSize: 14, lineHeight: 1.6, color: '#E8E0D0',
+                borderRadius: 6, cursor: 'pointer', fontFamily: sans, fontSize: 14, lineHeight: 1.6, color: '#E8E0D0',
                 animation: 'fadeUp 0.3s ease forwards',
               }}>
                 "{currentTurn.choice.text}"
@@ -209,9 +213,9 @@ export default function ConsultationScreen({ game }) {
                   padding: '12px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)',
                   borderRadius: 6, cursor: 'pointer',
                 }}>
-                  <span style={{ fontFamily: 'system-ui,sans-serif', fontSize: 10, fontWeight: 500, letterSpacing: '0.06em', color: TAG_COLORS[c.tag] || 'rgba(255,255,255,0.4)' }}>{c.tag}</span>
-                  <span style={{ fontFamily: 'system-ui,sans-serif', fontSize: 11, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>{c.label}</span>
-                  <span style={{ fontFamily: 'system-ui,sans-serif', fontSize: 14, color: '#E8E0D0', lineHeight: 1.6 }}>"{c.text}"</span>
+                  <span style={{ fontFamily: sans, fontSize: 10, fontWeight: 500, letterSpacing: '0.06em', color: TAG_COLORS[c.tag] || 'rgba(255,255,255,0.4)' }}>{c.tag}</span>
+                  <span style={{ fontFamily: sans, fontSize: 11, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>{c.label}</span>
+                  <span style={{ fontFamily: sans, fontSize: 14, color: '#E8E0D0', lineHeight: 1.6 }}>"{c.text}"</span>
                 </button>
               ))}
               {/* Phase 4+: minTurns 충족 후 자발 종료 버튼 */}
@@ -220,7 +224,7 @@ export default function ConsultationScreen({ game }) {
                   width: '100%', textAlign: 'center', padding: '10px 16px',
                   background: 'none', border: '1px solid rgba(255,255,255,0.06)',
                   borderRadius: 6, cursor: 'pointer', marginTop: 4,
-                  fontFamily: 'system-ui,sans-serif', fontSize: 11,
+                  fontFamily: sans, fontSize: 11,
                   color: 'rgba(232,224,208,0.28)', letterSpacing: '0.05em',
                   transition: 'color 0.2s, border-color 0.2s',
                 }}
@@ -243,24 +247,21 @@ export default function ConsultationScreen({ game }) {
           animation: 'patientEnter 2.2s ease forwards',
         }}>
           <span style={{
-            fontFamily: 'system-ui,sans-serif', fontSize: 10,
+            fontFamily: sans, fontSize: 10,
             color: 'rgba(232,224,208,0.25)', letterSpacing: '0.12em',
           }}>다음 환자</span>
           <p style={{
-            fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 22, fontWeight: 400,
+            fontFamily: serif, fontSize: 22, fontWeight: 400,
             color: '#E8E0D0', letterSpacing: '0.22em', margin: 0,
           }}>{patient.name}</p>
           <p style={{
-            fontFamily: 'system-ui,sans-serif', fontSize: 11,
+            fontFamily: sans, fontSize: 11,
             color: 'rgba(255,255,255,0.28)', letterSpacing: '0.04em', margin: 0,
           }}>{patient.age}세 · {patient.chiefComplaint}</p>
         </div>
       )}
 
-      <style>{`
-        @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-        @keyframes patientEnter{
+      <style>{`${KEYFRAMES.fadeUp}${KEYFRAMES.fadeIn}@keyframes patientEnter{
           0%{opacity:0}
           18%{opacity:1}
           72%{opacity:1}

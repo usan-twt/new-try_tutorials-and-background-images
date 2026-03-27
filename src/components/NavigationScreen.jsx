@@ -1,4 +1,7 @@
 import useHospitalNavigation, { getPalette } from '../hooks/useHospitalNavigation'
+import { FONTS } from '../styles/theme'
+
+const sans = FONTS.sans
 import { FLOORS } from '../data/hospitalMap'
 import DocumentOverlay from './DocumentOverlay'
 
@@ -50,7 +53,7 @@ function StairsIcon({ direction, palette }) {
       <div style={{
         position: 'absolute', top: -18, left: '50%', transform: 'translateX(-50%)',
         fontSize: 10, color: palette.textSecondary, whiteSpace: 'nowrap',
-        fontFamily: 'system-ui,sans-serif', fontWeight: 500, letterSpacing: 0.5,
+        fontFamily: sans, fontWeight: 500, letterSpacing: 0.5,
       }}>
         {direction === 'up' ? '▲ 위층' : '▼ 아래층'}
       </div>
@@ -77,7 +80,7 @@ export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete,
   return (
     <div style={{
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-      background: '#1A1815', fontFamily: 'system-ui,sans-serif', userSelect: 'none',
+      background: '#1A1815', fontFamily: sans, userSelect: 'none',
     }}>
       {/* HUD */}
       <div style={{
@@ -480,7 +483,7 @@ export default function NavigationScreen({ timeOfDay, onEnterClinic, onComplete,
               transform: dialogueVisible ? 'translateY(0)' : 'translateY(8px)',
               transition: 'opacity 0.2s, transform 0.2s', zIndex: 30,
             }}>
-            <div style={{ fontSize: 11, color: '#c4a870', fontWeight: 600, marginBottom: 6, letterSpacing: 0.5, fontFamily: 'system-ui,sans-serif' }}>
+            <div style={{ fontSize: 11, color: '#c4a870', fontWeight: 600, marginBottom: 6, letterSpacing: 0.5, fontFamily: sans }}>
               {activeDialogue ? activeDialogue.name : roomDescription?.name}
             </div>
             <div style={{ fontSize: 13, color: '#E8E0D0', lineHeight: 1.75, wordBreak: 'keep-all', fontFamily: "'Noto Serif KR',Georgia,serif", fontWeight: 300 }}>

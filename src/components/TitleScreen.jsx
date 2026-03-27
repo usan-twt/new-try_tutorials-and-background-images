@@ -1,4 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { FONTS } from '../styles/theme'
+
+const serif = FONTS.serif
+const sans = FONTS.sans
 
 const AMBIENCE = [
   '먼 곳에서 발자국 소리가 들린다', '복도 끝에서 짧은 인사가 들려온다',
@@ -40,11 +44,11 @@ export default function TitleScreen({ onStart }) {
       <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/title-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, rgba(26,24,21,0.85) 100%)', pointerEvents: 'none' }} />
       <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center', paddingBottom: '10vh' }}>
-        <h1 style={{ fontFamily: "'Noto Serif KR',Georgia,serif", fontWeight: 300, fontSize: 20, letterSpacing: '0.35em', color: '#E8E0D0', textShadow: '0 1px 4px rgba(0,0,0,0.5)', opacity: title ? 1 : 0, transform: title ? 'translateY(0)' : 'translateY(6px)', transition: 'opacity 0.8s,transform 0.8s' }}>INTERN</h1>
-        <p style={{ fontFamily: 'system-ui,sans-serif', fontSize: 10, color: '#C8C0B0', letterSpacing: '0.08em', marginTop: 8, textShadow: '0 1px 3px rgba(0,0,0,0.5)', opacity: title ? 1 : 0, transform: title ? 'translateY(0)' : 'translateY(4px)', transition: 'opacity 0.8s 0.3s,transform 0.8s 0.3s' }}>1년차 전공의의 하루</p>
+        <h1 style={{ fontFamily: serif, fontWeight: 300, fontSize: 20, letterSpacing: '0.35em', color: '#E8E0D0', textShadow: '0 1px 4px rgba(0,0,0,0.5)', opacity: title ? 1 : 0, transform: title ? 'translateY(0)' : 'translateY(6px)', transition: 'opacity 0.8s,transform 0.8s' }}>INTERN</h1>
+        <p style={{ fontFamily: sans, fontSize: 10, color: '#C8C0B0', letterSpacing: '0.08em', marginTop: 8, textShadow: '0 1px 3px rgba(0,0,0,0.5)', opacity: title ? 1 : 0, transform: title ? 'translateY(0)' : 'translateY(4px)', transition: 'opacity 0.8s 0.3s,transform 0.8s 0.3s' }}>1년차 전공의의 하루</p>
       </div>
-      <p style={{ position: 'absolute', bottom: '6vh', left: 0, right: 0, textAlign: 'center', fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 10, fontWeight: 300, color: '#C8C0B0', textShadow: '0 1px 3px rgba(0,0,0,0.5)', opacity: ambShow ? 1 : 0, transition: 'opacity 1.2s', pointerEvents: 'none', zIndex: 1 }}>{ambText}</p>
-      <p style={{ position: 'absolute', bottom: '2.5vh', left: 0, right: 0, textAlign: 'center', fontFamily: 'system-ui,sans-serif', fontSize: 10, color: '#A8A098', textShadow: '0 1px 3px rgba(0,0,0,0.5)', opacity: hint && !out ? 0.5 : 0, transition: 'opacity 1.5s', pointerEvents: 'none', zIndex: 1 }}>아무 곳을 눌러 시작하기</p>
+      <p style={{ position: 'absolute', bottom: '6vh', left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontSize: 10, fontWeight: 300, color: '#C8C0B0', textShadow: '0 1px 3px rgba(0,0,0,0.5)', opacity: ambShow ? 1 : 0, transition: 'opacity 1.2s', pointerEvents: 'none', zIndex: 1 }}>{ambText}</p>
+      <p style={{ position: 'absolute', bottom: '2.5vh', left: 0, right: 0, textAlign: 'center', fontFamily: sans, fontSize: 10, color: '#A8A098', textShadow: '0 1px 3px rgba(0,0,0,0.5)', opacity: hint && !out ? 0.5 : 0, transition: 'opacity 1.5s', pointerEvents: 'none', zIndex: 1 }}>아무 곳을 눌러 시작하기</p>
     </div>
   )
 }

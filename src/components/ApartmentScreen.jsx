@@ -3,9 +3,10 @@ import {
   entryTexts, windowTexts, BG_COLORS, BG_IMAGES,
   INTERACTION_POINTS, getBankEntries, APARTMENT_TIERS,
 } from '../data/apartmentData'
+import { FONTS } from '../styles/theme'
 
-const serif = "'Noto Serif KR',Georgia,serif"
-const sans = 'system-ui,sans-serif'
+const serif = FONTS.serif
+const sans = FONTS.sans
 
 // ── 통장 오버레이 ──
 function PhoneOverlay({ tier, economy, onClose }) {

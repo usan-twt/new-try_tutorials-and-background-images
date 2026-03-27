@@ -1,4 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { FONTS, KEYFRAMES } from '../styles/theme'
+
+const serif = FONTS.serif
+const sans = FONTS.sans
 
 const LINES = [
   { speaker: '선배', text: '(다가오며) 오늘부터 우리 과에서 근무하는 거지?' },
@@ -82,7 +86,7 @@ export default function CorridorScene({ onComplete, onNameSet }) {
       <div style={{ maxWidth: 460, padding: '0 32px', display: 'flex', flexDirection: 'column', gap: 20 }}>
         {/* 장소 표시 */}
         <span style={{
-          fontFamily: 'system-ui,sans-serif', fontSize: 11,
+          fontFamily: sans, fontSize: 11,
           color: 'rgba(232,224,208,0.3)', letterSpacing: '0.08em',
         }}>복도</span>
 
@@ -97,12 +101,12 @@ export default function CorridorScene({ onComplete, onNameSet }) {
                 animation: 'fadeUp 0.5s ease forwards',
               }}>
                 <span style={{
-                  display: 'block', fontFamily: 'system-ui,sans-serif', fontSize: 10,
+                  display: 'block', fontFamily: sans, fontSize: 10,
                   color: isSenior ? '#B0A070' : 'rgba(232,224,208,0.4)',
                   letterSpacing: '0.05em', marginBottom: 4,
                 }}>{line.speaker}</span>
                 <p style={{
-                  fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 14, fontWeight: 300,
+                  fontFamily: serif, fontSize: 14, fontWeight: 300,
                   lineHeight: 1.8,
                   color: isSenior ? 'rgba(176,160,112,0.8)' : 'rgba(232,224,208,0.7)',
                 }}>{line.text}</p>
@@ -129,7 +133,7 @@ export default function CorridorScene({ onComplete, onNameSet }) {
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.1)',
                 borderRadius: 6,
-                fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 15,
+                fontFamily: serif, fontSize: 15,
                 color: '#E8E0D0', outline: 'none',
                 letterSpacing: '0.1em',
               }}
@@ -139,13 +143,13 @@ export default function CorridorScene({ onComplete, onNameSet }) {
               background: 'rgba(176,160,112,0.15)',
               border: '1px solid rgba(176,160,112,0.3)',
               borderRadius: 6, cursor: 'pointer',
-              fontFamily: 'system-ui,sans-serif', fontSize: 13,
+              fontFamily: sans, fontSize: 13,
               color: '#B0A070',
             }}>확인</button>
           </form>
         )}
       </div>
-      <style>{`@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}`}</style>
+      <style>{KEYFRAMES.fadeUp}</style>
     </div>
   )
 }

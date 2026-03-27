@@ -1,4 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { FONTS, KEYFRAMES } from '../styles/theme'
+
+const serif = FONTS.serif
+const sans = FONTS.sans
 
 export default function InterludeScene({ interlude, onComplete }) {
   const [visible, setVisible] = useState(0)
@@ -58,7 +62,7 @@ export default function InterludeScene({ interlude, onComplete }) {
   return (
     <div style={{ width: '100%', height: '100%', background: '#1A1815', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'opacity 1s', opacity: fading ? 0 : 1 }}>
       <div style={{ maxWidth: 460, padding: '0 32px', display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <span style={{ fontFamily: 'system-ui,sans-serif', fontSize: 11, color: 'rgba(168,176,160,0.4)', letterSpacing: '0.08em' }}>{interlude.character}</span>
+        <span style={{ fontFamily: sans, fontSize: 11, color: 'rgba(168,176,160,0.4)', letterSpacing: '0.08em' }}>{interlude.character}</span>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {lines.map((l, i) => (
             l.type === 'notebook' ? (
@@ -79,7 +83,7 @@ export default function InterludeScene({ interlude, onComplete }) {
               </div>
             ) : (
               <p key={i} style={{
-                fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: 'rgba(232,224,208,0.7)',
+                fontFamily: serif, fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: 'rgba(232,224,208,0.7)',
                 opacity: i < visible ? 1 : 0, transform: i < visible ? 'translateY(0)' : 'translateY(4px)', transition: 'opacity 0.6s,transform 0.6s',
               }}>{l.text}</p>
             )
@@ -90,7 +94,7 @@ export default function InterludeScene({ interlude, onComplete }) {
             {reactions.map((r, i) => (
               <button key={i} onClick={() => react(r.tone)} style={{
                 textAlign: 'left', padding: '10px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)',
-                borderRadius: 5, cursor: 'pointer', fontFamily: 'system-ui,sans-serif', fontSize: 13, color: 'rgba(232,224,208,0.5)',
+                borderRadius: 5, cursor: 'pointer', fontFamily: sans, fontSize: 13, color: 'rgba(232,224,208,0.5)',
               }}>"{r.text}"</button>
             ))}
           </div>
@@ -99,17 +103,14 @@ export default function InterludeScene({ interlude, onComplete }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8 }}>
             {afterLines.map((l, i) => (
               <p key={`after-${i}`} style={{
-                fontFamily: "'Noto Serif KR',Georgia,serif", fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: 'rgba(232,224,208,0.7)',
+                fontFamily: serif, fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: 'rgba(232,224,208,0.7)',
                 opacity: i < afterVisible ? 1 : 0, transform: i < afterVisible ? 'translateY(0)' : 'translateY(4px)', transition: 'opacity 0.6s,transform 0.6s',
               }}>{l.text}</p>
             ))}
           </div>
         )}
       </div>
-      <style>{`
-        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-        @keyframes notebookGlow{0%,100%{box-shadow:0 0 0 0 rgba(176,160,112,0)}50%{box-shadow:0 0 20px 8px rgba(176,160,112,0.25)}}
-      `}</style>
+      <style>{`${KEYFRAMES.fadeIn}@keyframes notebookGlow{0%,100%{box-shadow:0 0 0 0 rgba(176,160,112,0)}50%{box-shadow:0 0 20px 8px rgba(176,160,112,0.25)}}`}</style>
     </div>
   )
 }
