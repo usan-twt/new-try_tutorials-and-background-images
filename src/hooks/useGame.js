@@ -6,20 +6,6 @@ import { evaluatePhase, PHASE_N } from '../data/evaluationData'
 import { NURSE_RUMOR, PERFORMANCE_NOTICE } from '../data/corporateHospitalEvents'
 import { getMealInterlude } from '../data/mealScenes'
 
-// ── 화면 전환 FSM ──
-const TRANSITIONS = {
-  title:        { START: 'corridor' },
-  corridor:     { DONE: 'phaseIntro' },
-  phaseIntro:   { READY: 'consultation' },
-  consultation: { END: 'dayEnd' },
-  dayEnd:       { NEXT: 'interlude', SKIP: 'phaseIntro', DONE: 'complete' },
-  interlude:    { DONE: 'consultation' },
-}
-
-function nextScreen(current, action) {
-  return TRANSITIONS[current]?.[action] || current
-}
-
 // ── 선택지 계산 ──
 function computeChoices(turn, lastFamily, turnsRemaining, usedFamilies, activeEvent) {
   if (!turn) return null
@@ -512,20 +498,17 @@ export default function useGame() {
     setInnerVoice(null)
 
     const idx = turnIndex
-    const isPhase1 = !!currentTurn.choice
 
     // Phase 1: choice 객체 없이 호출됨
-    if (isPhase1) {
+    if (currentTurn.choice) {
       const turn = currentTurn
       setMessages(prev => [...prev, { id: `d-${idx}`, speaker: 'doctor', text: turn.choice.text }])
-
       setTimeout(() => {
         setMessages(prev => [...prev, {
           id: `p-${idx}`, speaker: turn.response.speaker,
           text: turn.response.text, emotion: turn.response.emotion,
         }])
         if (turn.response.emotion) setCurrentEmotion(turn.response.emotion)
-
         if (turn.seniorGuide?.timing === 'after') {
           setTimeout(() => {
             setMessages(prev => [...prev, { id: `s-${idx}`, speaker: 'senior', text: turn.seniorGuide.text }])
@@ -662,7 +645,7 @@ export default function useGame() {
     exchangeCount, overtimeTurns, dayTurnsUsed, dayTurnsRemaining,
     dayBudgetTotal: dayBudget?.totalTurns ?? null,
     // Phase 4+
-    activeEvent, finishNews,
+    activeEvent, dailyPatientCounts, finishNews,
     minTurns, canEndConsultation, voluntaryClose,
   }
 }
